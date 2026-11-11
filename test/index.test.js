@@ -7,6 +7,9 @@ import * as src from '../src/sources.js';
 import { SOURCE_KEYS } from '../src/render.js';
 import {
   resolveSources,
+  dueSources,
+  nextAttempts,
+  mergeView,
   runCron,
   handleRequest,
   KV_STATE,
@@ -94,6 +97,64 @@ test('resolveSources: no input at all gives six missing sources', () => {
   assert.deepEqual(next, {});
 });
 
+test('resolveSources: a source not fetched in this run is current only if its last attempt succeeded', () => {
+  const item = { id: 'x' };
+  const previous = { nvd: { asOf: NOW - HOUR, items: [item] }, wid: { asOf: NOW - 3 * HOUR, items: [item] } };
+  const attempts = { nvd: NOW - HOUR, wid: NOW - HOUR };
+  const { view, next } = resolveSources({}, previous, NOW, attempts);
+  assert.deepEqual(view.nvd, { state: 'ok', asOf: NOW - HOUR, items: [item] });
+  assert.equal(view.wid.state, 'stale', 'the last attempt for wid failed');
+  assert.equal(next.nvd.asOf, NOW - HOUR);
+});
+
+/* ---------- Schedule ---------- */
+
+test('dueSources: NVD every two hours, the others every hour, with tolerance', () => {
+  const all = (t) => Object.fromEntries(SOURCE_KEYS.map((k) => [k, t]));
+  assert.deepEqual([...dueSources({}, NOW)], [...SOURCE_KEYS]);
+  assert.deepEqual([...dueSources(all(NOW - HOUR), NOW)], SOURCE_KEYS.filter((k) => k !== 'nvd'));
+  assert.deepEqual([...dueSources(all(NOW - 2 * HOUR), NOW)], [...SOURCE_KEYS]);
+  // A run a few minutes early still counts, more than the tolerance does not
+  assert.ok(dueSources(all(NOW - 2 * HOUR + 4 * 60_000), NOW).has('nvd'));
+  assert.ok(!dueSources(all(NOW - 2 * HOUR + 6 * 60_000), NOW).has('nvd'));
+  // Unusable records make a source due
+  assert.ok(dueSources({ nvd: NOW + HOUR }, NOW).has('nvd'));
+  assert.ok(dueSources({ nvd: 'gestern' }, NOW).has('nvd'));
+});
+
+test('nextAttempts records fetched sources, failures included, and keeps the rest', () => {
+  const results = { wid: { ok: false, items: [] }, bits: { ok: true, items: [] } };
+  const n = nextAttempts(results, { nvd: NOW - HOUR, euvd: NOW + HOUR, presse: 'x' }, NOW);
+  assert.deepEqual(n, { nvd: NOW - HOUR, wid: NOW, bits: NOW });
+});
+
+test('mergeView merges a stale KEV copy with fresh EUVD and survives malformed items', () => {
+  const view = {
+    nvd: { state: 'stale', asOf: NOW - HOUR, items: [{ id: 'CVE-2026-0001' }] },
+    euvd: {
+      state: 'ok',
+      asOf: NOW,
+      items: [
+        { id: 'EUVD-2026-1', link: 'a', epss: 1, cves: ['CVE-2026-0001'] },
+        { id: 'EUVD-2026-2', link: 'b', epss: 2, cves: ['CVE-2026-0002'] },
+      ],
+    },
+  };
+  const m = mergeView(view, () => {});
+  assert.equal(m.nvd.state, 'stale');
+  assert.equal(m.nvd.items[0].euvd.id, 'EUVD-2026-1');
+  assert.deepEqual(m.euvd.items.map((i) => i.id), ['EUVD-2026-2']);
+  assert.equal(view.nvd.items[0].euvd, undefined, 'the input view is not changed');
+
+  const logs = [];
+  const broken = { ...view, euvd: { ...view.euvd, items: [null] } };
+  assert.equal(mergeView(broken, (l) => logs.push(JSON.parse(l))), broken);
+  assert.ok(logs.some((l) => l.source === 'merge' && l.error === 'failed'));
+
+  const missing = { ...view, nvd: { state: 'missing', asOf: null, items: [] } };
+  assert.equal(mergeView(missing, () => {}), missing);
+});
+
 /* ---------- runCron ---------- */
 
 test('runCron on fixtures stores state and page, then falls back per source', async () => {
@@ -103,13 +164,14 @@ test('runCron on fixtures stores state and page, then falls back per source', as
   const first = await runCron(NOW, env, { fetchImpl: fixtureFetch(), ...quiet });
   for (const k of SOURCE_KEYS) assert.equal(first.states[k], 'ok', k);
   const state = JSON.parse(kv.store.get(KV_STATE));
-  assert.equal(state.v, 1);
+  assert.equal(state.v, 2);
+  assert.deepEqual(state.attempts, Object.fromEntries(SOURCE_KEYS.map((k) => [k, NOW])));
   assert.deepEqual(Object.keys(state.sources).sort(), [...SOURCE_KEYS].sort());
   assert.equal(cards(kv.store.get(KV_PAGE)), 29);
   assert.deepEqual(kv.meta.get(KV_PAGE), { generatedAt: NOW });
 
-  // One hour later NVD is down: its copy from the first run is shown as stale
-  const later = NOW + HOUR;
+  // Two hours later NVD is due again but down: its copy from the first run is shown as stale
+  const later = NOW + 2 * HOUR;
   const second = await runCron(later, env, {
     fetchImpl: fixtureFetch({ [src.nvdKevUrl(later)]: () => new Response(null, { status: 503 }) }),
     ...quiet,
@@ -118,8 +180,57 @@ test('runCron on fixtures stores state and page, then falls back per source', as
   const page = kv.store.get(KV_PAGE);
   assert.ok(page.includes('QUELLE NICHT ERREICHBAR, STAND: 11.11.2026 20:00 UTC'));
   assert.equal(JSON.parse(kv.store.get(KV_STATE)).sources.nvd.asOf, NOW);
-  // EUVD was not merged this time, but nothing is shown twice
+  // The stale KEV copy is still merged with the fresh EUVD list, so nothing is shown twice
   assert.equal(cards(page), 29);
+});
+
+test('runCron one hour later fetches everything except NVD and shows NVD as current', async () => {
+  const kv = new MemoryKV();
+  const env = { LAGE: kv };
+  await runCron(NOW, env, { fetchImpl: fixtureFetch(), ...quiet });
+
+  const nvdHost = new URL(src.nvdKevUrl(NOW)).host;
+  const calls = [];
+  const inner = fixtureFetch();
+  const counting = async (...args) => {
+    calls.push(String(args[0]));
+    return inner(...args);
+  };
+  const later = NOW + HOUR;
+  const r = await runCron(later, env, { fetchImpl: counting, ...quiet });
+  assert.deepEqual(r.fetched, SOURCE_KEYS.filter((k) => k !== 'nvd'));
+  assert.ok(!calls.some((u) => new URL(u).host === nvdHost), 'no request to NVD');
+  assert.equal(r.states.nvd, 'ok');
+  const state = JSON.parse(kv.store.get(KV_STATE));
+  assert.equal(state.attempts.nvd, NOW);
+  assert.equal(state.attempts.wid, later);
+  assert.equal(state.sources.nvd.asOf, NOW);
+  assert.equal(cards(kv.store.get(KV_PAGE)), 29);
+});
+
+test('runCron does not retry a failed NVD request before two hours', async () => {
+  const kv = new MemoryKV();
+  const env = { LAGE: kv };
+  const down = fixtureFetch({ [src.nvdKevUrl(NOW)]: () => new Response(null, { status: 503 }) });
+  const first = await runCron(NOW, env, { fetchImpl: down, ...quiet });
+  assert.equal(first.states.nvd, 'missing');
+
+  const second = await runCron(NOW + HOUR, env, { fetchImpl: fixtureFetch(), ...quiet });
+  assert.ok(!second.fetched.includes('nvd'));
+  assert.equal(second.states.nvd, 'missing');
+
+  const third = await runCron(NOW + 2 * HOUR, env, { fetchImpl: fixtureFetch(), ...quiet });
+  assert.ok(third.fetched.includes('nvd'));
+  assert.equal(third.states.nvd, 'ok');
+});
+
+test('runCron ignores a stored state of the previous version and fetches everything', async () => {
+  const kv = new MemoryKV();
+  kv.store.set(KV_STATE, JSON.stringify({ v: 1, sources: {} }));
+  const logs = [];
+  const r = await runCron(NOW, { LAGE: kv }, { fetchImpl: fixtureFetch(), log: (l) => logs.push(JSON.parse(l)) });
+  assert.deepEqual(r.fetched, [...SOURCE_KEYS]);
+  assert.ok(logs.some((l) => l.source === 'kv' && l.error === 'unexpected_shape'));
 });
 
 test('runCron survives a corrupted stored state', async () => {
@@ -129,7 +240,7 @@ test('runCron survives a corrupted stored state', async () => {
   const r = await runCron(NOW, { LAGE: kv }, { fetchImpl: fixtureFetch(), log: (l) => logs.push(JSON.parse(l)) });
   assert.equal(r.states.wid, 'ok');
   assert.ok(logs.some((l) => l.source === 'kv' && l.error === 'read_failed'));
-  assert.equal(JSON.parse(kv.store.get(KV_STATE)).v, 1);
+  assert.equal(JSON.parse(kv.store.get(KV_STATE)).v, 2);
 });
 
 test('runCron rejects when KV cannot be written', async () => {
@@ -144,7 +255,7 @@ test('scheduled handler uses the planned time, not the clock', async () => {
   const realLog = console.log;
   console.log = () => {};
   try {
-    await worker.scheduled({ scheduledTime: NOW, cron: '0 */6 * * *' }, { LAGE: kv }, {});
+    await worker.scheduled({ scheduledTime: NOW, cron: '17 * * * *' }, { LAGE: kv }, {});
   } finally {
     globalThis.fetch = realFetch;
     console.log = realLog;

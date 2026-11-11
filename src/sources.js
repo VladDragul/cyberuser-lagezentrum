@@ -530,8 +530,10 @@ async function collectEuvd(nowMs, ctx) {
   return { ...first, items: merged, partial: second.stats.needsMore };
 }
 
-// Fetches all sources in parallel. A failed source yields { ok: false } and
-// never affects the others; worker.js keeps the last good version for it.
+// Fetches the requested sources in parallel, all six when 'only' is not given.
+// A failed source yields { ok: false } and never affects the others; sources
+// that were not requested are absent from the result. worker.js decides which
+// sources are due, keeps the last good version of each and merges EUVD into KEV.
 export async function collectAll(nowMs, options = {}) {
   const ctx = {
     fetchImpl: options.fetchImpl ?? globalThis.fetch,
@@ -539,24 +541,17 @@ export async function collectAll(nowMs, options = {}) {
     log: options.log ?? ((line) => console.log(line)),
   };
 
-  const [nvd, euvd, wid, buergercert, bits, presse] = await Promise.all([
-    runSource('nvd', nvdKevUrl(nowMs), ACCEPT_JSON, (t) => parseNvd(t, nowMs), ctx),
-    collectEuvd(nowMs, ctx),
-    runSource('wid', FEEDS.wid, ACCEPT_RSS, parseWid, ctx),
-    runSource('buergercert', FEEDS.buergercert, ACCEPT_RSS, (t) => parseBuergercert(t), ctx),
-    runSource('bits', FEEDS.bits, ACCEPT_RSS, (t) => parseBsiFeed(t, 'bits'), ctx),
-    runSource('presse', FEEDS.presse, ACCEPT_RSS, (t) => parseBsiFeed(t, 'presse'), ctx),
-  ]);
+  const tasks = {
+    nvd: () => runSource('nvd', nvdKevUrl(nowMs), ACCEPT_JSON, (t) => parseNvd(t, nowMs), ctx),
+    euvd: () => collectEuvd(nowMs, ctx),
+    wid: () => runSource('wid', FEEDS.wid, ACCEPT_RSS, parseWid, ctx),
+    buergercert: () => runSource('buergercert', FEEDS.buergercert, ACCEPT_RSS, (t) => parseBuergercert(t), ctx),
+    bits: () => runSource('bits', FEEDS.bits, ACCEPT_RSS, (t) => parseBsiFeed(t, 'bits'), ctx),
+    presse: () => runSource('presse', FEEDS.presse, ACCEPT_RSS, (t) => parseBsiFeed(t, 'presse'), ctx),
+  };
 
-  // Merge only when both lists are current; otherwise the fallback copy of
-  // the failed source decides what is shown.
-  if (nvd.ok && euvd.ok) {
-    const m = mergeEuvdIntoNvd(nvd.items, euvd.items);
-    nvd.items = m.nvd;
-    euvd.items = m.euvd;
-    euvd.mergedIntoNvd = m.merged;
-    ctx.log(JSON.stringify({ source: 'merge', mergedIntoNvd: m.merged, euvdOnly: m.euvd.length }));
-  }
-
-  return { nvd, euvd, wid, buergercert, bits, presse };
+  const wanted = options.only === undefined ? null : new Set(options.only);
+  const keys = Object.keys(tasks).filter((key) => wanted === null || wanted.has(key));
+  const values = await Promise.all(keys.map((key) => tasks[key]()));
+  return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
 }

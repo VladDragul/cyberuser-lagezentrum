@@ -382,7 +382,7 @@ export function renderPage({ nowMs, sources } = {}) {
 <main>
 <section class="hero" aria-labelledby="hero-title">
   <h1 id="hero-title">Lagezentrum</h1>
-  <p class="lead">Aktuelle Warnungen und aktiv ausgenutzte Schwachstellen, direkt aus offiziellen Quellen: CISA und NIST (USA), ENISA (EU), CERT-Bund und BSI. Die Seite wird alle sechs Stunden automatisch erstellt, ohne KI und ohne eigene Bewertung. Maßgeblich ist immer die verlinkte Originalmeldung.</p>
+  <p class="lead">Aktuelle Warnungen und aktiv ausgenutzte Schwachstellen, direkt aus offiziellen Quellen: CISA und NIST (USA), ENISA (EU), CERT-Bund und BSI. Die Seite wird stündlich automatisch erstellt (NVD-Daten alle zwei Stunden), ohne KI und ohne eigene Bewertung. Maßgeblich ist immer die verlinkte Originalmeldung.</p>
   <p class="status">Stand: ${timeTag(nowMs, true)}</p>
 </section>
 

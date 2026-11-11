@@ -394,26 +394,26 @@ function fixtureFetch(overrides = {}) {
   return { fake, calls };
 }
 
-test('collectAll on fixtures: six requests, all sources ok, EUVD merged into KEV', async () => {
+test('collectAll on fixtures: six requests, all sources ok, nothing merged here', async () => {
   const { fake, calls } = fixtureFetch();
   const logs = [];
   const r = await src.collectAll(NOW, { fetchImpl: fake, log: (l) => logs.push(JSON.parse(l)) });
   assert.equal(calls.length, 6);
   for (const k of ['nvd', 'euvd', 'wid', 'buergercert', 'bits', 'presse']) assert.equal(r[k].ok, true, k);
   assert.equal(r.nvd.items.length, 12);
-  assert.ok(r.nvd.items.every((i) => i.euvd !== null));
-  assert.equal(r.euvd.items.length, 0);
-  assert.equal(r.euvd.mergedIntoNvd, 12);
+  // The EUVD merge happens in worker.js after source resolution, not here
+  assert.ok(r.nvd.items.every((i) => !i.euvd));
+  assert.equal(r.euvd.items.length, 12);
   assert.equal(r.wid.items.length, 12);
   assert.equal(r.buergercert.items.length, 5);
-  // one log line per source plus the merge line, with metrics only
-  assert.equal(logs.length, 7);
+  // one log line per source, with metrics only
+  assert.equal(logs.length, 6);
   for (const l of logs.filter((x) => x.source !== 'merge')) {
     assert.deepEqual(Object.keys(l).slice(0, 5), ['source', 'ok', 'status', 'bytes', 'ms']);
   }
 });
 
-test('collectAll isolates a failing source and skips the merge', async () => {
+test('collectAll isolates a failing source', async () => {
   const { fake } = fixtureFetch({ [src.nvdKevUrl(NOW)]: () => new Response(null, { status: 503 }) });
   const r = await src.collectAll(NOW, { fetchImpl: fake, log: () => {} });
   assert.equal(r.nvd.ok, false);
@@ -431,6 +431,15 @@ test('collectAll reports a parse error for a broken body', async () => {
   const { fake: fake2 } = fixtureFetch({ [src.nvdKevUrl(NOW)]: () => new Response('<html>') });
   const r2 = await src.collectAll(NOW, { fetchImpl: fake2, log: () => {} });
   assert.equal(r2.nvd.error, 'parse');
+});
+
+test('collectAll fetches only the requested sources', async () => {
+  const { fake, calls } = fixtureFetch();
+  const r = await src.collectAll(NOW, { fetchImpl: fake, log: () => {}, only: new Set(['wid', 'bits']) });
+  assert.deepEqual(Object.keys(r), ['wid', 'bits']);
+  assert.deepEqual([...calls].sort(), [src.FEEDS.wid, src.FEEDS.bits].sort());
+  const none = await src.collectAll(NOW, { fetchImpl: fake, log: () => {}, only: [] });
+  assert.deepEqual(none, {});
 });
 
 test('collectAll fetches at most one extra EUVD page', async () => {

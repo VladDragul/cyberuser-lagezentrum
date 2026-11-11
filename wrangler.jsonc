@@ -11,9 +11,10 @@
   "routes": [
     { "pattern": "cyberuser.de/news*", "zone_name": "cyberuser.de" }
   ],
-  // Every 6 hours (UTC): 00:00, 06:00, 12:00, 18:00
+  // Every hour at minute 17 (UTC). NVD is fetched every two hours, see
+  // SOURCE_INTERVAL_MS in src/worker.js
   "triggers": {
-    "crons": ["0 */6 * * *"]
+    "crons": ["17 * * * *"]
   },
   "kv_namespaces": [
     { "binding": "LAGE", "id": "596cea4a4faf402697ff8ca670f44336" }

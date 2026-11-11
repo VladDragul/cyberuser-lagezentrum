@@ -284,6 +284,10 @@ function fixtureFetch() {
 
 test('fixtures: collectAll then renderPage gives the expected cards and only allowed links', async (t) => {
   const r = await src.collectAll(NOW, { fetchImpl: fixtureFetch(), log: () => {} });
+  // Same merge as worker.js applies before rendering
+  const m = src.mergeEuvdIntoNvd(r.nvd.items, r.euvd.items);
+  r.nvd.items = m.nvd;
+  r.euvd.items = m.euvd;
   const sources = {};
   for (const k of SOURCE_KEYS) sources[k] = { state: r[k].ok ? 'ok' : 'missing', asOf: NOW, items: r[k].items };
 
