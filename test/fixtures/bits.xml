@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>BSI RSS-Newsfeed BSI-IT-Sicherheitsmitteilungen (BITS</title>
+<link>https://www.bsi.bund.de</link>
+<atom:link href="https://www.bsi.bund.de/SiteGlobals/Functions/RSSFeed/RSSNewsfeed/RSSNewsfeed_CSW.rss" rel="self" type="application/rss+xml" />
+<description>BSI-IT-Sicherheitsmitteilungen (BITS)</description>
+<lastBuildDate>Wed, 11 Nov 2026 12:03:30 +0100</lastBuildDate>
+<language>de-de</language>
+<copyright>Copyright Bundesamt für Sicherheit in der Informationstechnik. Alle Rechte vorbehalten</copyright>
+<managingEditor>oeffentlichkeitsarbeit@bsi.bund.de (Öffentlichkeitsarbeit)</managingEditor>
+<webMaster>webmaster@bsi.bund.de (Öffentlichkeitsarbeit)</webMaster>
+<category>Newspapers</category>
+<generator>Government Site Builder</generator>
+<image>
+<url>https://www.bsi.bund.de/cae/servlet/contentblob/416198/normal/Logo_BSI.jpg</url>
+<title>BSI RSS-Newsfeed BSI-IT-Sicherheitsmitteilungen (BITS</title>
+<link>https://www.bsi.bund.de</link>
+<description>RSS-Newsfeed BSI-IT-Sicherheitsmitteilungen (BITS) vom Bundesamt für Sicherheit in der Informationstechnik</description>
+</image>
+<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+<ttl>60</ttl>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-306241-1032_bits.html</guid>
+<title>Version 1.0: OpenSSH - Schwachstelle gef&#228;hrdet Alpine Linux und weitere Produkte</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-306241-1032_bits.html</link>
+<pubDate>Fri, 6 Nov 2026 13:00:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297981-1032_bits.html</guid>
+<title>Version 1.2: PHP - Kritische Schwachstellen bedrohen Webanwendungen weltweit</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297981-1032_bits.html</link>
+<pubDate>Thu, 22 Oct 2026 17:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297832-1032_bits.html</guid>
+<title>Version 1.0: BeyondTrust Remote Support - Zero-Day Schwachstelle seit mindestens August ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297832-1032_bits.html</link>
+<pubDate>Fri, 16 Oct 2026 13:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297701-1032_bits.html</guid>
+<title>Version 1.0: Cisco Secure Email Gateway - Zero-Day Schwachstelle wird aktiv ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297701-1032_bits.html</link>
+<pubDate>Thu, 15 Oct 2026 14:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297569-1032_bits.html</guid>
+<title>Version 1.0: Ivanti Connect Secure - Aktive Ausnutzung mehrerer Zero-Day Schwachstellen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-297569-1032_bits.html</link>
+<pubDate>Wed, 14 Oct 2026 12:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289305-1032_bits.html</guid>
+<title>Version 1.1: Citrix NetScaler - Systeme werden &#252;ber ZeroDay-Schwachstellen angegriffen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289305-1032_bits.html</link>
+<pubDate>Thu, 1 Oct 2026 14:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289157-1032_bits.html</guid>
+<title>Version 1.0: Check Point - Angreifer nutzen Schwachstellen seit Sommer aus</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289157-1032_bits.html</link>
+<pubDate>Wed, 23 Sep 2026 15:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289024-1032_bits.html</guid>
+<title>Version 1.0: F5 BIG-IP APM - Aktive Ausnutzug einer Zero-Day Schwachstelle</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-289024-1032_bits.html</link>
+<pubDate>Tue, 22 Sep 2026 17:35:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288868-1032.html</guid>
+<title>Version 1.0: Cisco Secure Email Gateway - Aktive Ausnutzung einer Zero-Day-Schwachstelle</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288868-1032.html</link>
+<pubDate>Tue, 15 Sep 2026 14:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288736-1032.html</guid>
+<title>Version 1.0: GitLab - Schwachstellen bereits kurz nach Ver&#246;ffentlichung im Fokus von Angreifern</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288736-1032.html</link>
+<pubDate>Mon, 14 Sep 2026 17:25:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288588-1032_bits.html</guid>
+<title>Version 1.0: SAP - Kritische Schwachstellen bedrohen verschiedene Anwendungen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288588-1032_bits.html</link>
+<pubDate>Wed, 9 Sep 2026 16:25:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-287419-1032_bits.html</guid>
+<title>Version 1.0: Deutsche Institutionen &#252;ber TerminalFix-Kampagne kompromittiert</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-287419-1032_bits.html</link>
+<pubDate>Fri, 4 Sep 2026 09:55:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288433-1032_bits.html</guid>
+<title>Version 1.0: SonicWall SMA1000 - Schwachstellen werden aktiv ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-288433-1032_bits.html</link>
+<pubDate>Wed, 2 Sep 2026 15:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271845-1032_bits.html</guid>
+<title>Version 1.2: SonicWall SMA1000 - Zero-Day Schwachstellen aktiv ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271845-1032_bits.html</link>
+<pubDate>Wed, 22 Jul 2026 11:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271984-1032_bits.html</guid>
+<title>Version 1.1: WordPress - Schwachstellen erlauben Remote Code Execution</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271984-1032_bits.html</link>
+<pubDate>Mon, 20 Jul 2026 14:05:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271713-1032_bits.html</guid>
+<title>Version 1.0: Microsoft SharePoint - Zero-Day und kritische Schwachstellen geschlossen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-271713-1032_bits.html</link>
+<pubDate>Tue, 14 Jul 2026 20:10:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262788-1032_bits.html</guid>
+<title>Version 1.0: Auswirkungen auf die Cybersicherheit von Organisationen durch die Entwicklung im Bereich K&#252;nstlicher Intelligenz</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262788-1032_bits.html</link>
+<pubDate>Mon, 22 Jun 2026 13:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-263373-1032_bits.html</guid>
+<title>Version 1.0: Check Point Remote Access VPN und Mobile Access - Aktiv ausgenutzte Schwachstelle erm&#246;glicht Aufbau von VPN-Sessions ohne Authentifizierung</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-263373-1032_bits.html</link>
+<pubDate>Tue, 9 Jun 2026 09:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262584-1032_bits.html</guid>
+<title>Gemeinsamer Sicherheitshinweis (BfV und BSI) - Auskundschaftung schlecht gesch&#252;tzter PV-Anlagen durch staatliche Cyberakteure</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-262584-1032_bits.html</link>
+<pubDate>Wed, 3 Jun 2026 15:05:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-255045-1032_bits.html</guid>
+<title>Version 1.0: Ivanti EPMM: Systeme &#252;ber neue Schwachstelle angegriffen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-255045-1032_bits.html</link>
+<pubDate>Thu, 7 May 2026 17:45:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-246817-1032_bits.html</guid>
+<title>Version 1.0: cPanel und WHM - Aktiv ausgenutzte Schwachstelle erm&#246;glicht Umgehen der Authentifizierung</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-246817-1032_bits.html</link>
+<pubDate>Thu, 30 Apr 2026 11:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-279568-1032_bits.html</guid>
+<title>Version 1.1: Cisco Firewalls mit persistenter Malware infiziert</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-279568-1032_bits.html</link>
+<pubDate>Fri, 24 Apr 2026 12:10:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-246628-1032_bits.html</guid>
+<title>Version 1.0: Microsoft Windows IKE - Kritische Schwachstelle gef&#228;hrdet Windows VPN-Server</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-246628-1032_bits.html</link>
+<pubDate>Wed, 15 Apr 2026 12:40:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238368-1032_bits.html</guid>
+<title>Version 1.0: F5 BIG-IP - Aktive Ausnutzung einer Schwachstelle im Access Policy Manager</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238368-1032_bits.html</link>
+<pubDate>Mon, 30 Mar 2026 18:10:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238088-1032_bits.html</guid>
+<title>Version 1.1: Citrix NetScaler ADC und Gateway - Schwachstellen gef&#228;hrden Organisationen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238088-1032_bits.html</link>
+<pubDate>Mon, 30 Mar 2026 17:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-237970-1032_bits.html</guid>
+<title>Version 1.0: Trivy - Supply-Chain Angriff f&#252;hrt zu Kompromittierungen in Deutschland</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-237970-1032_bits.html</link>
+<pubDate>Thu, 26 Mar 2026 17:10:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238220-1032_bits.html</guid>
+<title>Version 1.0: Microsoft SharePoint - Angreifer nutzen kritische Schwachstelle aktiv aus</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-238220-1032_bits.html</link>
+<pubDate>Wed, 25 Mar 2026 12:10:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-221601-1032_bits.html</guid>
+<title>Version 1.3: Ivanti EPMM - Aktive Angriffe &#252;ber Zero-Day Schwachstellen beobachtet</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-221601-1032_bits.html</link>
+<pubDate>Fri, 13 Feb 2026 11:25:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/202602_BfV_BSI_Sicherheitshinweis.html</guid>
+<title>Gemeinsamer Sicherheitshinweis (BfV und BSI) - Phishing &#252;ber Messengerdienste</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/202602_BfV_BSI_Sicherheitshinweis.html</link>
+<pubDate>Fri, 6 Feb 2026 14:10:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-221445-1032_bits.html</guid>
+<title>Version 1.2: Fortinet - Zero-Day Schwachstelle gef&#228;hrdet Fortinet-L&#246;sungen mit SAML SSO</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2026/2026-221445-1032_bits.html</link>
+<pubDate>Thu, 29 Jan 2026 14:50:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304753-1032_bits.html</guid>
+<title>Version 1.1: Cisco Secure Email - L&#246;sungen werden aktiv angegriffen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304753-1032_bits.html</link>
+<pubDate>Fri, 16 Jan 2026 10:40:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-305052-1032_bits.html</guid>
+<title>Version 1.0: MongoDB - Aktiv ausgenutzte Schwachstelle erlaubt Offenlegung sensibler Daten</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-305052-1032_bits.html</link>
+<pubDate>Mon, 29 Dec 2025 13:15:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304885-1032_bits.html</guid>
+<title>Version 1.0: WatchGuard Firebox - Aktive Ausnutzung einer Zero-Day Schwachstelle</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304885-1032_bits.html</link>
+<pubDate>Fri, 19 Dec 2025 13:00:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304569-1032_bits.html</guid>
+<title>Version 1.3 React Server Components - Kritische Schwachstelle bedroht zahlreiche Webanwendungen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-304569-1032_bits.html</link>
+<pubDate>Mon, 15 Dec 2025 13:40:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-288152-1032_bits.html</guid>
+<title>Version 1.0: BIND - Proof of Concept bedroht DNS-Server</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-288152-1032_bits.html</link>
+<pubDate>Tue, 28 Oct 2025 15:40:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287772-1032_bits.html</guid>
+<title>Version 1.0: Microsoft Exchange - Gef&#228;hrdung f&#252;r zehntausende Server nach Support-Ende f&#252;r Versionen 2016 und 2019</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287772-1032_bits.html</link>
+<pubDate>Tue, 28 Oct 2025 11:20:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-288009-1032_bits.html</guid>
+<title>Version 1.1: Microsoft WSUS - Notfallupdate schlie&#223;t kritische Schwachstelle mit Proof-of-Concept</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-288009-1032_bits.html</link>
+<pubDate>Mon, 27 Oct 2025 12:10:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287083-1032_bits.html</guid>
+<title>Version 1.0: F5 - Informationen &#252;ber Schwachstellen abgegriffen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287083-1032_bits.html</link>
+<pubDate>Thu, 16 Oct 2025 16:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-286926-1032_bits.html</guid>
+<title>Version 1.0: SonicWall - Konfigurationsinformationen von Firewalls abgegriffen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-286926-1032_bits.html</link>
+<pubDate>Thu, 9 Oct 2025 14:45:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287813-1032_bits.html</guid>
+<title>Version 1.0: Redis - Kritische Schwachstelle gef&#228;hrdet Redis-Server</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-287813-1032_bits.html</link>
+<pubDate>Tue, 7 Oct 2025 13:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-271252-1032_bits.html</guid>
+<title>Version 1.0: Citrix NetScaler ADC und NetScaler Gateway: Angriffe auf ungesch&#252;tzte Instanzen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-271252-1032_bits.html</link>
+<pubDate>Wed, 27 Aug 2025 12:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-271036-1032_bits.html</guid>
+<title>Version 1.1: SonicWall Gen 7 Firewalls - Ransomware-Angriffe beobachtet</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-271036-1032_bits.html</link>
+<pubDate>Thu, 7 Aug 2025 12:45:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-262781-1032_bits.html</guid>
+<title>Version 1.2: Microsoft SharePoint - Massive Ausnutzung einer Zero-Day Schwachstelle</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-262781-1032_bits.html</link>
+<pubDate>Mon, 4 Aug 2025 10:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-254480-1032_bits.html</guid>
+<title>Version 1.1: Citrix NetScaler ADC &amp; NetScaler Gateway - Kritische Sicherheitsl&#252;cken geschlossen und teils aktiv ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-254480-1032_bits.html</link>
+<pubDate>Tue, 8 Jul 2025 12:30:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-245980-1032_bits.html</guid>
+<title>Version 1.1: Ivanti EPMM - Zero-Day Schwachstellen werden aktiv ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-245980-1032_bits.html</link>
+<pubDate>Fri, 13 Jun 2025 13:00:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-238765-1032_csw.html</guid>
+<title>Version 1.0: Fortinet FortiOS - Angreifende installierten persistenten Lesezugriff auf Firewalls</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-238765-1032_csw.html</link>
+<pubDate>Fri, 11 Apr 2025 12:50:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-238620-1032_csw.html</guid>
+<title>Version 1.1: Ivanti Connect Secure - Kritische Schwachstelle in End-of-Support und ungepatchten Systemen ausgenutzt</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-238620-1032_csw.html</link>
+<pubDate>Wed, 9 Apr 2025 10:15:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-239237-1032_csw.html</guid>
+<title>Information zur Umstellung beim Versand von Warnungen</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-239237-1032_csw.html</link>
+<pubDate>Tue, 1 Apr 2025 15:20:00 +0200</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-230373-1032_csw.html</guid>
+<title>Version 1.0: Kubernetes - Kritische Schwachstelle im Ingress NGINX Controller erm&#246;glicht Cluster&#252;bernahme</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-230373-1032_csw.html</link>
+<pubDate>Tue, 25 Mar 2025 12:15:00 +0100</pubDate>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-213884-1032_csw.html</guid>
+<title>Version 1.0: SonicWall SonicOS - Proof-of-Concept Exploit f&#252;r Schwachstelle im SSLVPN ver&#246;ffentlicht</title>
+<link>https://www.bsi.bund.de/SharedDocs/Cybersicherheitswarnungen/DE/2025/2025-213884-1032_csw.html</link>
+<pubDate>Fri, 31 Jan 2025 14:20:00 +0100</pubDate>
+</item>
+</channel>
+</rss>

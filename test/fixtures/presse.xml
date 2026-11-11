@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>BSI RSS-Newsfeed Presse-, Kurzmitteilungen und Veranstaltungshinweise</title>
+<link>https://www.bsi.bund.de</link>
+<atom:link href="https://www.bsi.bund.de/SiteGlobals/Functions/RSSFeed/RSSNewsfeed/RSSNewsfeed_Presse_Veranstaltungen.rss" rel="self" type="application/rss+xml" />
+<description>Aktuelle Informationen vom Bundesamt für Sicherheit in der Informationstechnik</description>
+<lastBuildDate>Wed, 11 Nov 2026 12:03:31 +0100</lastBuildDate>
+<language>de-de</language>
+<copyright>Copyright Bundesamt für Sicherheit in der Informationstechnik. Alle Rechte vorbehalten</copyright>
+<managingEditor>presse@bsi.bund.de (Öffentlichkeitsarbeit)</managingEditor>
+<webMaster>webmaster@bsi.bund.de (Online Redaktion)</webMaster>
+<category>Presse</category>
+<generator>Government Site Builder</generator>
+<image>
+<url>https://www.bsi.bund.de/SiteGlobals/Frontend/Images/logo.svg</url>
+<title>BSI Bund</title>
+<link>https://www.bsi.bund.de</link>
+<description>RSS-Newsfeed Bundesamt für Sicherheit in der Informationstechnik - Presse- und Kurzmitteilungen</description>
+</image>
+<docs>http://blogs.law.harvard.edu/tech/rss</docs>
+<ttl>60</ttl>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261013_OT-Gefaehrdung-Kleinanlagen.html</guid>
+<title>BSI r&#228;t dringend zur Absicherung vernetzter Steuerungssysteme</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261013_OT-Gefaehrdung-Kleinanlagen.html</link>
+<pubDate>Tue, 3 Nov 2026 14:00:00 +0100</pubDate>
+<description>Dem BSI sind IT-Sicherheitsvorf&#228;lle bei einzelnen Superm&#228;rkten in Deutschland und zahlreichen weiteren europ&#228;ischen L&#228;ndern bekannt geworden. Das BSI weist erneut und ausdr&#252;cklich auf die Notwendigkeit hin, Steuerungssysteme angemessen abzusichern. Insbesondere der direkte Zugriff auf diese Systeme aus dem Internet sollte unterbunden werden.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261021_PHP-kritische-Schwachstelle.html</guid>
+<title>PHP: BSI warnt vor kritischen Schwachstellen &#8211; Sicherheitsupdate noch heute notwendig</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261021_PHP-kritische-Schwachstelle.html</link>
+<pubDate>Wed, 21 Oct 2026 14:00:00 +0200</pubDate>
+<description>Kritische Schwachstellen innerhalb der Programmiersprache PHP bedrohen aktuell weltweit Webanwendungen. Eine Ver&#246;ffentlichung entsprechender Sicherheitsupdates durch die Entwickler wird f&#252;r den heutigen Nachmittag um 16 Uhr erwartet.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261020_BSI_it-sa_2026.html</guid>
+<title>Cybersicherheit gemeinsam gestalten: Das BSI auf der it-sa 2026</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261020_BSI_it-sa_2026.html</link>
+<pubDate>Tue, 20 Oct 2026 08:00:00 +0200</pubDate>
+<description>Das BSI nimmt vom 27. bis 29. Oktober 2026 wieder an der it-sa Expo in N&#252;rnberg, Europas gr&#246;&#223;ter Fachmesse f&#252;r IT-Sicherheit, teil. Als zentrale Ansprechstelle f&#252;r Cybersicherheit in der Wirtschaft pr&#228;sentiert sich das BSI an seinem 200 Quadratmeter gro&#223;en Stand in Halle 9 (Stand 519).</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261019_Kinder-Smartwatches.html</guid>
+<title>Kinder-Smartwatches: Darauf sollten Eltern und Erziehungsberechtigte achten</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261019_Kinder-Smartwatches.html</link>
+<pubDate>Mon, 19 Oct 2026 09:00:00 +0200</pubDate>
+<description>Kinder-Smartwatches versprechen Eltern Sicherheit und erm&#246;glichen Kindern erste Schritte in die digitale Welt. Gleichzeitig verarbeiten die vernetzten Uhren teils hochsensible Daten und k&#246;nnen so selbst zum Sicherheitsrisiko werden. Das BSI hat daher eine Auswahl von Kinder-Smartwatches genauer unter die Lupe genommen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261020_CRA-Durchf%C3%BChrungsgesetz.html</guid>
+<title>Bundestag st&#228;rkt Cybersicherheit: CRA-Durchf&#252;hrungsgesetz verabschiedet</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261020_CRA-Durchf%C3%BChrungsgesetz.html</link>
+<pubDate>Fri, 16 Oct 2026 12:00:00 +0200</pubDate>
+<description>Mit der gestrigen Verabschiedung des Durchf&#252;hrungsgesetzes zum Cyber Resilience Act (CRA) durch den Deutschen Bundestag wird ein weiterer wichtiger Schritt f&#252;r mehr Cybersicherheit in Deutschland und Europa vollzogen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261012_Leitlinie-PQC.html</guid>
+<title>Umstellung auf Post-Quanten-Kryptografie: Leitlinie zur nationalen Umsetzung der EU-Roadmap ver&#246;ffentlicht</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261012_Leitlinie-PQC.html</link>
+<pubDate>Mon, 12 Oct 2026 10:00:00 +0200</pubDate>
+<description>Die gemeinsame Leitlinie von BMI, BMDS und BSI richtet sich insbesondere an Bundes-, Landes- und Kommunalverwaltungen sowie an Organisationen und Unternehmen, darunter Betreiber kritischer Infrastrukturen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261007_KI-Sicherheitsstudie_TUEV_BSI.html</guid>
+<title>Nur jedes zehnte Unternehmen gegen KI-gest&#252;tzte Angriffe ger&#252;stet - jedes sechste Unternehmen berichtet von Vorf&#228;llen</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/261007_KI-Sicherheitsstudie_TUEV_BSI.html</link>
+<pubDate>Wed, 7 Oct 2026 10:00:00 +0200</pubDate>
+<description>Nur wenige Unternehmen in Deutschland haben Schutzma&#223;nahmen und Prozesse mit Blick auf Cyberangriffe im Zusammenhang mit KI etabliert. Das zeigt die aktuelle Studie von T&#220;V-Verband und BSI zum Thema &#8222;K&#252;nstliche Intelligenz und Cybersicherheit in Unternehmen&quot;.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260911_CRA_Meldepflicht_Schwachstellen.html</guid>
+<title>Cyber Resilience Act: Meldepflicht startet</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260911_CRA_Meldepflicht_Schwachstellen.html</link>
+<pubDate>Fri, 11 Sep 2026 09:00:00 +0200</pubDate>
+<description>F&#252;r Hersteller von Produkten mit digitalen Elementen gelten auf dem Binnenmarkt der EU ab dem 11. September 2026 die Meldepflichten des CRA. Hersteller m&#252;ssen aktiv ausgenutzte Schwachstellen sowie schwerwiegende Sicherheitsvorf&#228;lle melden. Das BSI unterst&#252;tzt mit Schritt-f&#252;r-Schritt-Anleitungen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260806_security_txt.html</guid>
+<title>Nur 1,8 Prozent der Webseitenbetreiber nutzen security.txt &#8211; BSI und ACS raten zur Umsetzung</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260806_security_txt.html</link>
+<pubDate>Thu, 6 Aug 2026 10:15:00 +0200</pubDate>
+<description>Nur 1,8 Prozent der Webseitenbetreiber in Deutschland stellen bislang eine security.txt bereit. Das zeigen Messungen des Bundesamt f&#252;r Sicherheit in der Informationstechnik (BSI) im Rahmen des Cyberdome-Projekts.&#160;</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260728_Sichere_Ladeinfrastruktur.html</guid>
+<title>Sichere Ladeinfrastruktur: BSI ver&#246;ffentlicht Eckpunktepapier und startet mit beteiligten Ressorts die Ma&#223;nahmenumsetzung</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260728_Sichere_Ladeinfrastruktur.html</link>
+<pubDate>Tue, 28 Jul 2026 10:00:00 +0200</pubDate>
+<description>Die Elektromobilit&#228;t in Deutschland entwickelt sich immer dynamischer. Damit steigen auch die Anforderungen an Cybersicherheit und Resilienz. Das BSI hat aufbauend auf einer Studie ein Eckpunktepapier mit konkreten Ma&#223;nahmen f&#252;r eine resiliente und vertrauensw&#252;rdige Ladeinfrastruktur erarbeitet.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260722_Bundeskabinett_staerkt_CGS.html</guid>
+<title>Bundeskabinett st&#228;rkt mit &#8222;CyberGovSecure&quot; die Cybersicherheit der Bundesverwaltung</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260722_Bundeskabinett_staerkt_CGS.html</link>
+<pubDate>Wed, 22 Jul 2026 14:00:00 +0200</pubDate>
+<description>Das Programm &#8222;CyberGovSecure&#8220; setzt einen verbindlichen politischen und organisatorischen Rahmen. Das Programm setzt sich zum Ziel, die Cybersicherheit und Cyberresilienz der Bundesverwaltung ressort&#252;bergreifend, wirksam und messbar zu st&#228;rken.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260715_Projekt_Windows_seziert.html</guid>
+<title>Projekt &#8222;Windows seziert&#8220;: BSI ver&#246;ffentlicht Sicherheitsanalysen von Windows Hello for Business</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260715_Projekt_Windows_seziert.html</link>
+<pubDate>Wed, 15 Jul 2026 07:00:00 +0200</pubDate>
+<description>Um tiefgreifende Analysen verschiedener sicherheitsbezogener Komponenten in den Betriebssystemen Microsoft Windows 10 und Windows 11 durchzuf&#252;hren, hat das BSI das Projekt &#8222;Windows seziert&#8220; gestartet. Als erstes Ergebnis des Projekts wurden Analysen zu &quot;Windows Hello for Business&quot; ver&#246;ffentlicht.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260714_Cyberangriffe_auf_Praxen.html</guid>
+<title>Cyberangriffe auf Praxen: BSI unterst&#252;tzt bei der Umsetzung neuer IT-Sicherheitsvorgaben</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260714_Cyberangriffe_auf_Praxen.html</link>
+<pubDate>Tue, 14 Jul 2026 10:00:00 +0200</pubDate>
+<description>Viele Praxen untersch&#228;tzen das Risiko von Cyberangriffen. Das BSI unterst&#252;tzt Arzt-, Zahnarzt- und Psychotherapiepraxen mit konkreten Handlungsempfehlungen und Checklisten dabei, die durch die neue IT-Sicherheitsrichtlinie entstehenden Anforderungen an die Cybersicherheit umzusetzen und dauerhaft zu verankern.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260708_Kooperationsvereinbarung_BSI-Berlin.html</guid>
+<title>Cybersicherheit in Bund und L&#228;ndern: BSI und Berlin schlie&#223;en Kooperation</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260708_Kooperationsvereinbarung_BSI-Berlin.html</link>
+<pubDate>Wed, 8 Jul 2026 11:00:00 +0200</pubDate>
+<description>Das BSI und das Land Berlin haben sich auf gemeinsame Kooperationsma&#223;nahmen im Bereich Cyber- und Informationssicherheit verst&#228;ndigt.&#160;</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260706_KI_A5-Community-Draft.html</guid>
+<title>Pr&#252;fkatalog vertrauensw&#252;rdige KI-Systeme: BSI ver&#246;ffentlicht Community Draft des A5</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260706_KI_A5-Community-Draft.html</link>
+<pubDate>Mon, 6 Jul 2026 01:00:00 +0200</pubDate>
+<description>Mit der Entwicklung der AI Audit and Assurance Assessment Architecture (A5) legt das Bundesamt f&#252;r Sicherheit in der Informationstechnik (BSI) den Grundstein f&#252;r eine modulare und erweiterbare Pr&#252;farchitektur f&#252;r KI-Systeme.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260624_Endgame.html</guid>
+<title>Operation Endgame: BSI an internationaler Aktion gegen Schadsoftware-Familien beteiligt</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260624_Endgame.html</link>
+<pubDate>Wed, 24 Jun 2026 13:00:00 +0200</pubDate>
+<description>Im Rahmen der Operation Endgame konnten in einer international koordinierten Aktion mehrere Schadsoftware-Familien durch deutsche und internationale Polizeibeh&#246;rden, BSI und in Zusammenarbeit mit dem Privatsektor vom Netz genommen werden.&#160;</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260619_Sicher_reisen.html</guid>
+<title>Sicher reisen, digital gesch&#252;tzt bleiben: BSI gibt Tipps f&#252;r den Urlaub</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260619_Sicher_reisen.html</link>
+<pubDate>Fri, 19 Jun 2026 09:45:00 +0200</pubDate>
+<description>Sommerzeit ist Reisezeit: Das BSI empfiehlt Verbraucherinnen und Verbrauchern, ihre digitale Sicherheit bereits vor Reisebeginn mitzudenken. Wer Ger&#228;te, Konten und Daten rechtzeitig absichert, reduziert das Risiko, im Urlaub oder nach der R&#252;ckkehr unangenehme &#220;berraschungen zu erleben.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260616_BSI_Schleswig-Holstein_Kooperation.html</guid>
+<title>Cybersicherheit in Bund und L&#228;ndern: BSI und Schleswig-Holstein vereinbaren Kooperation</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260616_BSI_Schleswig-Holstein_Kooperation.html</link>
+<pubDate>Tue, 16 Jun 2026 10:00:00 +0200</pubDate>
+<description>Das BSI und das Land Schleswig-Holstein intensivieren ihre Zusammenarbeit im Bereich Cybersicherheit. Daf&#252;r unterzeichneten BSI-Pr&#228;sidentin Claudia Plattner und Dirk Schr&#246;dter, Chef der Staatskanzlei des Landes Schleswig-Holstein, eine entsprechende Vereinbarung.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260528_Digital_sicher_aufwachsen.html</guid>
+<title>Sicher aufwachsen im digitalen Zeitalter: Wie Eltern ihre Kinder und Jugendliche sch&#252;tzen k&#246;nnen</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260528_Digital_sicher_aufwachsen.html</link>
+<pubDate>Thu, 28 May 2026 11:00:00 +0200</pubDate>
+<description>Zum Weltkindertag am 01. Juni 2026 informiert das BSI &#252;ber einfache technische Schutzma&#223;nahmen und gibt Eltern sowie P&#228;dagoginnen und P&#228;dagogen konkrete Hilfestellungen f&#252;r mehr Sicherheit von Kindern und Jugendlichen im digitalen Alltag.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260513_Kooperation_Mecklenburg-Vorpommern.html</guid>
+<title>Cybersicherheit in Bund und L&#228;ndern: BSI und Mecklenburg-Vorpommern schlie&#223;en Kooperation</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260513_Kooperation_Mecklenburg-Vorpommern.html</link>
+<pubDate>Wed, 13 May 2026 07:00:00 +0200</pubDate>
+<description>Das BSI und das Land Mecklenburg-Vorpommern arbeiten im Bereich der Cybersicherheit k&#252;nftig enger zusammen. Ziel ist, die Zusammenarbeit zwischen Bund und Land mit Blick auf Cybersicherheit zu st&#228;rken, um so einen entscheidenden Beitrag zur digitalen Resilienz Deutschlands zu leisten.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260512_G7_Richtlinie_SBOM_for_AI.html</guid>
+<title>BSI ver&#246;ffentlicht G7-Richtlinie zu Software Bill of Materials for AI</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260512_G7_Richtlinie_SBOM_for_AI.html</link>
+<pubDate>Tue, 12 May 2026 08:00:00 +0200</pubDate>
+<description>Unter Federf&#252;hrung des BSI und der italienischen Cybersicherheitsbeh&#246;rde ACN wurde von KI-Expertinnen und Experten der G7-Cybersicherheitsbeh&#246;rden und der EU-Kommission eine Richtlinie mit Minimalanforderungen an eine SBOM for AI erarbeitet.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260511_Cyberkriminalitaet_im_Alltag.html</guid>
+<title>Cyberkriminalit&#228;t im Alltag: Jede zehnte Person in Deutschland allein im Vorjahr betroffen</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260511_Cyberkriminalitaet_im_Alltag.html</link>
+<pubDate>Mon, 11 May 2026 07:00:00 +0200</pubDate>
+<description>Viele Menschen informieren sich &#252;ber ihre pers&#246;nliche IT-Sicherheit erst im Ernstfall &#8211; so das Ergebnis des Cybersicherheitsmonitors 2026. Die repr&#228;sentative Befragung des BSI und des ProPK beleuchtet das Schutzverhalten der Bev&#246;lkerung und ihre Betroffenheit von Cyberkriminalit&#228;t.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260504_CyberGovSecure_gestartet.html</guid>
+<title>CyberGovSecure gestartet: Bund st&#228;rkt Cybersicherheit koordiniert und ressort&#252;bergreifend</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260504_CyberGovSecure_gestartet.html</link>
+<pubDate>Mon, 4 May 2026 07:55:00 +0200</pubDate>
+<description>Mit dem Kick-off des Programm CyberGovSecure hat die Bundesverwaltung den operativen Start f&#252;r eine koordinierte St&#228;rkung der Cybersicherheit vollzogen. Unter der Koordination der CISO Bund, des BMDS und mit fachlicher Begleitung durch das BSI werden gezielt Ma&#223;nahmen zur Erh&#246;hung der Cyberresilienz umgesetzt.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260429_BSI_Brandenburg_Kooperation.html</guid>
+<title>Cybersicherheit in Bund und L&#228;ndern: BSI und Brandenburg vereinbaren Kooperation</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260429_BSI_Brandenburg_Kooperation.html</link>
+<pubDate>Wed, 29 Apr 2026 17:45:00 +0200</pubDate>
+<description>Das BSI und das Land Brandenburg intensivieren ihre Zusammenarbeit im Bereich Cybersicherheit. Daf&#252;r unterzeichneten BSI-Pr&#228;sidentin Claudia Plattner und Brandenburgs Digitalstaatssekret&#228;r Ernst B&#252;rger eine entsprechende Vereinbarung.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260427_C3A.html</guid>
+<title>C3A: BSI ver&#246;ffentlicht Souver&#228;nit&#228;tskriterien f&#252;r Cloud-Dienste</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260427_C3A.html</link>
+<pubDate>Mon, 27 Apr 2026 05:45:00 +0200</pubDate>
+<description>Mit den Criteria enabling Cloud Computing Autonomy (C3A) hat das Bundesamt f&#252;r Sicherheit in der Informationstechnik (BSI) einen richtungsweisenden Handlungsrahmen vorgelegt, der die Souver&#228;nit&#228;tseigenschaften von Cloud-Diensten transparent macht.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260416_BSI-Kongress-2026.html</guid>
+<title>KI, Quantencomputer, Nachwuchsf&#246;rderung: Das war der 21. Deutsche IT-Sicherheitskongress</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260416_BSI-Kongress-2026.html</link>
+<pubDate>Thu, 16 Apr 2026 08:00:00 +0200</pubDate>
+<description>Auf dem 21. Deutschen IT-Sicherheitskongress haben Expertinnen und Experten den zunehmenden Bedarf an Sicherheitskonzepten f&#252;r den Einsatz K&#252;nstlicher Intelligenz (KI) diskutiert. Im Rahmen des BSI-Kongresses wird seit 25 Jahren auch der &#8222;Best Student Award&#8220; verliehen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260413_KI-Betrug-im-Netz.html</guid>
+<title>KI-Betrug im Netz: Nur ein F&#252;nftel &#252;berpr&#252;ft die Quelle</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260413_KI-Betrug-im-Netz.html</link>
+<pubDate>Mon, 13 Apr 2026 08:00:00 +0200</pubDate>
+<description>Fast die H&#228;lfte der Internetnutzerinnen und -nutzer in Deutschland f&#252;hlt sich zwar in der Lage, KI-generierte Inhalte zu erkennen. Tats&#228;chlich schaut jedoch kaum jemand genauer hin: Nur eine Minderheit hat schon einmal etwa nach Unstimmigkeiten im Bild gesucht oder die Quelle &#252;berpr&#252;ft.&#160;</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260407_C5_Cloud_Computing.html</guid>
+<title>Sicheres Cloud-Computing: BSI ver&#246;ffentlicht C5:2026</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260407_C5_Cloud_Computing.html</link>
+<pubDate>Tue, 7 Apr 2026 15:30:00 +0200</pubDate>
+<description>Das Bundesamt f&#252;r Sicherheit in der Informationstechnik (BSI) stellt den Cloud Computing Compliance Criteria Catalogue (C5) in seiner neuen Version (C5:2026) vor. Der C5 ist seit 2016 der deutschlandweit wichtigste Sicherheitsstandard f&#252;r Cloud-Anbieter und -Nutzer.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260330_World_Backup_Day.html</guid>
+<title>Vorsorge f&#252;r den Ernstfall: BSI ruft zum World Backup Day zur Datensicherung auf</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260330_World_Backup_Day.html</link>
+<pubDate>Mon, 30 Mar 2026 08:15:00 +0200</pubDate>
+<description>Zum World Backup Day am 31. M&#228;rz ruft das BSI Verbraucherinnen und Verbraucher dazu auf, wichtige Daten zu sichern und stellt eine Anleitung zur Erstellung einer Sicherheitskopie zur Verf&#252;gung.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260319_Vorsitz_AdCo_CRA.html</guid>
+<title>Cyber Resilience Act: BSI &#252;bernimmt den Vorsitz der AdCo CRA</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260319_Vorsitz_AdCo_CRA.html</link>
+<pubDate>Thu, 19 Mar 2026 12:00:00 +0100</pubDate>
+<description>Im Rahmen der Umsetzung des Cyber Resilience Acts (CRA) wird dem BSI erneut eine besondere Rolle zuteil. Neben der Ernennung zur markt&#252;berwachenden Beh&#246;rde &#252;bernimmt das BSI auf europ&#228;ischer Ebene nun den Vorsitz der Administrative Cooperation Group &#8222;AdCo CRA&#8220;.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260318_Sensorik_Cybersicherheit.html</guid>
+<title>Kooperation mit L&#228;ndern und Kommunen: BSI weitet Sensorik in der Cybersicherheit aus</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260318_Sensorik_Cybersicherheit.html</link>
+<pubDate>Wed, 18 Mar 2026 08:00:00 +0100</pubDate>
+<description>Angesichts der angespannten Cybersicherheitslage baut das BSI die Reaktionsf&#228;higkeit und damit auch die Resilienz Deutschlands gegen IT-Sicherheitsvorf&#228;lle weiter aus. Mit &#246;ffentlichen IT-Dienstleistern von L&#228;ndern und Kommunen wird der Einsatz der Daten-Sensorik erweitert und Echtzeitanalysen ausgebaut.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260317_Software-Produkte_Gesundheitswesen.html</guid>
+<title>BSI bem&#228;ngelt IT-Sicherheit von Software-Produkten des Gesundheitswesens</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260317_Software-Produkte_Gesundheitswesen.html</link>
+<pubDate>Tue, 17 Mar 2026 08:15:00 +0100</pubDate>
+<description>F&#252;r den Schutz sensibler Gesundheitsdaten ist die Verwendung sicherer Software-Produkte notwendig. Die IT-Sicherheit von Software-Produkten im Gesundheitswesen ist allerdings ausbauf&#228;hig. Das stellt das BSI nach der Testung der Standardkonfiguration unterschiedlicher Software-Produkte im Gesundheitswesen fest.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260307_Sicherheit_digitaler_Raum.html</guid>
+<title>BSI-Pr&#228;sidentin wirbt f&#252;r &#8222;360-Grad-Blick&#8220; auf Sicherheit im digitalen Raum</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260307_Sicherheit_digitaler_Raum.html</link>
+<pubDate>Sat, 7 Mar 2026 12:00:00 +0100</pubDate>
+<description>Mit Blick auf die aktuelle Cybersicherheitslage in Deutschland hat das BSI einen mehrdimensionalen L&#246;sungsansatz vorgestellt. Auf der Cyber Security Conference (CSC) von Schwarz Digits pr&#228;sentierte BSI-Pr&#228;sidentin Claudia Plattner das &#8222;Wheel of Motion&#8220; &#8211; eine Konzeptskizze f&#252;r L&#246;sungsstrategien im Umgang mit Cyberaggression.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260306_Anmeldung_IT_Sicherheitskongress.html</guid>
+<title>Deutscher IT-Sicherheitskongress: jetzt anmelden!&#160;</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260306_Anmeldung_IT_Sicherheitskongress.html</link>
+<pubDate>Fri, 6 Mar 2026 08:15:00 +0100</pubDate>
+<description>Vom 15. bis zum 16. April 2026 findet der 21. Deutsche IT-Sicherheitskongress in Bonn statt. Die Registrierung zur Teilnahme am Kongress ist ab sofort m&#246;glich.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260215_MSC.html</guid>
+<title>BSI-Pr&#228;sidentin auf der MSC: &#8222;Wer souver&#228;n sein will, muss Technologie beherrschen&#8220;</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260215_MSC.html</link>
+<pubDate>Sun, 15 Feb 2026 15:00:00 +0100</pubDate>
+<description>Ein verschobenes Machtgleichgewicht, digitale Souver&#228;nit&#228;t und der Cyberdome f&#252;r Deutschland: Das waren die thematischen Schwerpunkte f&#252;r das Bundesamt f&#252;r Sicherheit in der Informationstechnik (BSI) auf der M&#252;nchner Sicherheitskonferenz.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260213_BSI_Schwarz_Digits_Partnerschaft.html</guid>
+<title>Digitale Souver&#228;nit&#228;t gemeinsam gestalten: BSI und Schwarz Digits schlie&#223;en strategische Partnerschaft</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260213_BSI_Schwarz_Digits_Partnerschaft.html</link>
+<pubDate>Fri, 13 Feb 2026 17:00:00 +0100</pubDate>
+<description>Im Rahmen der M&#252;nchner Sicherheitskonferenz haben das BSI und Schwarz Digits, die IT-Sparte der Schwarz Gruppe, eine strategische Kooperation vereinbart. Ziel ist unter anderem die gemeinsame Entwicklung souver&#228;ner Cloud-L&#246;sungen, die auch f&#252;r den Einsatz in der Bundes- und in den Landesverwaltungen nutzbar gemacht werden k&#246;nnen.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260213_CSDM_MCSC.html</guid>
+<title>Cyber-Direktorentreffen und Cyber Security Conference in M&#252;nchen: Steigender Bedarf nach automatisierter Verteidigung</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260213_CSDM_MCSC.html</link>
+<pubDate>Fri, 13 Feb 2026 08:15:00 +0100</pubDate>
+<description>Die Spitzen der europ&#228;ischen Cybersicherheitsbeh&#246;rden haben sich zum Cyber Security Directors&#8216; Meeting im Rahmen der Munich Cyber Security Conference getroffen. Sie tauschten sich u.a. zu digitaler Souver&#228;nit&#228;t und der Umsetzung der europ&#228;ischen Regulierungen NIS-2 und CRA sowie der automatisierten Detektion und Abwehr von Cyberangriffen aus.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260211_Ende_klassischer_Verschluesselungsverfahren.html</guid>
+<title>BSI empfiehlt Ende klassischer asymmetrischer Verschl&#252;sselungsverfahren</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260211_Ende_klassischer_Verschluesselungsverfahren.html</link>
+<pubDate>Wed, 11 Feb 2026 08:15:00 +0100</pubDate>
+<description>In der j&#228;hrlichen Aktualisierung seiner kryptographischen Empfehlungen (TR-02102) spricht sich das BSI erstmals f&#252;r ein Ablaufdatum klassischer asymmetrischer Verschl&#252;sselungsverfahren aus.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260210_Studie_IT-Sicherheit_Privathaushalte.html</guid>
+<title>Studie des BSI: IT-Sicherheit in Privathaushalten ist mehr als eine technische Frage</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260210_Studie_IT-Sicherheit_Privathaushalte.html</link>
+<pubDate>Tue, 10 Feb 2026 08:15:00 +0100</pubDate>
+<description>Wie sicher sind Familien und Wohngemeinschaften im digitalen Alltag, wo liegen die praktischen Herausforderungen bei der Umsetzung von IT-Sicherheit? Eine Studie des BSI zeigt, dass sie h&#228;ufig an unklaren Zust&#228;ndigkeiten, sozialen Abh&#228;ngigkeiten sowie der mangelnden Alltagstauglichkeit von Schutzma&#223;nahmen scheitert.</description>
+</item>
+<item>
+<guid isPermaLink="true">https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260204_Zertifizierung_Software-Updates.html</guid>
+<title>Neues Verfahren bewahrt Zertifizierung bei Software-Updates</title>
+<link>https://www.bsi.bund.de/DE/Service-Navi/Presse/Pressemitteilungen/Presse2026/260204_Zertifizierung_Software-Updates.html</link>
+<pubDate>Wed, 4 Feb 2026 08:00:00 +0100</pubDate>
+<description>Mit einem neuen Verfahren erm&#246;glicht das BSI k&#252;nftig, Software auch nach Updates ohne erneute Zertifizierung als konform auszuweisen. Damit k&#246;nnen Hersteller deutlich schneller sicherheitsrelevante Updates ausspielen und gleichzeitig die Zertifizierung ihres Produktes beibehalten. Voraussetzung daf&#252;r ist eine Zertifizierung nach der TR-03185.</description>
+</item>
+</channel>
+</rss>

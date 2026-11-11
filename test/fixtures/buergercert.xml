@@ -1,0 +1,831 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>BSI Warn- und Informationsdienst (WID): Schwachstellen-Informationen (Bürger Cert)</title>
+    <link>https://wid.cert-bund.de/portal/wid/buergercert/details</link>
+    <description>BSI Warn- und Informationsdienst (WID) RSS Feed zur Verteilung Schwachstellen-Informationen (Bürger Cert)</description>
+    <pubDate>Wed, 11 Nov 2026 11:29:41 GMT</pubDate>
+    <item>
+      <title>7-Zip: Mehrere Schwachstellen ermöglichen nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=148830cc-6e11-4145-9cb2-62c9f826ced3</link>
+      <id>WID-TW-2026-0353</id>
+      <description>In 7-Zip existieren mehrere Schwachstellen, die zum aktuellen Zeitpunkt noch nicht im Detail beschrieben und veröffentlicht wurden. &#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um nicht näher spezifizierte Auswirkungen zu verursachen.</description>
+      <pubDate>Tue, 10 Nov 2026 13:12:01 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apple iOS, iPadOS und macOS: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=4e6f84bf-afa5-4679-afe3-9fdd9dc6fb4c</link>
+      <id>WID-TW-2026-0352</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Apple iOS, Apple iPadOS und Apple macOS ausnutzen, um Sicherheitsvorkehrungen zu umgehen, um Informationen offenzulegen und um Daten zu manipulieren. Die Schwachstellen werden unter anderem durch Speicherbeschädigungen, unsachgemäße Zustandsverwaltung, einen „Use-after-Free“-Fehler, einen Schreibvorgang außerhalb der zulässigen Grenzen (Out-of-Bounds-Schreibzugriff) sowie eine fehlende Validierung verursacht.</description>
+      <pubDate>Tue, 10 Nov 2026 13:02:04 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox für iOS: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=a5ac2cff-4726-40bf-afd2-f6b37170dee5</link>
+      <id>WID-TW-2026-0351</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Mozilla Firefox für iOS ausnutzen, um einen nicht näher beschriebenen Angriff durchzuführen oder zusätzliche Berechtigungen zu erhalten.</description>
+      <pubDate>Tue, 10 Nov 2026 13:02:03 GMT</pubDate>
+    </item>
+    <item>
+      <title>Synology DiskStation Manager: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d877ca7b-3b10-425c-bbce-a9114ba297eb</link>
+      <id>WID-TW-2026-0350</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Synology DiskStation Manager ausnutzen, um Dateien zu manipulieren, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, um einen SQL-Injection Angriff durchzuführen, um einen Cross-Site Scripting Angriff durchzuführen und um Sicherheitsvorkehrungen zu umgehen. Die Schwachstellen werden durch eine SQL-Injection, eine Umgehung der Authentifizierung, ein Path-Traversal, einen fehlenden kritischen Schritt bei der Authentifizierung, eine fehlerhafte Link-Auflösung, eine CRLF-Injection, eine unsachgemäße Zertifikatsvalidierung, XSS, eine fehlerhafte Autorisierung, eine erreichbare Zusicherung (Assertion), eine Server-Side Request Forgery (SSRF) sowie eine fehlende Autorisierung verursacht.</description>
+      <pubDate>Tue, 10 Nov 2026 13:02:03 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=34e89243-6893-42db-b132-670b1276da28</link>
+      <id>WID-TW-2026-0349</id>
+      <description>In Google Chrome und Microsoft Edge existieren mehrere Schwachstellen. &#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Sicherheitsmaßnahmen zu umgehen, Daten offenzulegen oder zu manipulieren, einen Systemabsturz zu verursachen oder schädlichen Code auszuführen. &#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder eine Benutzerinteraktion erforderlich. Beispielsweise muss ein Benutzer einen schädlichen Link oder eine schädliche Datei öffnen.</description>
+      <pubDate>Tue, 10 Nov 2026 11:02:02 GMT</pubDate>
+    </item>
+    <item>
+      <title>Moodle: Schwachstelle ermöglicht Offenlegung von Informationen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d0af4360-0da8-47b7-b588-c6b74f5cf067</link>
+      <id>WID-TW-2026-0348</id>
+      <description>Ein Angreifer kann eine Schwachstelle in Moodle ausnutzen, um Informationen offenzulegen. Die Schwachstelle wird durch unzureichende Zugriffskontrollen bei H5P-Inhaltsdateien verursacht. Dieser Fehler ermöglicht es, H5P-Inhalte ohne entsprechende Berechtigung einzusehen.</description>
+      <pubDate>Fri, 06 Nov 2026 13:39:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>LibreOffice: Schwachstelle ermöglicht Denial-of-Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=03240976-bbff-4516-8ca1-7dd9f9413dcc</link>
+      <id>WID-TW-2026-0347</id>
+      <description>Ein Angreifer kann eine Schwachstelle in LibreOffice ausnutzen und dadurch das Programm zum Absturz bringen. Zur Ausnutzung genügt es, eine bösartig gestaltete Office-Datei zu öffnen.</description>
+      <pubDate>Fri, 06 Nov 2026 12:44:57 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apache OpenOffice: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=555aedff-505f-49f2-88b4-810c26aef2d1</link>
+      <id>WID-TW-2026-0346</id>
+      <description>Es bestehen mehrere Schwachstellen in Apache OpenOffice. Ein Angreifer kann diese Schwachstellen ausnutzen, um OpenOffice zum Absturz zu bringen, Speicherbereiche zu beschädigen, möglicherweise Code auszuführen, irreführende Dokumentinhalte anzuzeigen oder lokale Dateien beziehungsweise Umgebungsdaten auszulesen. Zur erfolgreichen Ausnutzung ist eine Benutzeraktion erforderlich.</description>
+      <pubDate>Wed, 04 Nov 2026 12:54:03 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox: Schwachstelle ermöglicht nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=baccc09b-16c4-4c88-8416-5c49237f84ad</link>
+      <id>WID-TW-2026-0345</id>
+      <description>Ein entfernter, nicht angemeldeter Angreifer kann eine Schwachstelle in Mozilla Firefox ausnutzen. Die möglichen Folgen des Angriffs sind derzeit noch nicht bekannt.</description>
+      <pubDate>Wed, 04 Nov 2026 09:29:03 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6a77fe73-54b8-4aca-adde-a7b997e2c90e</link>
+      <id>WID-TW-2026-0344</id>
+      <description>In verschiedenen Komponenten von Google Chrome bestehen mehrere Schwachstellen. &#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren, Opfer zu täuschen oder einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich. Beispielsweise muss eine schädliche Webseite, App oder Datei geöffnet werden.</description>
+      <pubDate>Wed, 04 Nov 2026 09:29:03 GMT</pubDate>
+    </item>
+    <item>
+      <title>Android Patchday November 2026 (Google Android, Automotive OS and XR): Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d4a8236d-cbbd-4370-b21e-f08b24ed2713</link>
+      <id>WID-TW-2026-0343</id>
+      <description>In Google Android, Android Automotive OS und Android XR bestehen mehrere Schwachstellen. &#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Privilegien zu erweitern, vertrauliche Informationen offenzulegen, aktive Anrufe – einschließlich Notrufe – zu beenden und das Telefon zum Absturz zu bringen oder andere, nicht näher spezifizierte Auswirkungen zu verursachen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, eine Benutzerinteraktion oder bestimmte Bedingungen erforderlich.</description>
+      <pubDate>Tue, 03 Nov 2026 11:22:33 GMT</pubDate>
+    </item>
+    <item>
+      <title>WordPress: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=659d02ae-0e32-4896-8fcc-e5f2e85c8225</link>
+      <id>WID-TW-2026-0342</id>
+      <description>Ein Angreifer aus dem Internet kann eine Schwachstelle in WordPress ausnutzen und dadurch eigene, schädliche Programmbefehle ausführen.</description>
+      <pubDate>Mon, 02 Nov 2026 13:17:34 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Schwachstelle ermöglicht Privilegieneskalation</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=fccb952b-f5e1-406a-aecb-3c319ef1f99b</link>
+      <id>WID-TW-2026-0341</id>
+      <description>Es existiert eine Schwachstelle in Microsoft Edge aufgrund fehlerhafter Autorisierung.&#xD;
+&#xD;
+Ein Angreifer mit lokalem Zugriff kann diese Schwachstelle ausnutzen, um erweiterte Rechte zu erlangen.</description>
+      <pubDate>Mon, 02 Nov 2026 13:17:34 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Digital Editions: Schwachstelle ermöglicht Manipulation von Dateien</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=19ccaae3-9b1b-4fab-b5d4-d2a92af6684e</link>
+      <id>WID-TW-2026-0340</id>
+      <description>In Adobe Digital Editions besteht eine Schwachstelle.&#xD;
+&#xD;
+Ein Angreifer kann diese ausnutzen, um Sicherheitsmaßnahmen zu umgehen und sich unbefugten Schreibzugriff zu verschaffen.&#xD;
+Dafür ist eine Benutzerinteraktion erforderlich: Das Opfer muss eine schädliche Datei öffnen.</description>
+      <pubDate>Fri, 30 Oct 2026 14:13:07 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen ermöglichen nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=157d6847-7b02-449b-90e5-9e6ac1b3e74f</link>
+      <id>WID-TW-2026-0339</id>
+      <description>In verschiedenen Komponenten von Google Chrome bestehen mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich. Beispielsweise muss eine schädliche Webseite, App oder Datei geöffnet werden.</description>
+      <pubDate>Fri, 30 Oct 2026 14:13:07 GMT</pubDate>
+    </item>
+    <item>
+      <title>Norton Antivirus: Schwachstelle ermöglicht Privilegieneskalation</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=7a2dd07d-dc17-453a-93e0-ac5a91c9d0e3</link>
+      <id>WID-TW-2026-0338</id>
+      <description>Ein lokaler Angreifer kann eine Schwachstelle in Norton Antivirus, Avast Antivirus und AVG Anti-Virus ausnutzen, um Dateien zu löschen und höhere Zugriffsrechte zu erlangen.</description>
+      <pubDate>Thu, 29 Oct 2026 13:59:27 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox, Firefox ESR, und Thunderbird: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=f8b9b059-6696-4d68-9ea4-4ee66e3600fd</link>
+      <id>WID-TW-2026-0337</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Mozilla Firefox, Mozilla Firefox ESR und Mozilla Thunderbird ausnutzen, um seine Privilegien zu erhöhen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, um Dateien zu manipulieren und um Sicherheitsvorkehrungen zu umgehen. Die Schwachstellen sind auf mehrere Probleme zurückzuführen, unter anderem auf eine Einbindung lokaler Dateien (Local File Inclusion), eine Anforderungsfälschung (Request Forgery), einen Ganzzahlüberlauf (Integer Overflow), einen „Use-after-free“-Fehler, einen Ausbruch aus einer Sandbox (Sandbox Escape), einen ungültigen Zeiger sowie eine Wettlaufsituation (Race Condition).</description>
+      <pubDate>Thu, 29 Oct 2026 09:04:28 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen ermöglichen nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=38672e46-f5c6-412a-bc0d-8ea64fa53cfd</link>
+      <id>WID-TW-2026-0336</id>
+      <description>In verschiedenen Komponenten von Google Chrome bestehen mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich. Beispielsweise muss eine schädliche Webseite, App oder Datei geöffnet werden.</description>
+      <pubDate>Thu, 29 Oct 2026 09:04:28 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Creative Cloud Desktop Application und Substance 3D Painter: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=b5847004-a0e2-44e1-aa3c-c992e88ffcf8</link>
+      <id>WID-TW-2026-0335</id>
+      <description>In Adobe Creative Cloud Desktop Application und Substance 3D Painter bestehen mehrere Schwachstellen. &#xD;
+&#xD;
+Ein Angreifer kann diese ausnutzen, um seine Privilegien zu erhöhen, Schadcode auszuführen oder vertrauliche Informationen offenzulegen.&#xD;
+Dazu ist eine Benutzeraktion erforderlich, zum Beispiel das Öffnen einer schädlichen Datei.</description>
+      <pubDate>Thu, 29 Oct 2026 09:04:27 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=759996cf-666f-44b7-88b0-7f236300d3fe</link>
+      <id>WID-TW-2026-0334</id>
+      <description>In Microsoft Edge existieren mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, erweiterte Berechtigungen – auch administrative Privilegien – zu erlangen, Sicherheitsmaßnahmen zu umgehen, Opfer zu täuschen sowie Daten zu modifizieren oder offenzulegen.&#xD;
+&#xD;
+Einige dieser Schwachstellen benötigen bestimmte Berechtigungen oder eine Benutzerinteraktion, wie beispielsweise das Öffnen eines bösartigen Links, um erfolgreich ausgenutzt werden zu können.</description>
+      <pubDate>Thu, 29 Oct 2026 09:04:27 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dell BIOS: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=619f6f0b-18f6-49af-9ce3-7da6c9e9d3f0</link>
+      <id>WID-TW-2026-0333</id>
+      <description>In Dell BIOS existieren mehrere Schwachstellen. &#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, erweiterte Berechtigungen zu erlangen, Sicherheitsmaßnahmen zu umgehen, Daten zu manipulieren oder offenzulegen oder einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Für die Ausnutzung einiger dieser Schwachstellen sind bestimmte Berechtigungen, physischer, lokaler oder angrenzender Netzwerkzugriff oder eine Benutzerinteraktion erforderlich.</description>
+      <pubDate>Tue, 27 Oct 2026 12:51:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox (iOS): Mehrere Schwachstellen ermöglichen Darstellen falscher Informationen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=b7fe4fe7-df87-41dc-86f7-23a7f64236cc</link>
+      <id>WID-TW-2026-0332</id>
+      <description>Ein entfernter Angreifer kann mehrere Schwachstellen in Mozilla Firefox (iOS) ausnutzen, um falsche Informationen darzustellen.</description>
+      <pubDate>Tue, 27 Oct 2026 12:51:28 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apple iOS, iPadOS, macOS und Safari: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=eac1543a-ad76-4a4b-812d-572283524f97</link>
+      <id>WID-TW-2026-0331</id>
+      <description>In Apple iOS, Apple iPadOS, macOS und Safari existieren mehrere Schwachstellen. &#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Tue, 27 Oct 2026 12:41:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Oracle Java SE: Schwachstelle ermöglicht Offenlegung von Informationen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=56fb5fa3-b787-4067-8e74-68c237dfd110</link>
+      <id>WID-TW-2026-0330</id>
+      <description>Ein entfernter Angreifer kann eine Schwachstelle in Oracle Java und GraalVM ausnutzen, um ohne Anmeldung vertrauliche Informationen zu erhalten oder wichtige Daten zu verändern oder zu löschen.</description>
+      <pubDate>Mon, 26 Oct 2026 12:34:13 GMT</pubDate>
+    </item>
+    <item>
+      <title>VLC für Android: Schwachstelle ermöglicht Manipulation von Dateien</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d774711b-93ba-41c2-84e5-b6aa1dcb38bb</link>
+      <id>WID-TW-2026-0329</id>
+      <description>In VLC für Android gibt es eine Schwachstelle. Die App vertraut Dateien aus anderen Apps allein aufgrund ihres Quellnamens. Ein Angreifer kann diese Schwachstelle ausnutzen, um Dateien anderer Apps zu überschreiben.</description>
+      <pubDate>Mon, 26 Oct 2026 12:34:13 GMT</pubDate>
+    </item>
+    <item>
+      <title>Oracle Java SE and GraalVM, und OpenJDK: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=85fa740f-95da-4c64-8dac-c7f7267567ae</link>
+      <id>WID-TW-2026-0328</id>
+      <description>In Oracle Java SE, GraalVM und OpenJDK besteht eine Schwachstelle. Sie ist auf eMudhra-Zwischenzertifikate zurückzuführen, deren kryptografisch schwache private Schlüssel kompromittiert wurden.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstelle ausnutzen, um Zertifikate für beliebige Hostnamen zu erstellen, sich als Websites auszugeben und den TLS-Verkehr auszulesen oder zu verändern.</description>
+      <pubDate>Fri, 23 Oct 2026 10:50:52 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=aea405c1-02ff-4885-b6a9-429115280a08</link>
+      <id>WID-TW-2026-0325</id>
+      <description>In verschiedenen Komponenten von Google Chrome / Microsoft Edge bestehen mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich. Beispielsweise muss eine schädliche Webseite, App oder Datei geöffnet werden.</description>
+      <pubDate>Fri, 23 Oct 2026 08:30:52 GMT</pubDate>
+    </item>
+    <item>
+      <title>Oracle Java SE: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=0366119e-f4d5-4a26-a3d2-84b1fce2b5c9</link>
+      <id>WID-TW-2026-0327</id>
+      <description>In Oracle Java SE existieren mehrere Schwachstellen. Ein Angreifer kann mehrere Schwachstellen in Oracle Java SE ausnutzen, um die Vertraulichkeit, Integrität und Verfügbarkeit zu gefährden.</description>
+      <pubDate>Wed, 21 Oct 2026 11:30:51 GMT</pubDate>
+    </item>
+    <item>
+      <title>DrayTek Vigor: Mehrere Schwachstellen ermöglichen Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=c47b6794-8c5e-43a1-98cb-c5571563313c</link>
+      <id>WID-TW-2026-0326</id>
+      <description>Ein Angreifer mit gültigen Zugangsdaten kann mehrere Schwachstellen in DrayTek-Vigor-Routern ausnutzen, um Dateien zu verändern und Schadcode auf den betroffenen Geräten auszuführen.</description>
+      <pubDate>Wed, 21 Oct 2026 11:25:53 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Produkte (Thunderbird, Firefox ESR und Firefox): Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6cef0ec3-9b4c-4f06-875f-2906d397df9c</link>
+      <id>WID-TW-2026-0324</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Mozilla Thunderbird, Firefox ESR und Firefox ausnutzen, um Sicherheitsvorkehrungen zu umgehen, einen Systemabsturz zu erzeugen, Informationen offenzulegen und Daten zu manipulieren. &#xD;
+Um einige dieser Schwachstellen erfolgreich auszunutzen, sind unter Umständen bestimmte Berechtigungen, lokaler Zugriff oder bestimmte Voraussetzungen erforderlich. Ebenso kann eine Interaktion des Benutzers nötig sein, beispielsweise das Öffnen einer manipulierten Datei oder eines Links.</description>
+      <pubDate>Wed, 21 Oct 2026 11:25:52 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Mehrere Schwachstellen ermöglichen Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=eb97cbd4-f797-4b19-8861-5820eff225c1</link>
+      <id>WID-TW-2026-0323</id>
+      <description>Ein Angreifer kann einen Benutzer dazu verleiten, eine manipulierte Datei in Microsoft Edge zu öffnen. Dadurch kann der Angreifer eine Schwachstelle ausnutzen und beliebigen Programmcode auf dem betroffenen System ausführen.</description>
+      <pubDate>Tue, 20 Oct 2026 11:10:52 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e1a1844c-c081-4a6a-b320-c45ded96608f</link>
+      <id>WID-TW-2026-0322</id>
+      <description>In Google Chrome / Microsoft Edge bestehen mehrere Schwachstellen. Ein Angreifer kann diese ausnutzen, um Schadcode auszuführen oder einen Programmabsturz herbeiztuführen. Zur Ausnutzung genügt es, eine bösartig gestaltete Webseite oder Datei zu laden.</description>
+      <pubDate>Mon, 19 Oct 2026 13:00:53 GMT</pubDate>
+    </item>
+    <item>
+      <title>7-Zip: Schwachstelle ermöglicht Offenlegung von Informationen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=175b45ef-94b8-4bee-b1b0-1e132415217b</link>
+      <id>WID-TW-2026-0321</id>
+      <description>Ein entfernter, anonymer Angreifer kann eine Schwachstelle in 7-Zip ausnutzen, um Informationen offenzulegen. Die Schwachstelle tritt bei der Verarbeitung von SquashFS Dateien auf.</description>
+      <pubDate>Thu, 15 Oct 2026 13:10:52 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox und Thunderbrid: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=ff9b30ef-3859-441f-8502-a66ff1c4bd0c</link>
+      <id>WID-TW-2026-0320</id>
+      <description>In Mozilla Firefox und Thunderbrid existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um erweiterte Berechtigungen zu erlangen, Sicherheitsmaßnahmen zu umgehen, Opfer zu täuschen, Daten offenzulegen oder zu modifizieren, einen Systemabsturz zu erzeugen oder andere, nicht näher spezifizierte Angriffe durchzuführen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, E-Mail, App oder Datei.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:13 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Creative Cloud (Bridge und Substance 3D): Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e1d415f6-6923-478e-bbb0-5c722385a570</link>
+      <id>WID-TW-2026-0319</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Adobe Creative Cloud (Bridge und Substance 3D Produkte) ausnutzen, um Schadcode auszuführen, um einen Programmabsturz zu verursachen und um Informationen offenzulegen.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:13 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Patchday Oktober 2026</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=c6752367-2a0e-4504-9a99-ca9e2f6ac029</link>
+      <id>WID-TW-2026-0318</id>
+      <description>Microsoft hat im Oktober zahlreiche Schwachstellen in verschiedenen Produkten behoben.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Photoshop: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d89011bb-fa68-4f23-8c7c-3fc11822c021</link>
+      <id>WID-TW-2026-0317</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Adobe Photoshop ausnutzen, um Schadcode auszuführen oder das Programm zum Absturz zu bringen. Dazu ist eine Benutzeraktion erforderlich.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Ubiquiti UniFi: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=88574fa4-2868-44ae-827b-6c436a59b209</link>
+      <id>WID-TW-2026-0316</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Ubiquiti UniFi ausnutzen um auf interne Systeme und Informationen zuzugreifen, Dateien zu verändern, Schadcode auszuführen oder das Gerät zum Absturz zu bringen.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=2a3b6f9a-57f4-43fe-8083-b29936f96ccc</link>
+      <id>WID-TW-2026-0315</id>
+      <description>In verschiedenen Komponenten von Google Chrome bestehen mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Lenovo Computer (WLAN Treiber): Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=3c3f1125-5d25-42ba-a2ff-2867bda7adb6</link>
+      <id>WID-TW-2026-0314</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Lenovo Computer (WLAN Treiber) ausnutzen, um Daten zu manipulieren, und um einen Denial of Service Angriff durchzuführen.</description>
+      <pubDate>Wed, 14 Oct 2026 12:09:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dell BIOS: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=797de882-3200-4b21-8428-b12473888fef</link>
+      <id>WID-TW-2026-0313</id>
+      <description>Ein lokaler Angreifer kann eine Schwachstelle in Dell BIOS ausnutzen, um beliebigen Programmcode auszuführen. Die Schwachstelle wird durch eine Race Condition verursacht.</description>
+      <pubDate>Tue, 13 Oct 2026 11:59:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox iOS: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=9fcd71e9-a496-4819-9490-ad1a0ce18b9e</link>
+      <id>WID-TW-2026-0312</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Mozilla Firefox iOS ausnutzen, um Informationen offenzulegen, Sicherheitsmaßnahmen zu umgehen und Cross-site-scripting Angriffe durchzuführen. Für die erfolgreiche Ausnutzung dieser Schwachstellen sind möglicherweise Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Tue, 13 Oct 2026 11:59:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=551c0f75-5957-41b0-aa53-bfef6066bb10</link>
+      <id>WID-TW-2026-0307</id>
+      <description>In Google Chrome existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Opfer zu täuschen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Fri, 09 Oct 2026 12:14:12 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dell BIOS: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6f21d478-f302-454f-bcd2-15106fae286a</link>
+      <id>WID-TW-2026-0311</id>
+      <description>Ein Angreifer mit Administratorrechten kann eine Schwachstelle in Dell BIOS ausnutzen, um beliebigen Programmcode auszuführen. Die Schwachstelle wird durch eine unsachgemäße Eingabevalidierung verursacht.</description>
+      <pubDate>Thu, 08 Oct 2026 13:31:46 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=976bd407-8d4a-4585-ada8-025cda021ad8</link>
+      <id>WID-TW-2026-0310</id>
+      <description>Ein Angreifer kann eine Schwachstelle in Mozilla Firefox ausnutzen, um Sicherheitsvorkehrungen zu umgehen.</description>
+      <pubDate>Wed, 07 Oct 2026 12:06:46 GMT</pubDate>
+    </item>
+    <item>
+      <title>Pixel Patchday Oktober 2026: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=a5c40d45-9af2-49f7-9fca-0faac5a79c05</link>
+      <id>WID-TW-2026-0309</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Google Android Pixel ausnutzen, um seine Privilegien zu erhöhen, und um Informationen offenzulegen. Die Schwachstellen werden durch ein Use-After-Free, eine Race-Condition, einen Out-of-Bounds-Schreibzugriff, eine fehlende Berechtigungsprüfung sowie eine fehlerhafte Rechteverwaltung verursacht.</description>
+      <pubDate>Wed, 07 Oct 2026 12:06:45 GMT</pubDate>
+    </item>
+    <item>
+      <title>WordPress: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=abed2456-6571-4953-99aa-7b27811a4810</link>
+      <id>WID-TW-2026-0308</id>
+      <description>Ein entfernter Angreifer kann mehrere Schwachstellen in WordPress ausnutzen, um einen Cross-Site Scripting Angriff durchzuführen, um Sicherheitsmechanismen zu umgehen, sowie Daten offenzulegen oder zu manipulieren.</description>
+      <pubDate>Wed, 07 Oct 2026 12:06:45 GMT</pubDate>
+    </item>
+    <item>
+      <title>Samsung Android: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d5097981-97d7-4cb3-9c05-efe14a5c083e</link>
+      <id>WID-TW-2026-0306</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Samsung Android ausnutzen, um beliebigen Programmcode auszuführen, um Informationen offenzulegen und um einen nicht näher spezifizierten Angriff durchzuführen. Die Schwachstellen werden durch einen Schreibvorgang außerhalb der zulässigen Grenzen (Out-of-Bounds Write), eine Verwendung nach der Freigabe (Use-after-Free), eine fehlerhafte Eingabevalidierung, eine fehlerhafte Berechtigungsverwaltung, eine fehlerhafte Zugriffssteuerung, einen Lesevorgang außerhalb der zulässigen Grenzen (Out-of-Bounds Read) sowie eine fehlerhafte Behandlung unzureichender Berechtigungen verursacht.</description>
+      <pubDate>Tue, 06 Oct 2026 12:10:47 GMT</pubDate>
+    </item>
+    <item>
+      <title>Android Patchday Oktober 2026: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e7525cb4-c249-4e4e-9b61-a6121e4fa106</link>
+      <id>WID-TW-2026-0305</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Google Android ausnutzen, um seine Privilegien zu erhöhen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen und um beliebigen Programmcode auszuführen. &#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen App oder Datei.</description>
+      <pubDate>Tue, 06 Oct 2026 10:20:46 GMT</pubDate>
+    </item>
+    <item>
+      <title>LibreOffice: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=25f8019f-b03e-4f9f-9745-bda694697c64</link>
+      <id>WID-TW-2026-0304</id>
+      <description>In LibreOffice existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer mit lokalem Zugriff kann diese Schwachstellen in LibreOffice ausnutzen, um Informationen zu stehlen, Daten zu manipulieren und Schadcode auszuführen.&#xD;
+&#xD;
+Für eine erfolgreiche Ausnutzung muss ein Benutzer ein schädliches Dokument öffnen.</description>
+      <pubDate>Tue, 06 Oct 2026 09:40:46 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=11476c12-efcf-41a2-a657-dcc9b8c2f777</link>
+      <id>WID-TW-2026-0303</id>
+      <description>In Google Chrome / Microsoft Edge existieren mehrere Schwachstellen. &#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren, Opfer zu täuschen oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Tue, 06 Oct 2026 07:55:46 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apache OpenOffice: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=5f6d5c48-47a2-40db-abe6-9ddd4885964d</link>
+      <id>WID-TW-2026-0302</id>
+      <description>Es existiert eine Schwachstelle in Apache OpenOffice, die die Java-Integration betrifft. Ein Angreifer kann diese Schwachstelle ausnutzen, um beliebigen Schadcode auszuführen.&#xD;
+Dazu muss ein Benutzer ein bösartiges Dokument öffnen.</description>
+      <pubDate>Mon, 05 Oct 2026 12:40:47 GMT</pubDate>
+    </item>
+    <item>
+      <title>Moodle: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e7dad8b0-e9a3-4e3d-a93e-ec1cb579f403</link>
+      <id>WID-TW-2026-0301</id>
+      <description>In Moodle existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Dateien zu manipulieren, Daten offenzulegen oder Benutzer zu täuschen. Für einige der Schwachstellen ist eine Benutzeraktion erforderlich: Das Opfer muss eine bösartige Webseite oder einen Link anklicken.</description>
+      <pubDate>Thu, 01 Oct 2026 11:06:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Nvidia GPU Display Treiber: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=110edabc-ce71-4628-b3d5-498141b47331</link>
+      <id>WID-TW-2026-0300</id>
+      <description>Im NVIDIA GPU Display Driver für Linux und Windows bestehen mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, Daten offenzulegen oder zu manipulieren oder einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Einige dieser Schwachstellen erfordern eine bestimmte Berechtigungsstufe, lokalen oder physischen Zugriff oder bestimmte Bedingungen, um erfolgreich ausgenutzt werden zu können.</description>
+      <pubDate>Thu, 01 Oct 2026 10:51:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Moodle: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6d6453c7-65e7-45a1-acf7-26a1de1ae6ec</link>
+      <id>WID-TW-2026-0299</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Moodle ausnutzen, um Sicherheitsvorkehrungen zu umgehen und um die Datenbank zu manipulieren.</description>
+      <pubDate>Wed, 30 Sep 2026 11:51:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox ESR und Firefox: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e96e8ce3-3625-489a-ba88-558ecf3c1a4d</link>
+      <id>WID-TW-2026-0298</id>
+      <description>In Mozilla Firefox ESR und Mozilla Firefox existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, vertrauliche Informationen offenzulegen, Daten zu manipulieren, sowie Schadcode auszuführen oder einen Systemabsturz auszulösen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei oder Webseite.</description>
+      <pubDate>Wed, 30 Sep 2026 10:26:30 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=dcc8a988-40d6-44e6-bd5f-88ef13a44572</link>
+      <id>WID-TW-2026-0297</id>
+      <description>In Google Chrome existieren mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um seine Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, vertrauliche Informationen offenzulegen, Daten zu manipulieren, den Benutzer zu täuschen, sowie Schadcode auszuführen oder einen Systemabsturz auszulösen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei oder Webseite.</description>
+      <pubDate>Wed, 30 Sep 2026 10:26:30 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apple iOS, iPadOS, macOS Tahoe und Sequoia: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e87a1169-a3a8-4e29-bda9-e5a9fec50fa4</link>
+      <id>WID-TW-2026-0296</id>
+      <description>In Apple iOS und iPadOS sowie in macOS Tahoe und Sequoia besteht eine Schwachstelle. &#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstelle ausnutzen, um Schadcode auszuführen. Dazu ist eine Benutzeraktion erforderlich: Das Opfer muss eine schädliche Datei bearbeiten.&#xD;
+&#xD;
+Apple berichtet, dass diese Schwachstelle bereits in gezielten Angriffen ausgenutzt wurde.</description>
+      <pubDate>Tue, 29 Sep 2026 09:56:30 GMT</pubDate>
+    </item>
+    <item>
+      <title>VLC: Mehrere Schwachstellen ermöglichen nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=e79f6eb7-30a9-4d07-8764-6ca5d0632bd7</link>
+      <id>WID-TW-2026-0295</id>
+      <description>Es existieren mehrere Schwachstellen in VLC, die zum aktuellen Zeitpunkt nicht im Detail beschrieben und veröffentlicht wurden. Ein Angreifer kann diese Schwachstellen ausnutzen, um nicht näher spezifizierte Auswirkungen zu verursachen.</description>
+      <pubDate>Fri, 25 Sep 2026 10:54:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>GIMP: Schwachstelle ermöglicht Codeausführung und Denial of Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=f8d7c394-f720-45a4-8510-2c7205286e1b</link>
+      <id>WID-TW-2026-0294</id>
+      <description>Ein Angreifer kann eine Schwachstelle in GIMP ausnutzen, um Schadcode auszuführen und um einen Programmabsturz herbeizuführen. Zur Ausnutzung genügt es, eine bösartig gestaltete Bilddatei in GIMP zu öffnen</description>
+      <pubDate>Fri, 25 Sep 2026 10:44:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=dc235e9b-715a-475f-849b-3913eddfd5fb</link>
+      <id>WID-TW-2026-0288</id>
+      <description>In Google Chrome existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren, Opfer zu täuschen oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Fri, 25 Sep 2026 10:09:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>GIMP: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=ac0bed9d-3901-44fb-800b-01646d5d47c9</link>
+      <id>WID-TW-2026-0293</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in GIMP ausnutzen, um beliebigen Programmcode auszuführen, um einen Denial of Service Angriff durchzuführen, und um Informationen offenzulegen.</description>
+      <pubDate>Thu, 24 Sep 2026 11:04:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Outlook: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=9814156b-3fb2-4d14-a6df-e989775c57bd</link>
+      <id>WID-TW-2026-0292</id>
+      <description>Ein Angreifer kann eine Schwachstelle in Microsoft Outlook ausnutzen, um beliebigen Programmcode auszuführen. Zur Ausnutzung genügt es, eine z.B. per E-Mail empfangene, bösartig gestaltete Office Datei zu öffnen.</description>
+      <pubDate>Thu, 24 Sep 2026 10:59:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>WordPress: Schwachstelle ermöglicht Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=bf380e90-37a0-4b4b-b05c-5cabec97d79e</link>
+      <id>WID-TW-2026-0291</id>
+      <description>Ein entfernter, anonymer Angreifer kann eine Schwachstelle in WordPress ausnutzen, um Schadcode auszuführen.&#xD;
+Die Ausnutzung erfordert bestimmte Konfigurationen und Dateien auf dem Server.</description>
+      <pubDate>Thu, 24 Sep 2026 10:59:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>Foxit PDF Reader und Foxit PDF Editor: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=d58818b6-976f-4424-aacb-b411313586d6</link>
+      <id>WID-TW-2026-0290</id>
+      <description>In Foxit PDF Reader und Foxit PDF Editor existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, sensible Informationen offenzulegen, Sicherheitsmaßnahmen zu umgehen und Daten zu manipulieren.&#xD;
+Um einige dieser Schwachstellen erfolgreich auszunutzen, sind eine bestimmte Berechtigungsstufe, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei.</description>
+      <pubDate>Wed, 23 Sep 2026 11:29:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>LibreOffice: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=92318db1-13bf-422a-bc76-0bcd08cc251f</link>
+      <id>WID-TW-2026-0289</id>
+      <description>In LibreOffice existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um einen Systemabsturz zu verursachen, Daten zu manipulieren oder Informationen offenzulegen.&#xD;
+Für eine erfolgreiche Ausnutzung ist eine Benutzerinteraktion erforderlich, beispielsweise das Öffnen eines Dokuments mit einem manipulierten Link.</description>
+      <pubDate>Wed, 23 Sep 2026 11:29:23 GMT</pubDate>
+    </item>
+    <item>
+      <title>Ubiquiti UniFi Gateways: Mehrere Schwachstellen ermöglichen Denial of Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=88b9bf58-0496-4e3e-b42a-5ad1c0a0cdcf</link>
+      <id>WID-TW-2026-0287</id>
+      <description>In Ubiquiti UniFi-Gateway-Geräten bestehen mehrere Schwachstellen.&#xD;
+&#xD;
+Ein entfernter, anonymer Angreifer kann diese Schwachstellen ausnutzen, um einen Systemabsturz zu erzeugen.</description>
+      <pubDate>Wed, 23 Sep 2026 11:24:24 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Creative Cloud Applikationen: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=143ff7b4-d802-4ed3-8cf4-8e9149d3003c</link>
+      <id>WID-TW-2026-0286</id>
+      <description>In Adobe Creative Cloud InDesign, Bridge, Premiere and Substance 3D Modeler  existieren mehrere Schwachstellen.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um einen Systemabsturz zu erzeugen, Schadcode auszuführen, Sicherheitsmaßnahmen zu umgehen oder vertrauliche Daten offenzulegen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen ist Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei.</description>
+      <pubDate>Wed, 23 Sep 2026 11:24:24 GMT</pubDate>
+    </item>
+    <item>
+      <title>WordPress: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=30b3c74f-ee91-46f9-81c2-4ebabc723952</link>
+      <id>WID-TW-2026-0285</id>
+      <description>In WordPress existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese ausnutzen, um Sicherheitsmaßnahmen zu umgehen, Cross-Site-Scripting-Angriffe durchzuführen oder Daten zu manipulieren und offenzulegen. Eine als „Click2Shell“ bezeichnete Schwachstelle ermöglicht es Angreifern, einen angemeldeten Administrator dazu zu zwingen, ein vom Angreifer ausgewähltes WordPress.org-Theme zu installieren, und sie kann mit einer separaten Schwachstelle im Theme kombiniert werden, um Schadcode auf dem Server auszuführen.</description>
+      <pubDate>Mon, 21 Sep 2026 10:06:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Schwachstelle ermöglicht Privilegieneskalation</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=ee74f532-841c-4602-8630-c9238374d6d4</link>
+      <id>WID-TW-2026-0284</id>
+      <description>In Microsoft Edge besteht eine Schwachstelle. Ein Angreifer kann diese Schwachstelle ausnutzen, um Sicherheitsmechanismen zu umgehen und dadurch seine Privilegien erhöhen.</description>
+      <pubDate>Mon, 21 Sep 2026 09:56:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Synology DiskStation Manager: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=44e8f62a-93b3-4835-bca3-8fbcf5735fce</link>
+      <id>WID-TW-2026-0283</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen in Synology DiskStation Manager ausnutzen, um Dateien zu manipulieren, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, um einen Cross-Site Scripting Angriff durchzuführen und um einen SQL-Injection Angriff durchzuführen. Die Schwachstellen werden durch unsachgemäße Kodierung oder Maskierung von Ausgaben, unzureichende Entropie, fehlerhafte Rechtevergabe, externe Kontrolle von Dateinamen oder Pfaden, XSS, CRLF-Injection sowie SQL-Injection verursacht.</description>
+      <pubDate>Fri, 18 Sep 2026 12:36:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=2693fa8c-850b-4837-90b2-ccdabc993eb1</link>
+      <id>WID-TW-2026-0282</id>
+      <description>In Google Chrome existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Opfer zu täuschen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Fri, 18 Sep 2026 10:26:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=7fe49922-141b-490d-90e7-b2c314a892e0</link>
+      <id>WID-TW-2026-0278</id>
+      <description>In Google Chrome / Microsoft Edge existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Fri, 18 Sep 2026 07:11:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Pixel Patchday September 2026: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=3f690254-deac-4531-9f7f-0789599265f2</link>
+      <id>WID-TW-2026-0281</id>
+      <description>Es bestehen mehrere Schwachstellen in Google Android Pixel.&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um erweiterte Privilegien zu erlangen, Schadcode auszuführen, einen Systemabsturz zu erzeugen oder vertrauliche Informationen zu stehlen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, eine Benutzerinteraktion oder die Erfüllung bestimmter Bedingungen erforderlich.</description>
+      <pubDate>Wed, 16 Sep 2026 11:31:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>GIMP: Schwachstelle ermöglicht Codeausführung und Denial of Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=4ca64f56-6937-4eab-bb7d-9171fbaf99ac</link>
+      <id>WID-TW-2026-0280</id>
+      <description>Ein entfernter, anonymer Angreifer kann eine Schwachstelle in GIMP ausnutzen, um beliebigen Programmcode auszuführen und um einen Denial of Service Angriff durchzuführen. Die Schwachstelle wird durch einen Integer-Überlauf bei der Multiplikation von Werten aus einem eingebetteten JPEG-Header verursacht, der beim Erstellen einer Vorschaubild-Miniaturansicht für eine speziell präparierte PSD-Bilddatei (Photoshop Document) auftritt. Dieser Fehler führt zu einem Heap-basierten Pufferüberlauf, wenn die Bilddaten dekodiert werden.</description>
+      <pubDate>Wed, 16 Sep 2026 11:31:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=a5a97da6-5bda-4b27-a57a-360b6b6d2a34</link>
+      <id>WID-TW-2026-0279</id>
+      <description>In Microsoft Edge bestehen mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese ausnutzen, um Schadcode auszuführen und erweiterte Berechtigungen zu erlangen.&#xD;
+&#xD;
+Dazu muss ein Benutzer eine vom Angreifer kontrollierte Webseite aufrufen und zwei Tippgesten ausführen oder eine schädliche Office-Datei öffnen.</description>
+      <pubDate>Wed, 16 Sep 2026 11:31:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox und Thunderbird: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=95a50f93-7796-40d3-ad64-b420e3c30495</link>
+      <id>WID-TW-2026-0277</id>
+      <description>In Mozilla Firefox, Mozilla Firefox ESR und Mozilla Thunderbird existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Berechtigungen zu erlangen, Sicherheitsmaßnahmen zu umgehen, vertrauliche Daten offenzulegen und zu manipulieren, oder einen Systemabsturz auszulösen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei oder Webseite.</description>
+      <pubDate>Wed, 16 Sep 2026 10:51:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>GIMP Plugins: Mehrere Schwachstellen ermöglichen Codeausführung und DoS</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=c18241ae-7058-4e2b-9cf2-89746a2b7032</link>
+      <id>WID-TW-2026-0276</id>
+      <description>In GIMP bestehen mehrere Schwachstellen, die die Plug-ins ICO, Lightning und PSP betreffen. &#xD;
+Ein Angreifer mit lokalem Zugriff kann diese ausnutzen, um potenziell Schadcode auszuführen oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für eine erfolgreiche Ausnutzung muss ein Benutzer eine bösartige Datei öffnen.</description>
+      <pubDate>Tue, 15 Sep 2026 11:21:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Apple iOS, iPadOS, macOS Tahoe, macOS Golden Gate, macOS Sequoia und Safari: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6fa4fd99-5617-4a2b-8b7a-7a357ae74975</link>
+      <id>WID-TW-2026-0275</id>
+      <description>In Apple iOS, iPadOS, macOS Tahoe, macOS Golden Gate, macOS Sequoia und Safari bestehen mehrere Schwachstellen. &#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um beliebigen Code – auch mit Root-Rechten – auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, auf Daten zuzugreifen, diese zu manipulieren oder offenzulegen sowie einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Einige dieser Schwachstellen erfordern ein bestimmte Berechtigungsstufe, lokalen oder physischen Zugriff, bestimmte Voraussetzungen oder eine Benutzerinteraktion, um erfolgreich ausgenutzt werden zu können. Genügend ist es, wenn ein Opfer eine böswillig erstellte Bilder, Dateien oder Apps öffnet.</description>
+      <pubDate>Tue, 15 Sep 2026 11:11:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Windows 11 (Secure Kernel Mode): Schwachstelle ermöglicht Privilegieneskalation</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=4d43344b-a519-4023-a47d-b5c3f314a420</link>
+      <id>WID-TW-2026-0274</id>
+      <description>Ein lokaler Angreifer kann eine Schwachstelle in Microsoft Windows 11 (Secure Kernel Mode) ausnutzen, um seine Privilegien zu erhöhen. Die Schwachstelle wird durch einen Double Free verursacht.</description>
+      <pubDate>Tue, 15 Sep 2026 10:51:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen ermöglichen nicht spezifizierten Angriff</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=a662a19b-dd8c-4509-96d2-e2a4b399fde1</link>
+      <id>WID-TW-2026-0263</id>
+      <description>Es existieren mehrere Schwachstellen in Google Chrome / Microsoft Edge. Ein Angreifer kann diese Schwachstellen ausnutzen, um nicht näher spezifizierte Angriffe durchzuführen. Diese können die Ausführung von Schadcode, die Umgehung von Sicherheitsmaßnahmen, die Ausweitung von Privilegien, die Offenlegung sensibler Informationen, die Durchführung von Cross-Site-Scripting-Angriffen oder das Auslösen eines Systemabsturzes umfassen. Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, z. B. das Öffnen einer schädlichen Datei oder Webseite.</description>
+      <pubDate>Tue, 15 Sep 2026 09:06:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Schwachstelle ermöglicht Cross-Site Scripting</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=1f706efd-394c-4792-b2b5-7c2734686cc8</link>
+      <id>WID-TW-2026-0273</id>
+      <description>In Microsoft Edge existiert eine Cross-Site Scripting Schwachstelle. &#xD;
+Ein Angreifer kann diese Schwachstelle ausnutzen, um Benutzer zu täuschen und bösartigen Skriptcode direkt im Browser des Opfers auszuführen. &#xD;
+Dazu muss der Benutzer mehrere Edge-Browser-Instanzen geöffnet haben, dann eine vom Angreifer kontrollierte Website aufrufen und zuletzt auf ein von der Website angezeigtes Pop-up-Fenster klicken.</description>
+      <pubDate>Mon, 14 Sep 2026 12:36:32 GMT</pubDate>
+    </item>
+    <item>
+      <title>Dell Computer (Intel NPU Treiber): Mehrere Schwachstellen ermöglichen Denial of Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=21c49594-e3a9-4470-b3b0-4b8ebc98dfe9</link>
+      <id>WID-TW-2026-0272</id>
+      <description>In Dell-Computern sind mehrere Schwachstellen vorhanden, die den Intel-NPU-Treiber betreffen.&#xD;
+Ein Angreifer mit geringen Berechtigungen kann diese ausnutzen, um das Gerät zum Absturz zu bringen.</description>
+      <pubDate>Thu, 10 Sep 2026 12:46:31 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox: Schwachstelle ermöglicht Denial of Service</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=9e368492-12f6-4729-8f9f-4c7e26f25ad9</link>
+      <id>WID-TW-2026-0271</id>
+      <description>Es existiert eine Schwachstelle in Mozilla Firefox für iOS. Diese kann beim ansehen einer bösartigen Webseite dazu führen, dass Firefox für iOS vorübergehend nicht mehr genutzt werden kann, bis die Seite geschlossen wird.</description>
+      <pubDate>Wed, 09 Sep 2026 11:34:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Photoshop Mobile für Android: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=fe47fd1a-54a0-42ea-8bc9-c70af6a4d8d3</link>
+      <id>WID-TW-2026-0270</id>
+      <description>In Adobe Photoshop Mobile für Android existieren mehrere Schwachstellen. Ein Angreifer kann diese ausnutzen um seine Privilegien zu erhöhen und Sicherheitsmaßnahmen zu umgehen. Zur erfolgreichen Ausnutzung ist eine Benutzeraktion erforderlich.</description>
+      <pubDate>Wed, 09 Sep 2026 11:29:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Android Patchday September 2026: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=325ddc3d-9d57-4532-8e40-e64764f93ddc</link>
+      <id>WID-TW-2026-0267</id>
+      <description>In Google Android existieren mehrere Schwachstellen.Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, vertrauliche Informationen offenzulegen oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen App oder Datei.</description>
+      <pubDate>Wed, 09 Sep 2026 11:04:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Patchday September 2026</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=1610d729-2c3d-433e-8edd-3eb4571e9294</link>
+      <id>WID-TW-2026-0269</id>
+      <description>Microsoft hat im September zahlreiche Schwachstellen in verschiedenen Produkten behoben.</description>
+      <pubDate>Wed, 09 Sep 2026 10:04:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Lenovo BIOS: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=1a261300-ecb6-485f-831f-bb5fd452a968</link>
+      <id>WID-TW-2026-0268</id>
+      <description>Im Lenovo-BIOS sind mehrere Schwachstellen vorhanden. Diese sind auf Sicherheitsprobleme in BIOS-Komponenten der Hersteller AMI, Insyde und NVIDIA zurückzuführen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, Daten zu manipulieren, vertrauliche Informationen offenzulegen oder einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Dafür sind möglicherweise bestimmte Berechtigungen, lokaler/physischer Zugriff oder eine Benutzerinteraktion erforderlich.</description>
+      <pubDate>Wed, 09 Sep 2026 09:49:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Acrobat und Acrobat Reader: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6dde9e32-c3fc-4bd2-a63a-5bb3b7d36fc7</link>
+      <id>WID-TW-2026-0266</id>
+      <description>In Adobe Acrobat, Acrobat 2024 und Acrobat Reader bestehen mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, erweiterte Berechtigungen zu erlangen, Sicherheitsmaßnahmen zu umgehen, Daten zu modifizieren, vertrauliche Informationen zu stehlen oder einen Systemabsturz zu verursachen.&#xD;
+&#xD;
+Einige dieser Schwachstellen erfordern eine erweiterte Berechtigungsstufe oder eine Benutzerinteraktion, z. B. das Öffnen einer schädlichen Datei, um erfolgreich ausgenutzt werden zu können.</description>
+      <pubDate>Wed, 09 Sep 2026 08:59:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Creative Cloud (Illustrator und Animate): Mehrere Schwachstellen ermöglichen Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=dab5be39-96cb-4013-bde1-76e0bf95e4e3</link>
+      <id>WID-TW-2026-0265</id>
+      <description>In Adobe Creative Cloud Illustrator und Animate  existieren mehrere Schwachstellen. Ein Angreifer mit lokalem Zugriff kann diese Schwachstellen ausnutzen, um Schadcode auszuführen. Dazu ist eine Benutzeraktion erforderlich, z. B. das Öffnen einer schädlichen Datei.</description>
+      <pubDate>Wed, 09 Sep 2026 08:54:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Adobe Photoshop: Mehrere Schwachstellen ermöglichen Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=250c06cd-56a2-418a-8b7c-1a5cba008214</link>
+      <id>WID-TW-2026-0264</id>
+      <description>In Adobe Photoshop existieren mehrere Schwachstellen. Ein Angreifer mit lokalem Zugriff kann diese Schwachstellen ausnutzen, um Schadcode auszuführen. Dazu ist eine Benutzeraktion erforderlich, wie beispielsweise das Öffnen einer schädlichen Datei.</description>
+      <pubDate>Wed, 09 Sep 2026 08:54:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome / Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=8da410f7-6a4d-493f-aa27-3dc9e115b1d4</link>
+      <id>WID-TW-2026-0261</id>
+      <description>In Google Chrome bestehen mehrere Schwachstellen. Ein Angreifer kann dadurch Schadcode ausführen, Informationen stehlen und Sicherheitsmechanismen umgehen. &#xD;
+Zur Ausnutzung genügt es, eine bösartig gestaltete Webseite zu laden.</description>
+      <pubDate>Wed, 09 Sep 2026 05:44:17 GMT</pubDate>
+    </item>
+    <item>
+      <title>Samsung Android: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=568fd682-c715-418e-911d-9a78dd889d5a</link>
+      <id>WID-TW-2026-0262</id>
+      <description>In Samsung Android bestehen mehrere Schwachstellen. &#xD;
+Ein Angreifer kann diese ausnutzen, um Code – sogar mit Root-Rechten – auszuführen, sich erweiterte Zugriffsrechte zu verschaffen, Sicherheitsmaßnahmen zu umgehen, vertrauliche Informationen preiszugeben, Daten zu manipulieren oder einen Systemabsturz auszulösen. Einige dieser Schwachstellen erfordern eine bestimmte Berechtigungsstufe, lokalen oder physischen Zugriff, Benutzerinteraktion oder bestimmte Bedingungen, um erfolgreich ausgenutzt werden zu können.</description>
+      <pubDate>Tue, 08 Sep 2026 11:44:18 GMT</pubDate>
+    </item>
+    <item>
+      <title>VMware Fusion und Workstation: Mehrere Schwachstellen ermöglichen Codeausführung</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=03b7d30b-af74-49a4-ba1d-a486228a28e2</link>
+      <id>WID-TW-2026-0260</id>
+      <description>In VMware Workstation und VMware Fusion existieren mehrere Schwachstellen. Ein lokaler Angreifer aus einer virtuellen Maschine kann mehrere Schwachstellen in VMware Workstation und VMware Fusion ausnutzen, um beliebigen Programmcode auf dem Rechner auszuführen, auf dem VMware läuft.</description>
+      <pubDate>Thu, 03 Sep 2026 11:26:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>Google Chrome: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=317fd2ce-4027-4268-844b-6b8ad242e54e</link>
+      <id>WID-TW-2026-0259</id>
+      <description>In Google Chrome existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, sensible Informationen offenzulegen, den Benutzer zu täuschen, Daten zu modifizieren oder einen Systemabsturz zu erzeugen.&#xD;
+&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, spezifische Bedingungen oder Benutzerinteraktionen erforderlich, wie beispielsweise das Öffnen einer schädlichen Webseite, App oder Datei.</description>
+      <pubDate>Wed, 02 Sep 2026 10:21:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox und Thunderbird: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=c7cf36fa-a4e0-4083-ae6f-8627052363c0</link>
+      <id>WID-TW-2026-0258</id>
+      <description>In Mozilla Firefox und Thunderbird existieren mehrere Schwachstellen.&#xD;
+&#xD;
+Ein Angreifer kann diese Schwachstellen ausnutzen, um Berechtigungen zu erweitern, Sicherheitsmaßnahmen zu umgehen, vertrauliche Informationen offenzulegen, Daten zu manipulieren, den Benutzer zu täuschen, sowie möglicherweise Schadcode auszuführen oder einen Systemabsturz auszulösen.&#xD;
+Für die erfolgreiche Ausnutzung einiger dieser Schwachstellen sind möglicherweise bestimmte Berechtigungen, bestimmte Bedingungen oder eine Benutzerinteraktion erforderlich, z. B. das Öffnen einer schädlichen Datei oder Webseite.</description>
+      <pubDate>Wed, 02 Sep 2026 10:21:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mozilla Firefox: Schwachstelle ermöglicht Darstellen falscher Informationen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=c8063b9a-a470-4823-8656-58584111e9e7</link>
+      <id>WID-TW-2026-0257</id>
+      <description>Eine Schwachstelle in Firefox für iOS ermöglicht es einem Angreifer, über eine manipulierte Webseite die Adressleiste des Browsers zu fälschen. Dadurch kann eine vertrauenswürdige Webadresse angezeigt werden, obwohl weiterhin Inhalte des Angreifers dargestellt werden. Dies kann für Phishing-Angriffe genutzt werden.&#xD;
+&#xD;
+Zur Ausnutzung muss der Benutzer eine vom Angreifer präparierte Webseite aufrufen.</description>
+      <pubDate>Tue, 01 Sep 2026 10:51:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>HP Computer: Schwachstelle ermöglicht Privilegieneskalation</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=6e454312-12c2-49c0-bf97-48114d294a5c</link>
+      <id>WID-TW-2026-0256</id>
+      <description>Im System-BIOS wurde bei bestimmten HP PC-Geräten ein potenzielles Sicherheitsrisiko festgestellt, das Rechteausweitung und/oder Ausführung von willkürlichem Code ermöglichen kann.</description>
+      <pubDate>Mon, 31 Aug 2026 11:11:05 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Edge: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=aa14d79a-6df7-4cf0-a5da-93f8a8228b82</link>
+      <id>WID-TW-2026-0255</id>
+      <description>In Microsoft Edge existieren mehrere Schwachstellen. Ein Angreifer kann diese Schwachstellen ausnutzen, um Schadcode auszuführen, Sicherheitsmaßnahmen zu umgehen, Benutzer zu täuschen, Daten zu manipulieren oder offenzulegen oder einen Systemabsturz zu verursachen.  Eine erfolgreiche Ausnutzung erfordert eine Benutzerinteraktion, z. B. das Öffnen einer schädlichen Datei oder App.</description>
+      <pubDate>Mon, 31 Aug 2026 10:01:06 GMT</pubDate>
+    </item>
+    <item>
+      <title>D-LINK DIR-X1860Z Router: Mehrere Schwachstellen</title>
+      <link>https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=96c3a429-8d23-4eb9-8847-57031cfe1c1b</link>
+      <id>WID-TW-2026-0254</id>
+      <description>Ein Angreifer kann mehrere Schwachstellen im D-LINK DIR-X1860Z Router ausnutzen, um ein neues Administratorpasswort festzulegen und Informationen zur WLAN-Konfiguration, einschließlich der WLAN-Zugangsdaten, abzurufen.</description>
+      <pubDate>Thu, 27 Aug 2026 11:26:06 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

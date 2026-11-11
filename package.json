@@ -13,5 +13,8 @@
   "allowScripts": {
     "esbuild@0.28.2": true,
     "workerd@1.20261110.1": true
+  },
+  "engines": {
+    "node": "26.13.0"
   }
 }
