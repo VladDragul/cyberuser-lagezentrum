@@ -151,3 +151,8 @@ test('every homepage link target exists as a card anchor on /news', () => {
   assert.equal(targets.length, 10);
   for (const h of targets) assert.ok(page.includes(`<li id="${h.slice('/news#'.length)}">`), h);
 });
+
+test('both columns start with the same Stand line', () => {
+  const out = renderBrief(input());
+  assert.equal(count(out, /<p class="status">Stand: /g), 2);
+});

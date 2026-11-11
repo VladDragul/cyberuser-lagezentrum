@@ -41,7 +41,7 @@ import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 /* ---------- Configuration ---------- */
 
 // Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261111e';
+export const STYLE_HREF = '/style.css?v=20261111f';
 export const MAX_ITEMS_PER_SECTION = 50;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
@@ -582,6 +582,7 @@ ${marked ? FINGERPRINT_DEFS : ''}<div class="lage-col lage-col-kev">
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
 ${groups[0]}</div>
 <div class="lage-col lage-col-wid">
+<p class="status">Stand: ${timeTag(nowMs, true)}</p>
 ${groups[1]}<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>
 <p class="lage-sources">Quellen: CISA, NIST (NVD), CERT-Bund (BSI)</p>
 </div>
