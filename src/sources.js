@@ -1,4 +1,4 @@
-// Fetching and parsing of the six official sources shown on /news.
+// Fetching and parsing of the six official sources shown on the homepage.
 // Parsers are pure (string in, normalized items out) and run identically in
 // node --test and in the Worker. Network access goes through an injectable
 // fetch implementation so tests never touch the network.
@@ -44,7 +44,7 @@ export const BSI_LATEST = 10;
 const MAX_RSS_ITEMS = 500;
 const MAX_JSON_ITEMS = 500;
 
-const USER_AGENT = 'cyberuser-lagezentrum/0.1 (+https://cyberuser.de/news)';
+const USER_AGENT = 'cyberuser.de/0.1 (+https://cyberuser.de/)';
 const ACCEPT_JSON = 'application/json';
 const ACCEPT_RSS = 'application/rss+xml, application/xml;q=0.9, text/xml;q=0.8';
 

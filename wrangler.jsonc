@@ -6,8 +6,8 @@
   // No public *.workers.dev address and no preview URLs: only the route below
   "workers_dev": false,
   "preview_urls": false,
-  // Matches /news, /news/ and anything else starting with /news;
-  // the Worker answers 404 for every path it does not explicitly serve
+  // Former Lagezentrum page: /news and /news/ redirect to the homepage;
+  // the Worker answers 404 for everything else starting with /news
   "routes": [
     { "pattern": "cyberuser.de/news*", "zone_name": "cyberuser.de" },
     // Exact homepage only: no wildcard, so /index.html and URLs with a

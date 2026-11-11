@@ -1,22 +1,21 @@
-// Worker logic for /news (Lagezentrum). The runtime entry point is index.js.
+// Worker logic for the homepage brief on cyberuser.de. The runtime entry point is index.js.
 //
 // scheduled: fetch the sources that are due (NVD every two hours, the rest
 //            every hour), keep the last good copy of each in KV,
-//            render the page once and store the finished HTML in KV.
-// fetch:     serve that HTML for /news and /news/; for / pass the request to
-//            the origin and put the stored brief into the homepage;
-//            404 for anything else.
+//            render the brief once and store the finished HTML in KV.
+// fetch:     for / pass the request to the origin and put the stored brief
+//            into the homepage; /news and /news/ (the former page) redirect
+//            to /; 404 for anything else.
 //
-// All heavy work happens in the cron run. A visitor request costs one KV read
+// All heavy work happens in the cron run. A homepage request costs one KV read
 // and no parsing or rendering.
 
 import { collectAll, mergeEuvdIntoNvd } from './sources.js';
-import { renderPage, renderBrief, SOURCE_KEYS, itemKey } from './render.js';
+import { renderBrief, SOURCE_KEYS, itemKey } from './render.js';
 
 /* ---------- Configuration ---------- */
 
 export const KV_STATE = 'state';
-export const KV_PAGE = 'page';
 export const KV_BRIEF = 'brief';
 const STATE_VERSION = 3;
 
@@ -54,6 +53,7 @@ export const SECURITY_HEADERS = Object.freeze({
 export const PAGE_CACHE_CONTROL = 'public, max-age=300, no-transform';
 const ERROR_CACHE_CONTROL = 'no-store, no-transform';
 
+// The former Lagezentrum page; both paths now redirect to the homepage
 const NEWS_PATHS = new Set(['/news', '/news/']);
 
 /* ---------- Source state ---------- */
@@ -122,9 +122,10 @@ export function resolveSources(results, previous, nowMs, attempts) {
   return { view, next };
 }
 
-// KEV cards show the EUVD link and EPSS of a matching EUVD entry. Lists are
-// stored unmerged, so the merge runs on what is shown, whether it is fresh or a
-// fallback copy. render.js still hides EUVD entries already covered by KEV.
+// An EUVD entry that matches a KEV entry is folded into it, so it is not shown
+// twice. Lists are stored unmerged, so the merge runs on what is shown, whether
+// it is fresh or a fallback copy. render.js still hides EUVD entries already
+// covered by KEV.
 export function mergeView(view, log) {
   if (view.nvd.state === 'missing' || view.euvd.state === 'missing') return view;
   try {
@@ -132,7 +133,7 @@ export function mergeView(view, log) {
     log(JSON.stringify({ source: 'merge', mergedIntoNvd: m.merged, euvdOnly: m.euvd.length }));
     return { ...view, nvd: { ...view.nvd, items: m.nvd }, euvd: { ...view.euvd, items: m.euvd } };
   } catch {
-    // A malformed stored item must not stop the run; the page is rendered unmerged
+    // A malformed stored item must not stop the run; the brief is rendered unmerged
     log(JSON.stringify({ source: 'merge', error: 'failed' }));
     return view;
   }
@@ -221,20 +222,18 @@ export async function runCron(nowMs, env, options = {}) {
   // First-seen times use the unmerged lists, so EUVD keys stay stable
   const seen = updateSeen(view, previous.seen, nowMs);
   const merged = mergeView(view, log);
-  const page = renderPage({ nowMs, sources: merged, seen });
-  // Short homepage fragment from the same data, so both always agree
+  // The homepage fragment, rendered once per run
   const brief = renderBrief({ nowMs, sources: merged, seen });
 
-  // State first: if the page write fails, the next run still has the newest copies.
+  // State first: if the brief write fails, the next run still has the newest copies.
   // A failed write rejects, so the invocation is reported as failed in Metrics.
   await env.LAGE.put(KV_STATE, JSON.stringify({ v: STATE_VERSION, sources: next, attempts, seen }));
-  await env.LAGE.put(KV_PAGE, page, { metadata: { generatedAt: nowMs } });
   await env.LAGE.put(KV_BRIEF, brief, { metadata: { generatedAt: nowMs } });
 
   const states = {};
   for (const key of SOURCE_KEYS) states[key] = view[key].state;
   const fetched = SOURCE_KEYS.filter((key) => due.has(key));
-  const summary = { source: 'cron', chars: page.length, fetched, states };
+  const summary = { source: 'cron', chars: brief.length, fetched, states };
   log(JSON.stringify(summary));
   return summary;
 }
@@ -256,7 +255,7 @@ function plain(method, status, text, extra = {}) {
 /* ---------- Homepage ---------- */
 
 // The brief is shown for at most this long after the cron run that wrote it;
-// older means the cron has stopped, and the homepage falls back to its own link
+// older means the cron has stopped, and the homepage keeps its own fallback text
 export const BRIEF_MAX_AGE_MS = 24 * 3_600_000;
 export const BRIEF_START = '<!-- lage:start -->';
 export const BRIEF_END = '<!-- lage:end -->';
@@ -325,19 +324,11 @@ export async function handleRequest(request, env, options = {}) {
   }
   if (!NEWS_PATHS.has(new URL(request.url).pathname)) return plain(method, 404, 'Nicht gefunden.\n');
 
-  let page = null;
-  try {
-    page = await env.LAGE.get(KV_PAGE);
-  } catch {
-    log(JSON.stringify({ source: 'fetch', error: 'kv_get' }));
-  }
-  if (typeof page !== 'string') {
-    return plain(method, 503, 'Das Lagezentrum wird gerade aufgebaut. Bitte später erneut versuchen.\n', {
-      'retry-after': '600',
-    });
-  }
-  return respond(method, 200, page, {
-    'content-type': 'text/html; charset=utf-8',
+  // The cards moved to the homepage. The query string is dropped on purpose:
+  // the homepage route is exact, so "/?x=1" would bypass this Worker.
+  return respond(method, 301, 'Die Sicherheitslage steht jetzt auf der Startseite: https://cyberuser.de/\n', {
+    'content-type': 'text/plain; charset=utf-8',
     'cache-control': PAGE_CACHE_CONTROL,
+    location: '/',
   });
 }

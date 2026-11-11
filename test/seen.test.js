@@ -2,8 +2,8 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { itemKey, isFresh, renderPage, NEW_WINDOW_MS, SOURCE_KEYS } from '../src/render.js';
-import { updateSeen, runCron, KV_STATE, KV_PAGE } from '../src/worker.js';
+import { itemKey, isFresh, renderBrief, NEW_WINDOW_MS, SOURCE_KEYS } from '../src/render.js';
+import { updateSeen, runCron, KV_STATE, KV_BRIEF } from '../src/worker.js';
 import { FINGERPRINT_RIDGES } from '../src/fingerprint.js';
 
 const NOW = Date.UTC(2026, 10, 11, 20, 17, 0);
@@ -88,10 +88,10 @@ test('isFresh: inside the window only, never for baseline, future or inherited k
   assert.equal(isFresh({ nvd: [] }, 'nvd', item, NOW), false);
 });
 
-/* ---------- renderPage ---------- */
+/* ---------- renderBrief ---------- */
 
 test('NEU cards carry the mark; the fingerprint symbol is defined once', () => {
-  const out = renderPage({
+  const out = renderBrief({
     nowMs: NOW,
     sources: okNvd(A, B, C),
     seen: { nvd: { [A]: NOW - HOUR, [B]: NOW - 2 * HOUR, [C]: 0 } },
@@ -104,7 +104,7 @@ test('NEU cards carry the mark; the fingerprint symbol is defined once', () => {
 
 test('without new items there is no mark and no symbol', () => {
   for (const seen of [undefined, {}, { nvd: { [A]: 0 } }, { nvd: { [A]: NOW - 2 * DAY } }]) {
-    const out = renderPage({ nowMs: NOW, sources: okNvd(A), seen });
+    const out = renderBrief({ nowMs: NOW, sources: okNvd(A), seen });
     assert.equal(marks(out), 0);
     assert.equal(symbols(out), 0);
   }
@@ -112,7 +112,7 @@ test('without new items there is no mark and no symbol', () => {
 
 test('item text cannot fake the mark', () => {
   const item = { ...kev(A), title: '<span class="print">' };
-  const out = renderPage({ nowMs: NOW, sources: { nvd: { state: 'ok', asOf: NOW, items: [item] } }, seen: {} });
+  const out = renderBrief({ nowMs: NOW, sources: { nvd: { state: 'ok', asOf: NOW, items: [item] } }, seen: {} });
   assert.equal(marks(out), 0);
   assert.equal(symbols(out), 0);
 });
@@ -134,7 +134,7 @@ function memoryKv(initial) {
 }
 const failingFetch = async () => new Response('', { status: 503 });
 
-test('runCron stores seen in state v3 and marks an item new on the page', async () => {
+test('runCron stores seen in state v3 and marks an item new in the brief', async () => {
   const asOf = NOW - HOUR;
   const kv = memoryKv({
     v: 3,
@@ -146,7 +146,7 @@ test('runCron stores seen in state v3 and marks an item new on the page', async 
   const state = JSON.parse(kv.store.get(KV_STATE));
   assert.equal(state.v, 3);
   assert.deepEqual(state.seen.nvd, { [A]: NOW });
-  assert.equal(marks(kv.store.get(KV_PAGE)), 1);
+  assert.equal(marks(kv.store.get(KV_BRIEF)), 1);
 });
 
 test('runCron ignores a v2 state: no copies, no seen, nothing marked', async () => {
@@ -155,5 +155,5 @@ test('runCron ignores a v2 state: no copies, no seen, nothing marked', async () 
   const state = JSON.parse(kv.store.get(KV_STATE));
   assert.equal(state.v, 3);
   assert.deepEqual(state.seen, {});
-  assert.equal(marks(kv.store.get(KV_PAGE)), 0);
+  assert.equal(marks(kv.store.get(KV_BRIEF)), 0);
 });

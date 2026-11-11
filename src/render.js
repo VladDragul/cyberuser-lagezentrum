@@ -1,16 +1,17 @@
-// Lagezentrum page renderer (/news).
+// Homepage brief renderer: the "Sicherheitslage" cards on cyberuser.de.
 //
 // Pure: no I/O, no clock, no globals. The same input always gives the same
 // output, which keeps the cron CPU budget predictable and the tests exact.
 //
-// The page reuses existing site components; style.css only gains the NEU mark:
-//   .hero/.lead/.status  page head and the "Stand" line
-//   .fp-section          one section per source (as on fingerabdruck.html)
-//   .signals + .slip     SITREP cards: frosted panel with shadow (home page slip)
-//   .fields/.field       THREAT/TARGET/STATUS/ACTION/LINK grid inside a card
-//   .rules               frosted panel holding the compact BSI news lists
-//   .noscript            small muted paragraph, reused for item descriptions
-//   .print               NEU mark (fingerprint) on cards first seen in the last 24 h
+// The output is an HTML fragment. worker.js stores it in KV and places it
+// between the markers of the homepage that nginx serves. It only uses classes
+// that style.css on the static site already defines:
+//   .lage, .lage-col        the two columns
+//   .lage-list, .lage-item  one small card per entry
+//   .slip-head, .slip-time  source and date line of a card
+//   .lage-title, .lage-id   title (linked to the source) and the ID line
+//   .status                 "Stand" line and outage notices
+//   .print                  NEU mark (fingerprint) on entries first seen in the last 24 h
 //
 // Safety model:
 //   - Every interpolated value goes through the html tag and escapeHtml.
@@ -35,33 +36,24 @@ import {
   buergercertUrl,
   safeBsiUrl,
 } from './sanitize.js';
-import { windowStartMs } from './sources.js';
 import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 
 /* ---------- Configuration ---------- */
 
-// Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261111f';
+// Cards shown per source, newest first
 export const MAX_ITEMS_PER_SECTION = 50;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
 export const SOURCE_KEYS = Object.freeze(['nvd', 'euvd', 'wid', 'buergercert', 'bits', 'presse']);
 
+// Upper bound on stored items looked at per source before sorting
+const MAX_ITEMS_READ = 500;
+const MAX_CVES_READ = 50;
 const MAX_CVES_SHOWN = 5;
 const SOURCE_STATES = new Set(['ok', 'stale', 'missing']);
 // widRelevant in sources.js only ever keeps these
 const WID_SEVERITIES = new Set(['hoch', 'kritisch']);
 const WID_STATUSES = new Set(['NEU', 'UPDATE']);
-
-export const ACTIONS = Object.freeze({
-  kev: 'Betroffene Systeme ermitteln und das Sicherheitsupdate des Herstellers vorrangig einspielen. Die Schwachstelle wird bereits aktiv ausgenutzt.',
-  euvd: 'Betroffene Systeme ermitteln und die Hinweise des Herstellers umsetzen. Die Schwachstelle wird laut ENISA ausgenutzt.',
-  widCritical: 'Betroffene Systeme ermitteln und verfügbare Updates umgehend einspielen.',
-  widHigh: 'Betroffene Systeme ermitteln und verfügbare Updates zeitnah einspielen.',
-  widUnpatched:
-    'Noch kein Update verfügbar. Hinweise des Herstellers zu Gegenmaßnahmen prüfen und betroffene Systeme absichern oder vom Netz trennen.',
-  buergercert: 'Warnung lesen und betroffene Geräte und Programme aktualisieren.',
-});
 
 /* ---------- Escaping template tag ---------- */
 
@@ -89,7 +81,7 @@ export function html(strings, ...values) {
   return new SafeHtml(out);
 }
 
-/* ---------- Formatting (manual, UTC, no Intl) ---------- */
+/* ---------- Formatting ---------- */
 
 const pad2 = (n) => (n < 10 ? '0' : '') + n;
 
@@ -99,14 +91,32 @@ function validDate(ms) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+// Calendar dates without a time of day (KEV added, EUVD exploited since) stay in UTC
 export function formatDay(ms) {
   const d = validDate(ms);
   return d ? `${pad2(d.getUTCDate())}.${pad2(d.getUTCMonth() + 1)}.${d.getUTCFullYear()}` : null;
 }
 
+// Created once: constructing the formatter is the expensive part. Only the
+// numeric parts are used, so the result does not depend on the locale data of
+// the runtime, only on its time zone data.
+const BERLIN = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Europe/Berlin',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+// Date and time as read in Germany (Europe/Berlin, daylight saving included)
 export function formatDateTime(ms) {
   const d = validDate(ms);
-  return d ? `${formatDay(ms)} ${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())} UTC` : null;
+  if (!d) return null;
+  const p = {};
+  for (const part of BERLIN.formatToParts(d)) p[part.type] = part.value;
+  return `${p.day}.${p.month}.${p.year} ${p.hour}:${p.minute} Uhr`;
 }
 
 // German decimal comma; with trim, trailing zeros after the comma are dropped
@@ -116,6 +126,7 @@ export function formatDecimal(n, digits, trim = false) {
   return s.replace('.', ',');
 }
 
+// The datetime attribute is always ISO in UTC; only the visible text is local
 function timeTag(ms, withTime) {
   const d = validDate(ms);
   if (!d) return 'unbekannt';
@@ -131,8 +142,6 @@ function cvssText(score, version) {
   const v = typeof version === 'string' && /^\d\.\d$/.test(version) ? ` (v${version})` : '';
   return `CVSS ${formatDecimal(s, 1)}${v}`;
 }
-
-const epssText = (epss) => (epss === null ? '' : `EPSS ${formatDecimal(epss, 2, true)} %`);
 
 // Joins the non-empty parts with a separator
 function joinParts(parts, sep) {
@@ -153,35 +162,12 @@ const RIDGE_PATH = /^M[0-9. ]{1,4000}$/;
 const inRange = (n, min, max, fallback) => (typeof n === 'number' && n >= min && n <= max ? n : fallback);
 const ridges = FINGERPRINT_RIDGES.filter((r) => Array.isArray(r) && typeof r[0] === 'string' && RIDGE_PATH.test(r[0]));
 
-// Defined once per page, and only when at least one card carries the mark
+// Defined once per fragment, and only when at least one card carries the mark
 const FINGERPRINT_DEFS = html`<svg class="print-defs" width="0" height="0" aria-hidden="true" focusable="false"><symbol id="fp" viewBox="${FINGERPRINT_VIEWBOX}"><g fill="none" stroke="currentColor" stroke-linecap="round">${ridges.map(
   (r) => html`<path d="${r[0]}" stroke-opacity="${inRange(r[1], 0, 1, 1)}" stroke-width="${inRange(r[2], 0.5, 2, 1)}"/>`,
 )}</g></symbol></svg>`;
 
 const NEW_MARK = html`<span class="print" title="Seit weniger als 24 Stunden auf dieser Seite"><svg class="print-fp" viewBox="${FINGERPRINT_VIEWBOX}" aria-hidden="true" focusable="false"><use href="#fp"/></svg><span class="print-label">NEU</span></span>`;
-
-/* ---------- Building blocks ---------- */
-
-const field = (label, value) => html`<div class="field"><dt>${label}</dt><dd>${value}</dd></div>`;
-const link = (href, text) => (href ? html`<a href="${href}" rel="noreferrer">${text}</a>` : '');
-
-function card({ head, time, threat, target, status, action, links, description, lang, fresh, href, anchor }) {
-  // The threat text links to the primary source; CSS stretches this link over the whole card
-  const threatCell = href ? html`<a class="slip-link" href="${href}" rel="noreferrer">${threat}</a>` : threat;
-  let desc = '';
-  if (description !== '') {
-    desc = lang
-      ? html`<p class="noscript" lang="${lang}">${description}</p>`
-      : html`<p class="noscript">${description}</p>`;
-  }
-  // The anchor lets the homepage link to this exact card
-  const open = anchor ? html`<li id="${anchor}">` : html`<li>`;
-  return html`${open}<article class="slip">
-<div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
-<dl class="fields">${field('THREAT', threatCell)}${field('TARGET', target)}${field('STATUS', status)}${field('ACTION', action)}${field('LINK', joinParts(links, ' · '))}</dl>
-${desc}${fresh ? NEW_MARK : ''}
-</article></li>`;
-}
 
 /* ---------- Item identity (shared with worker.js) ---------- */
 
@@ -224,269 +210,7 @@ export function isFresh(seen, sourceKey, item, nowMs) {
   return typeof t === 'number' && Number.isFinite(t) && t > 0 && t <= nowMs && nowMs - t < NEW_WINDOW_MS;
 }
 
-/* ---------- Per-source items (null = invalid, not rendered) ---------- */
-
-function kevCard(item, fresh = false) {
-  const id = cveId(item?.id);
-  if (!id || !validDate(item.kevAdded)) return null;
-  const due = validDate(item.kevDue) ? item.kevDue : null;
-  const euvd = euvdId(item.euvd?.id);
-  const epss = euvd ? boundedNumber(item.euvd.epss, 0, 100) : null;
-  return {
-    id,
-    html: card({
-      head: 'CISA KEV',
-      time: timeTag(item.kevAdded, false),
-      threat: cleanText(item.title, LIMITS.vulnName) || id,
-      target: joinParts([id, cvssText(item.cvss?.score, item.cvss?.version)], ', '),
-      status: joinParts(
-        ['Aktiv ausgenutzt', due === null ? '' : html`CISA-Frist ${timeTag(due, false)}`, epssText(epss)],
-        ', ',
-      ),
-      action: ACTIONS.kev,
-      href: nvdUrl(id),
-      anchor: newsAnchor('nvd', id),
-      links: [link(nvdUrl(id), 'NVD'), link(euvdUrl(euvd), 'EUVD')],
-      description: cleanText(item.description, LIMITS.description),
-      lang: 'en',
-      fresh,
-    }),
-  };
-}
-
-function euvdCard(item, kevIds, fresh = false) {
-  const id = euvdId(item?.id);
-  if (!id || !validDate(item.exploitedSince)) return null;
-  const cves = Array.isArray(item.cves) ? [...new Set(item.cves.slice(0, 50).filter((c) => cveId(c) !== null))] : [];
-  // Already shown in the KEV section (also covers a stale EUVD copy that was never merged)
-  if (cves.some((c) => kevIds.has(c))) return null;
-  const shown = cves.slice(0, MAX_CVES_SHOWN).join(', ');
-  const more = cves.length > MAX_CVES_SHOWN ? ` (+${cves.length - MAX_CVES_SHOWN})` : '';
-  return card({
-    head: 'ENISA EUVD',
-    time: timeTag(item.exploitedSince, false),
-    threat: cleanText(item.title, LIMITS.vulnName) || id,
-    target: joinParts([cves.length > 0 ? shown + more : id, cvssText(item.baseScore, null)], ', '),
-    status: joinParts(['Laut ENISA ausgenutzt', epssText(boundedNumber(item.epss, 0, 100))], ', '),
-    action: ACTIONS.euvd,
-    href: euvdUrl(id),
-    links: [link(euvdUrl(id), 'EUVD'), cves.length > 0 ? link(nvdUrl(cves[0]), 'NVD') : ''],
-    description: cleanText(item.description, LIMITS.description),
-    lang: 'en',
-    fresh,
-  });
-}
-
-function widCard(item, fresh = false) {
-  const id = widId(item?.id);
-  const severity = item?.severity;
-  const status = item?.status;
-  if (!id || !WID_SEVERITIES.has(severity) || !WID_STATUSES.has(status) || !validDate(item.date)) return null;
-  const unpatched = item.unpatched === true;
-  let action = ACTIONS.widHigh;
-  if (unpatched) action = ACTIONS.widUnpatched;
-  else if (severity === 'kritisch') action = ACTIONS.widCritical;
-  return card({
-    head: 'CERT-Bund WID',
-    time: timeTag(item.date, true),
-    threat: cleanText(item.title, LIMITS.title) || id,
-    target: id,
-    status: joinParts(
-      [status === 'NEU' ? 'Erstmeldung' : 'Aktualisiert', `Schweregrad ${severity}`, unpatched ? html`<strong>UNGEPATCHT</strong>` : ''],
-      ', ',
-    ),
-    action,
-    href: widUrl(id),
-    anchor: newsAnchor('wid', id),
-    links: [link(widUrl(id), 'WID')],
-    description: cleanText(item.description, LIMITS.description),
-    lang: null,
-    fresh,
-  });
-}
-
-function buergercertCard(item, fresh = false) {
-  const id = uuid(item?.id);
-  const title = cleanText(item?.title, LIMITS.title);
-  if (!id || title === '' || !validDate(item.date)) return null;
-  return card({
-    head: 'Bürger-CERT',
-    time: timeTag(item.date, true),
-    threat: title,
-    target: 'Privatanwender',
-    status: 'Aktuelle Warnung',
-    action: ACTIONS.buergercert,
-    href: buergercertUrl(id),
-    links: [link(buergercertUrl(id), 'Bürger-CERT')],
-    description: cleanText(item.description, LIMITS.description),
-    lang: null,
-    fresh,
-  });
-}
-
-function newsItem(item, fresh = false) {
-  const title = cleanText(item?.title, LIMITS.title);
-  if (title === '' || !validDate(item.date)) return null;
-  const href = safeBsiUrl(item.link);
-  return html`<li>${fresh ? html`<strong>NEU</strong> ` : ''}${timeTag(item.date, true)}: ${href ? link(href, title) : title}</li>`;
-}
-
-/* ---------- Sections ---------- */
-
-function normalizeSource(input) {
-  const state = SOURCE_STATES.has(input?.state) ? input.state : 'missing';
-  const items = state !== 'missing' && Array.isArray(input.items) ? input.items.slice(0, MAX_ITEMS_PER_SECTION) : [];
-  return { state, asOf: input?.asOf ?? null, items };
-}
-
-function mapValid(items, fn) {
-  const out = [];
-  for (const item of items) {
-    const r = fn(item);
-    if (r !== null) out.push(r);
-  }
-  return out;
-}
-
-function sourceNotice(src) {
-  if (src.state === 'stale') {
-    return html`<p class="status">QUELLE NICHT ERREICHBAR, STAND: ${formatDateTime(src.asOf) ?? 'UNBEKANNT'}</p>`;
-  }
-  if (src.state === 'missing') return html`<p class="status">QUELLE NICHT ERREICHBAR, KEINE DATEN</p>`;
-  return '';
-}
-
-const cardList = (entries) => html`<ul class="signals">${entries}</ul>`;
-const newsList = (entries) => html`<div class="rules"><ul>${entries}</ul></div>`;
-
-function section(key, meta, src, entries, wrap) {
-  let body = '';
-  if (src.state !== 'missing') body = entries.length > 0 ? wrap(entries) : html`<p>${meta.empty}</p>`;
-  return html`<section class="fp-section" id="${key}" aria-labelledby="${key}-title">
-<h2 id="${key}-title">${meta.title}</h2>
-<p>${meta.intro}</p>
-${sourceNotice(src)}${body}
-</section>
-`;
-}
-
-function sectionTexts(nowMs) {
-  const since = formatDay(validDate(nowMs) ? windowStartMs(nowMs) : NaN);
-  const window = since ? ` Zeitraum: seit dem ${since}.` : '';
-  return {
-    nvd: {
-      title: 'Aktiv ausgenutzte Schwachstellen',
-      intro: `Neu im Katalog „Known Exploited Vulnerabilities“ der US-Behörde CISA, mit Daten aus der NVD und, wo vorhanden, aus der europäischen Schwachstellendatenbank EUVD.${window}`,
-      empty: 'Im Zeitraum wurden keine neuen Einträge aufgenommen.',
-    },
-    euvd: {
-      title: 'Weitere ausgenutzte Schwachstellen (EUVD)',
-      intro: `Von der ENISA als ausgenutzt markiert und nicht bereits oben im KEV-Katalog aufgeführt.${window}`,
-      empty: 'Keine weiteren Einträge. Was auch im KEV-Katalog steht, ist oben aufgeführt.',
-    },
-    wid: {
-      title: 'Sicherheitshinweise des CERT-Bund',
-      intro:
-        'Aus dem Warn- und Informationsdienst (WID) des BSI: alle kritischen Hinweise sowie hohe, wenn sie neu sind oder noch kein Update existiert.',
-      empty: 'Im aktuellen Feed stehen keine Hinweise dieser Stufen.',
-    },
-    buergercert: {
-      title: 'Warnungen für Privatanwender',
-      intro: 'Die neuesten Warnungen des Bürger-CERT im BSI.',
-      empty: 'Der Feed enthält derzeit keine Warnungen.',
-    },
-    bits: {
-      title: 'Cybersicherheitswarnungen des BSI',
-      intro: 'Die neuesten Warnungen von der Website des BSI.',
-      empty: 'Der Feed enthält derzeit keine Meldungen.',
-    },
-    presse: {
-      title: 'Presse und Veranstaltungen des BSI',
-      intro: 'Die neuesten Pressemitteilungen und Veranstaltungshinweise des BSI.',
-      empty: 'Der Feed enthält derzeit keine Meldungen.',
-    },
-  };
-}
-
-/* ---------- Page ---------- */
-
-// input: { nowMs, sources: { nvd, euvd, wid, buergercert, bits, presse } }
-// each source: { state: 'ok' | 'stale' | 'missing', asOf: epoch ms, items: [...] }
-// seen (optional): { [source]: { [itemKey]: firstSeenMs } } from worker.js, for NEU
-// Fallback decisions (which copy is shown) are made by worker.js, not here.
-export function renderPage({ nowMs, sources, seen } = {}) {
-  const src = {};
-  for (const key of SOURCE_KEYS) src[key] = normalizeSource(sources?.[key]);
-  const t = sectionTexts(nowMs);
-
-  const kevIds = new Set();
-  const kevCards = [];
-  for (const item of src.nvd.items) {
-    const c = kevCard(item, isFresh(seen, 'nvd', item, nowMs));
-    if (c === null) continue;
-    kevIds.add(c.id);
-    kevCards.push(c.html);
-  }
-
-  const sections = [
-    section('nvd', t.nvd, src.nvd, kevCards, cardList),
-    section('euvd', t.euvd, src.euvd, mapValid(src.euvd.items, (i) => euvdCard(i, kevIds, isFresh(seen, 'euvd', i, nowMs))), cardList),
-    section('wid', t.wid, src.wid, mapValid(src.wid.items, (i) => widCard(i, isFresh(seen, 'wid', i, nowMs))), cardList),
-    section('buergercert', t.buergercert, src.buergercert, mapValid(src.buergercert.items, (i) => buergercertCard(i, isFresh(seen, 'buergercert', i, nowMs))), cardList),
-    section('bits', t.bits, src.bits, mapValid(src.bits.items, (i) => newsItem(i, isFresh(seen, 'bits', i, nowMs))), newsList),
-    section('presse', t.presse, src.presse, mapValid(src.presse.items, (i) => newsItem(i, isFresh(seen, 'presse', i, nowMs))), newsList),
-  ];
-
-  // Item text is escaped, so this marker can only come from NEW_MARK
-  const marked = fragment(sections).includes('<span class="print"');
-
-  const page = html`<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cyberuser | Lagezentrum</title>
-<link rel="icon" href="/favicon.ico?v=2">
-<meta name="description" content="Aktuelle Warnungen und aktiv ausgenutzte Schwachstellen aus offiziellen Quellen: CISA, NIST, ENISA, CERT-Bund und BSI. Automatisch zusammengestellt, ohne KI.">
-<meta name="color-scheme" content="dark">
-<link rel="canonical" href="https://cyberuser.de/news">
-<link rel="stylesheet" href="${STYLE_HREF}">
-</head>
-<body class="page-news">
-${marked ? FINGERPRINT_DEFS : ''}
-<header class="site">
-  <a class="brand" href="/">cyberuser.de</a>
-</header>
-
-<main>
-<section class="hero" aria-labelledby="hero-title">
-  <h1 id="hero-title">Lagezentrum</h1>
-  <p class="lead">Aktuelle Warnungen und aktiv ausgenutzte Schwachstellen, direkt aus offiziellen Quellen: CISA und NIST (USA), ENISA (EU), CERT-Bund und BSI. Die Seite wird stündlich automatisch erstellt (NVD-Daten alle zwei Stunden), ohne KI und ohne eigene Bewertung. Maßgeblich ist immer die verlinkte Originalmeldung.</p>
-  <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-</section>
-
-${sections}</main>
-
-<footer class="site">
-  <a href="/">Startseite</a>
-  <a href="/impressum.html">Impressum</a>
-  <a href="/datenschutz.html">Datenschutz</a>
-  <a href="/kontakt.html">Kontakt</a>
-  <span class="badges"><a href="https://internet.nl/"><img src="/badge-internetnl-web.svg" alt="Internet.nl: 100 % im Website-Test" width="204" height="38"></a><a href="https://internet.nl/"><img src="/badge-internetnl-mail.svg" alt="Internet.nl: 100 % im E-Mail-Test" width="204" height="39"></a></span>
-</footer>
-
-</body>
-</html>
-`;
-  return '<!doctype html>\n' + page.value;
-}
-
-/* ---------- Homepage brief ---------- */
-
-// Newest entries per source in the homepage brief
-export const BRIEF_COUNTS = Object.freeze({ nvd: 5, wid: 5 });
-
-// Anchor of a card on /news: section key plus the validated item id
-export const newsAnchor = (key, id) => `${key}-${id}`;
+/* ---------- Ordering ---------- */
 
 // Sort newest first without trusting the feed order; invalid dates go last,
 // ties keep their original order
@@ -511,15 +235,18 @@ function pickNewest(items, dateOf, toEntry, count) {
   return out;
 }
 
+/* ---------- Cards (null = invalid, not rendered) ---------- */
+
+// One card for every source: source and date, title linked to the original
+// publication, and a last line that is never empty
 function briefItem({ head, time, title, id, href, fresh }) {
   return html`<li class="lage-item">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
-<p class="lage-title">${href ? html`<a class="slip-link" href="${href}">${title}</a>` : title}</p>
+<p class="lage-title">${href ? html`<a class="slip-link" href="${href}" rel="noopener noreferrer">${title}</a>` : title}</p>
 <p class="lage-id">${id}</p>${fresh ? NEW_MARK : ''}
 </li>`;
 }
 
-// Same validation as kevCard, so an item shows here only if /news shows it too
 function kevBrief(item, fresh) {
   const id = cveId(item?.id);
   if (!id || !validDate(item.kevAdded)) return null;
@@ -528,13 +255,31 @@ function kevBrief(item, fresh) {
     time: timeTag(item.kevAdded, false),
     title: cleanText(item.title, LIMITS.vulnName) || id,
     id: joinParts([id, cvssText(item.cvss?.score, item.cvss?.version)], ', '),
-    // Homepage cards open the matching card on /news, which links to the source
-    href: `/news#${newsAnchor('nvd', id)}`,
+    href: nvdUrl(id),
     fresh,
   });
 }
 
-// Same validation as widCard
+function euvdBrief(item, kevIds, fresh) {
+  const id = euvdId(item?.id);
+  if (!id || !validDate(item.exploitedSince)) return null;
+  const cves = Array.isArray(item.cves)
+    ? [...new Set(item.cves.slice(0, MAX_CVES_READ).filter((c) => cveId(c) !== null))]
+    : [];
+  // Already shown as a KEV card (also covers an EUVD copy that was never merged)
+  if (cves.some((c) => kevIds.has(c))) return null;
+  const shown = cves.slice(0, MAX_CVES_SHOWN).join(', ');
+  const more = cves.length > MAX_CVES_SHOWN ? ` (+${cves.length - MAX_CVES_SHOWN})` : '';
+  return briefItem({
+    head: 'ENISA EUVD',
+    time: timeTag(item.exploitedSince, false),
+    title: cleanText(item.title, LIMITS.vulnName) || id,
+    id: joinParts([cves.length > 0 ? shown + more : id, cvssText(item.baseScore, null)], ', '),
+    href: euvdUrl(id),
+    fresh,
+  });
+}
+
 function widBrief(item, fresh) {
   const id = widId(item?.id);
   const severity = item?.severity;
@@ -543,10 +288,56 @@ function widBrief(item, fresh) {
     head: 'CERT-Bund WID',
     time: timeTag(item.date, true),
     title: cleanText(item.title, LIMITS.title) || id,
+    // only a literal true counts as unpatched
     id: joinParts([id, `Schweregrad ${severity}`, item.unpatched === true ? html`<strong>UNGEPATCHT</strong>` : ''], ', '),
-    href: `/news#${newsAnchor('wid', id)}`,
+    href: widUrl(id),
     fresh,
   });
+}
+
+function buergercertBrief(item, fresh) {
+  const id = uuid(item?.id);
+  const title = cleanText(item?.title, LIMITS.title);
+  if (!id || title === '' || !validDate(item.date)) return null;
+  return briefItem({
+    head: 'Bürger-CERT',
+    time: timeTag(item.date, true),
+    title,
+    id: 'Warnung für Privatanwender',
+    href: buergercertUrl(id),
+    fresh,
+  });
+}
+
+// Both BSI website feeds. The link is the only one taken from a feed; when
+// safeBsiUrl rejects it, the title is shown without a link.
+function bsiBrief(item, head, label, fresh) {
+  const title = cleanText(item?.title, LIMITS.title);
+  if (title === '' || !validDate(item.date)) return null;
+  return briefItem({
+    head,
+    time: timeTag(item.date, true),
+    title,
+    id: label,
+    href: safeBsiUrl(item.link),
+    fresh,
+  });
+}
+
+/* ---------- Groups ---------- */
+
+function normalizeSource(input) {
+  const state = SOURCE_STATES.has(input?.state) ? input.state : 'missing';
+  const items = state !== 'missing' && Array.isArray(input.items) ? input.items.slice(0, MAX_ITEMS_READ) : [];
+  return { state, asOf: input?.asOf ?? null, items };
+}
+
+function sourceNotice(src) {
+  if (src.state === 'stale') {
+    return html`<p class="status">QUELLE NICHT ERREICHBAR, STAND: ${formatDateTime(src.asOf) ?? 'UNBEKANNT'}</p>`;
+  }
+  if (src.state === 'missing') return html`<p class="status">QUELLE NICHT ERREICHBAR, KEINE DATEN</p>`;
+  return '';
 }
 
 function briefGroup(title, src, entries) {
@@ -559,32 +350,63 @@ ${sourceNotice(src)}${body}
 `;
 }
 
-// Short HTML fragment for the homepage. Same input as renderPage; returns a
-// string without <html>/<body>, to be placed between the homepage markers.
+/* ---------- Homepage brief ---------- */
+
+// input: { nowMs, sources: { nvd, euvd, wid, buergercert, bits, presse } }
+// each source: { state: 'ok' | 'stale' | 'missing', asOf: epoch ms, items: [...] }
+// seen (optional): { [source]: { [itemKey]: firstSeenMs } } from worker.js, for NEU
+// Fallback decisions (which copy is shown) are made by worker.js, not here.
+//
+// Returns a string without <html>/<body>, to be placed between the homepage
+// markers. Left column: exploited vulnerabilities (KEV, then EUVD entries that
+// are not in KEV). Right column: the German sources.
 export function renderBrief({ nowMs, sources, seen } = {}) {
-  const nvd = normalizeSource(sources?.nvd);
-  const wid = normalizeSource(sources?.wid);
+  const src = {};
+  for (const key of SOURCE_KEYS) src[key] = normalizeSource(sources?.[key]);
 
-  const kev = pickNewest(nvd.items, (i) => i?.kevAdded, (i) => kevBrief(i, isFresh(seen, 'nvd', i, nowMs)), BRIEF_COUNTS.nvd);
-  const bsi = pickNewest(wid.items, (i) => i?.date, (i) => widBrief(i, isFresh(seen, 'wid', i, nowMs)), BRIEF_COUNTS.wid);
+  const fresh = (key, item) => isFresh(seen, key, item, nowMs);
+  const newest = (key, dateOf, toEntry) => pickNewest(src[key].items, dateOf, toEntry, MAX_ITEMS_PER_SECTION);
+  const byDate = (i) => i?.date;
 
-  const groups = [
-    briefGroup('Aktiv ausgenutzte Schwachstellen', nvd, kev),
-    briefGroup('Hinweise des CERT-Bund', wid, bsi),
+  // Only CVEs that really got a KEV card hide their EUVD entry
+  const kevIds = new Set();
+  const kev = newest(
+    'nvd',
+    (i) => i?.kevAdded,
+    (i) => {
+      const entry = kevBrief(i, fresh('nvd', i));
+      if (entry !== null) kevIds.add(i.id);
+      return entry;
+    },
+  );
+  const euvd = newest('euvd', (i) => i?.exploitedSince, (i) => euvdBrief(i, kevIds, fresh('euvd', i)));
+  const wid = newest('wid', byDate, (i) => widBrief(i, fresh('wid', i)));
+  const buergercert = newest('buergercert', byDate, (i) => buergercertBrief(i, fresh('buergercert', i)));
+  const bits = newest('bits', byDate, (i) => bsiBrief(i, 'BSI', 'Cybersicherheitswarnung', fresh('bits', i)));
+  const presse = newest('presse', byDate, (i) => bsiBrief(i, 'BSI Presse', 'Presse und Veranstaltungen', fresh('presse', i)));
+
+  const left = [
+    briefGroup('Aktiv ausgenutzte Schwachstellen', src.nvd, kev),
+    briefGroup('Weitere ausgenutzte Schwachstellen (EUVD)', src.euvd, euvd),
+  ];
+  const right = [
+    briefGroup('Hinweise des CERT-Bund', src.wid, wid),
+    briefGroup('Warnungen für Privatanwender', src.buergercert, buergercert),
+    briefGroup('Cybersicherheitswarnungen des BSI', src.bits, bits),
+    briefGroup('Presse und Veranstaltungen des BSI', src.presse, presse),
   ];
 
   // Item text is escaped, so this marker can only come from NEW_MARK
-  const marked = fragment(groups).includes('<span class="print"');
+  const marked = fragment([left, right]).includes('<span class="print"');
 
   return html`<aside class="lage" aria-labelledby="lage-title">
 ${marked ? FINGERPRINT_DEFS : ''}<div class="lage-col lage-col-kev">
 <h2 id="lage-title">Sicherheitslage</h2>
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${groups[0]}</div>
+${left}</div>
 <div class="lage-col lage-col-wid">
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${groups[1]}${kev.length + bsi.length === 0 ? html`<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>` : ''}
-<p class="lage-sources">Quellen: CISA, NIST (NVD), CERT-Bund (BSI)</p>
+${right}<p class="lage-sources">Quellen: CISA, NIST (NVD), ENISA (EUVD), CERT-Bund, BSI</p>
 </div>
 </aside>
 `.value;

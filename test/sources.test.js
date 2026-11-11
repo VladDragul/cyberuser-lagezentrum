@@ -315,7 +315,7 @@ test('fetchText sends no-store, manual redirects, a signal and a user agent', as
   assert.equal(seen.redirect, 'manual');
   assert.ok(seen.signal instanceof AbortSignal);
   assert.equal(seen.headers.accept, 'application/json');
-  assert.match(seen.headers['user-agent'], /^cyberuser-lagezentrum\//);
+  assert.match(seen.headers['user-agent'], /^cyberuser\.de\//);
 });
 
 test('fetchText treats every non-200 status as a failure, redirects included', async () => {

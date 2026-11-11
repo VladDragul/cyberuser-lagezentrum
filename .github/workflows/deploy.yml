@@ -37,7 +37,7 @@ jobs:
     # Waits for manual approval; the token is released only after approval
     environment:
       name: production
-      url: https://cyberuser.de/news
+      url: https://cyberuser.de/
     # Never run two deployments at once; a newer one waits for the older one
     concurrency:
       group: deploy-production

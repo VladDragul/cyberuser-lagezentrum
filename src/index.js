@@ -1,4 +1,4 @@
-// Worker entry point for /news and the homepage (Lagezentrum).
+// Worker entry point for the homepage brief and the /news redirect.
 //
 // workerd treats every named export of the main module as an entrypoint and
 // only accepts functions, classes or handler objects there. This module must

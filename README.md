@@ -1,8 +1,8 @@
 # cyberuser-lagezentrum
 
-Cloudflare Worker that serves `/news` ("Lagezentrum") on cyberuser.de: a German-language overview of current vulnerabilities and security advisories from official sources. No cookies, no scripts from third parties, no visitor data stored.
+Cloudflare Worker behind the "Sicherheitslage" cards on the homepage of cyberuser.de: a German-language overview of current vulnerabilities and security advisories from official sources. No cookies, no scripts from third parties, no visitor data stored.
 
-The rest of cyberuser.de is a static site served from a home server (lab01) through Cloudflare Tunnel. This Worker answers the `/news` route and, for the exact homepage `/`, inserts a short brief into the page that nginx on lab01 serves.
+cyberuser.de is a static site served from a home server (lab01) through Cloudflare Tunnel. For the exact homepage `/`, this Worker inserts the cards into the page that nginx on lab01 serves. The former page `/news` redirects to the homepage.
 
 ## Sources
 
@@ -35,7 +35,7 @@ NVD asks automated clients to check for updates no more than once every two hour
 
 - Response headers (same policy as the static site): CSP `default-src 'none'` with `'self'` only for scripts, styles, images and fonts, no inline styles; COEP, COOP, CORP, Permissions-Policy, `Referrer-Policy: no-referrer`, `nosniff`, `X-Frame-Options: DENY`. HSTS is added by Cloudflare at the edge.
 - `Cache-Control: public, max-age=300, no-transform`. `no-transform` also stops Cloudflare from injecting its JavaScript Detections snippet.
-- No `*.workers.dev` address and no preview URLs: the Worker is reachable only through the `cyberuser.de/news*` route and the exact homepage route `cyberuser.de/` (no wildcard, so `/index.html` and URLs with a query string go straight to the origin). Every other path it sees gets a 404.
+- No `*.workers.dev` address and no preview URLs: the Worker is reachable only through the `cyberuser.de/news*` route and the exact homepage route `cyberuser.de/` (no wildcard, so `/index.html` and URLs with a query string go straight to the origin). `/news` and `/news/` answer with a 301 to the homepage; every other path it sees gets a 404.
 - Automatic invocation logs are disabled, so no visitor metadata (IP, headers) is stored. Only explicit console logs from the cron run are kept.
 - All input from sources is treated as untrusted: text is decoded, trimmed to fixed limits and escaped; IDs and URLs must match strict patterns before they are used.
 
@@ -87,7 +87,7 @@ From a second session, trigger a cron run and load the page:
 # /__scheduled ignores the time parameter; use this endpoint instead.
 # time is the simulated scheduledTime in milliseconds since the epoch.
 curl -s "http://localhost:8787/cdn-cgi/local/scheduled?cron=17+*+*+*+*&time=$(date +%s000)"
-curl -s http://localhost:8787/news | head
+npx wrangler kv key get brief --binding LAGE --local | head
 ```
 
 Inspect or change the simulated KV state (local only, never the deployed namespace):
@@ -112,7 +112,7 @@ Deterministic for a given numpy and matplotlib version (seeds 3 and 11). Last ge
 Relevant limits this design stays within (check the current values in the official docs):
 
 - Workers: 5 Cron Triggers per account, 10 ms CPU per invocation (cron included), 50 subrequests per invocation, 100,000 requests per day. <https://developers.cloudflare.com/workers/platform/limits/>
-- KV: 100,000 reads and 1,000 writes per day. An hourly cron writes about 72 times a day (state, page, brief). Every `/news` view costs one Worker request and one KV read; every homepage view costs one Worker request, one KV read and one request to the origin. <https://developers.cloudflare.com/kv/platform/limits/>
+- KV: 100,000 reads and 1,000 writes per day. An hourly cron writes 48 times a day (state, brief). Every homepage view costs one Worker request, one KV read and one request to the origin; a redirect from `/news` costs one Worker request and no KV read. <https://developers.cloudflare.com/kv/platform/limits/>
 
 If traffic grows, the next step is the Cache API inside the Worker.
 

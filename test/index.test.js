@@ -13,7 +13,6 @@ import {
   runCron,
   handleRequest,
   KV_STATE,
-  KV_PAGE,
   KV_BRIEF,
   BRIEF_START,
   BRIEF_END,
@@ -66,7 +65,7 @@ function fixtureFetch(overrides = {}) {
   };
 }
 
-const cards = (s) => (s.match(/<article class="slip">/g) ?? []).length;
+const cards = (s) => (s.match(/<li class="lage-item">/g) ?? []).length;
 const quiet = { log: () => {} };
 
 /* ---------- resolveSources ---------- */
@@ -166,7 +165,7 @@ test('mergeView merges a stale KEV copy with fresh EUVD and survives malformed i
 
 /* ---------- runCron ---------- */
 
-test('runCron on fixtures stores state and page, then falls back per source', async () => {
+test('runCron on fixtures stores state and brief, then falls back per source', async () => {
   const kv = new MemoryKV();
   const env = { LAGE: kv };
 
@@ -176,8 +175,8 @@ test('runCron on fixtures stores state and page, then falls back per source', as
   assert.equal(state.v, 3);
   assert.deepEqual(state.attempts, Object.fromEntries(SOURCE_KEYS.map((k) => [k, NOW])));
   assert.deepEqual(Object.keys(state.sources).sort(), [...SOURCE_KEYS].sort());
-  assert.equal(cards(kv.store.get(KV_PAGE)), 29);
-  assert.deepEqual(kv.meta.get(KV_PAGE), { generatedAt: NOW });
+  assert.equal(cards(kv.store.get(KV_BRIEF)), 49);
+  assert.deepEqual(kv.meta.get(KV_BRIEF), { generatedAt: NOW });
 
   // Two hours later NVD is due again but down: its copy from the first run is shown as stale
   const later = NOW + 2 * HOUR;
@@ -186,11 +185,11 @@ test('runCron on fixtures stores state and page, then falls back per source', as
     ...quiet,
   });
   assert.equal(second.states.nvd, 'stale');
-  const page = kv.store.get(KV_PAGE);
-  assert.ok(page.includes('QUELLE NICHT ERREICHBAR, STAND: 11.11.2026 20:00 UTC'));
+  const brief = kv.store.get(KV_BRIEF);
+  assert.ok(brief.includes('QUELLE NICHT ERREICHBAR, STAND: 11.11.2026 21:00 Uhr'));
   assert.equal(JSON.parse(kv.store.get(KV_STATE)).sources.nvd.asOf, NOW);
   // The stale KEV copy is still merged with the fresh EUVD list, so nothing is shown twice
-  assert.equal(cards(page), 29);
+  assert.equal(cards(brief), 49);
 });
 
 test('runCron one hour later fetches everything except NVD and shows NVD as current', async () => {
@@ -214,7 +213,7 @@ test('runCron one hour later fetches everything except NVD and shows NVD as curr
   assert.equal(state.attempts.nvd, NOW);
   assert.equal(state.attempts.wid, later);
   assert.equal(state.sources.nvd.asOf, NOW);
-  assert.equal(cards(kv.store.get(KV_PAGE)), 29);
+  assert.equal(cards(kv.store.get(KV_BRIEF)), 49);
 });
 
 test('runCron does not retry a failed NVD request before two hours', async () => {
@@ -269,7 +268,7 @@ test('scheduled handler uses the planned time, not the clock', async () => {
     globalThis.fetch = realFetch;
     console.log = realLog;
   }
-  assert.deepEqual(kv.meta.get(KV_PAGE), { generatedAt: NOW });
+  assert.deepEqual(kv.meta.get(KV_BRIEF), { generatedAt: NOW });
 });
 
 /* ---------- handleRequest ---------- */
@@ -281,31 +280,28 @@ function assertSecurityHeaders(res) {
 
 const req = (path, method = 'GET') => new Request(`https://cyberuser.de${path}`, { method });
 
-test('GET /news and /news/ serve the stored page', async () => {
-  const kv = new MemoryKV();
-  kv.store.set(KV_PAGE, '<!doctype html><p>ok</p>');
+test('GET /news and /news/ redirect to the homepage without reading KV', async () => {
   for (const path of ['/news', '/news/', '/news?x=1']) {
-    const res = await handleRequest(req(path), { LAGE: kv }, quiet);
-    assert.equal(res.status, 200, path);
-    assert.equal(res.headers.get('content-type'), 'text/html; charset=utf-8');
+    const res = await handleRequest(req(path), { LAGE: new MemoryKV({ failGet: true }) }, quiet);
+    assert.equal(res.status, 301, path);
+    assert.equal(res.headers.get('location'), '/', path);
+    assert.equal(res.headers.get('content-type'), 'text/plain; charset=utf-8');
     assert.equal(res.headers.get('cache-control'), PAGE_CACHE_CONTROL);
     assertSecurityHeaders(res);
-    assert.equal(await res.text(), '<!doctype html><p>ok</p>');
+    assert.match(await res.text(), /Startseite/);
   }
 });
 
-test('HEAD returns headers without a body', async () => {
-  const kv = new MemoryKV();
-  kv.store.set(KV_PAGE, '<p>ok</p>');
-  const res = await handleRequest(req('/news', 'HEAD'), { LAGE: kv }, quiet);
-  assert.equal(res.status, 200);
+test('HEAD /news redirects without a body', async () => {
+  const res = await handleRequest(req('/news', 'HEAD'), { LAGE: new MemoryKV() }, quiet);
+  assert.equal(res.status, 301);
+  assert.equal(res.headers.get('location'), '/');
   assertSecurityHeaders(res);
   assert.equal(await res.text(), '');
 });
 
 test('everything else under the route is 404, other methods are 405', async () => {
   const kv = new MemoryKV();
-  kv.store.set(KV_PAGE, '<p>ok</p>');
   for (const path of ['/news/terminal.js', '/newsletter', '/news/x', '/news//']) {
     const res = await handleRequest(req(path), { LAGE: kv }, quiet);
     assert.equal(res.status, 404, path);
@@ -319,16 +315,6 @@ test('everything else under the route is 404, other methods are 405', async () =
   }
 });
 
-test('no page yet or KV down gives 503 with Retry-After', async () => {
-  for (const kv of [new MemoryKV(), new MemoryKV({ failGet: true })]) {
-    const res = await handleRequest(req('/news'), { LAGE: kv }, quiet);
-    assert.equal(res.status, 503);
-    assert.equal(res.headers.get('retry-after'), '600');
-    assert.equal(res.headers.get('cache-control'), 'no-store, no-transform');
-    assertSecurityHeaders(res);
-  }
-});
-
 test('entry module has a default export only, as workerd requires', async () => {
   const entry = await import('../src/index.js');
   assert.deepEqual(Object.keys(entry), ['default']);
@@ -337,7 +323,7 @@ test('entry module has a default export only, as workerd requires', async () => 
 /* ---------- Homepage ---------- */
 
 const BRIEF = '<aside class="lage">Sicherheitslage</aside>';
-const HOME = `<!doctype html><html><body><main>${BRIEF_START}\n<p><a href="/news">Lagezentrum</a></p>\n${BRIEF_END}</main></body></html>`;
+const HOME = `<!doctype html><html><body><main>${BRIEF_START}\n<p>Die Sicherheitslage wird geladen.</p>\n${BRIEF_END}</main></body></html>`;
 const HOME_WITH_BRIEF = `<!doctype html><html><body><main>${BRIEF_START}\n${BRIEF}${BRIEF_END}</main></body></html>`;
 
 // Same headers as the real nginx answer for /
@@ -447,11 +433,9 @@ test('homepage: unreachable origin gives 502 without caching', async () => {
 });
 
 test('/news never calls the origin', async () => {
-  const kv = new MemoryKV();
-  kv.store.set(KV_PAGE, '<p>ok</p>');
   const o = origin();
-  const res = await handleRequest(req('/news'), { LAGE: kv }, { ...quiet, fetchImpl: o.fetchImpl });
-  assert.equal(res.status, 200);
+  const res = await handleRequest(req('/news'), { LAGE: new MemoryKV() }, { ...quiet, fetchImpl: o.fetchImpl });
+  assert.equal(res.status, 301);
   assert.deepEqual(o.calls, []);
 });
 
