@@ -41,7 +41,7 @@ import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 /* ---------- Configuration ---------- */
 
 // Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261111b';
+export const STYLE_HREF = '/style.css?v=20261111c';
 export const MAX_ITEMS_PER_SECTION = 50;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
@@ -165,7 +165,9 @@ const NEW_MARK = html`<span class="print" title="Seit weniger als 24 Stunden auf
 const field = (label, value) => html`<div class="field"><dt>${label}</dt><dd>${value}</dd></div>`;
 const link = (href, text) => (href ? html`<a href="${href}" rel="noreferrer">${text}</a>` : '');
 
-function card({ head, time, threat, target, status, action, links, description, lang, fresh }) {
+function card({ head, time, threat, target, status, action, links, description, lang, fresh, href }) {
+  // The threat text links to the primary source; CSS stretches this link over the whole card
+  const threatCell = href ? html`<a class="slip-link" href="${href}" rel="noreferrer">${threat}</a>` : threat;
   let desc = '';
   if (description !== '') {
     desc = lang
@@ -174,7 +176,7 @@ function card({ head, time, threat, target, status, action, links, description, 
   }
   return html`<li><article class="slip">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
-<dl class="fields">${field('THREAT', threat)}${field('TARGET', target)}${field('STATUS', status)}${field('ACTION', action)}${field('LINK', joinParts(links, ' · '))}</dl>
+<dl class="fields">${field('THREAT', threatCell)}${field('TARGET', target)}${field('STATUS', status)}${field('ACTION', action)}${field('LINK', joinParts(links, ' · '))}</dl>
 ${desc}${fresh ? NEW_MARK : ''}
 </article></li>`;
 }
@@ -240,6 +242,7 @@ function kevCard(item, fresh = false) {
         ', ',
       ),
       action: ACTIONS.kev,
+      href: nvdUrl(id),
       links: [link(nvdUrl(id), 'NVD'), link(euvdUrl(euvd), 'EUVD')],
       description: cleanText(item.description, LIMITS.description),
       lang: 'en',
@@ -263,6 +266,7 @@ function euvdCard(item, kevIds, fresh = false) {
     target: joinParts([cves.length > 0 ? shown + more : id, cvssText(item.baseScore, null)], ', '),
     status: joinParts(['Laut ENISA ausgenutzt', epssText(boundedNumber(item.epss, 0, 100))], ', '),
     action: ACTIONS.euvd,
+    href: euvdUrl(id),
     links: [link(euvdUrl(id), 'EUVD'), cves.length > 0 ? link(nvdUrl(cves[0]), 'NVD') : ''],
     description: cleanText(item.description, LIMITS.description),
     lang: 'en',
@@ -289,6 +293,7 @@ function widCard(item, fresh = false) {
       ', ',
     ),
     action,
+    href: widUrl(id),
     links: [link(widUrl(id), 'WID')],
     description: cleanText(item.description, LIMITS.description),
     lang: null,
@@ -307,6 +312,7 @@ function buergercertCard(item, fresh = false) {
     target: 'Privatanwender',
     status: 'Aktuelle Warnung',
     action: ACTIONS.buergercert,
+    href: buergercertUrl(id),
     links: [link(buergercertUrl(id), 'Bürger-CERT')],
     description: cleanText(item.description, LIMITS.description),
     lang: null,
@@ -441,7 +447,7 @@ export function renderPage({ nowMs, sources, seen } = {}) {
 <link rel="canonical" href="https://cyberuser.de/news">
 <link rel="stylesheet" href="${STYLE_HREF}">
 </head>
-<body>
+<body class="page-news">
 ${marked ? FINGERPRINT_DEFS : ''}
 <header class="site">
   <a class="brand" href="/">cyberuser.de</a>

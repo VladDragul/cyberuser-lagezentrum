@@ -229,7 +229,7 @@ test('KEV card: CVSS, CISA due date, EPSS, NVD and EUVD links, English descripti
   assert.ok(out.includes('<span class="slip-time"><time datetime="2026-11-10">10.11.2026</time></span>'));
 
   const bare = renderPage(input({ nvd: ok([kev({ cvss: null, euvd: null, kevDue: null, title: '' })]) }));
-  assert.ok(bare.includes('<dt>THREAT</dt><dd>CVE-2026-1234</dd>'));
+  assert.ok(/<dt>THREAT<\/dt><dd><a class="slip-link" href="[^"]+" rel="noreferrer">CVE-2026-1234<\/a><\/dd>/.test(bare));
   assert.ok(bare.includes('<dt>TARGET</dt><dd>CVE-2026-1234</dd>'));
   assert.ok(bare.includes('<dt>STATUS</dt><dd>Aktiv ausgenutzt</dd>'));
   assert.ok(!bare.includes('euvd.enisa.europa.eu'));
