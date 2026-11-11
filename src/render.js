@@ -483,7 +483,7 @@ ${sections}</main>
 /* ---------- Homepage brief ---------- */
 
 // Newest entries per source in the homepage brief
-export const BRIEF_COUNTS = Object.freeze({ nvd: 6, wid: 4 });
+export const BRIEF_COUNTS = Object.freeze({ nvd: 5, wid: 5 });
 
 // Anchor of a card on /news: section key plus the validated item id
 export const newsAnchor = (key, id) => `${key}-${id}`;
@@ -583,7 +583,7 @@ ${marked ? FINGERPRINT_DEFS : ''}<div class="lage-col lage-col-kev">
 ${groups[0]}</div>
 <div class="lage-col lage-col-wid">
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${groups[1]}<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>
+${groups[1]}${kev.length + bsi.length === 0 ? html`<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>` : ''}
 <p class="lage-sources">Quellen: CISA, NIST (NVD), CERT-Bund (BSI)</p>
 </div>
 </aside>

@@ -45,24 +45,24 @@ const wid = (n, over = {}) => ({
 const many = (fn, n) => Array.from({ length: n }, (_, i) => fn(i));
 
 test('brief shows exactly the configured number of entries per source', () => {
-  assert.deepEqual({ ...BRIEF_COUNTS }, { nvd: 6, wid: 4 });
+  assert.deepEqual({ ...BRIEF_COUNTS }, { nvd: 5, wid: 5 });
   const out = renderBrief(input({ nvd: ok(many(kev, 10)), wid: ok(many(wid, 10)) }));
-  assert.equal(count(out, /CISA KEV/g), 6);
-  assert.equal(count(out, /CERT-Bund WID/g), 4);
+  assert.equal(count(out, /CISA KEV/g), 5);
+  assert.equal(count(out, /CERT-Bund WID/g), 5);
   assert.equal(rows(out), 10);
 });
 
 test('brief sorts newest first, whatever the feed order', () => {
   const shuffled = [kev(3), kev(0), kev(5), kev(1), kev(4), kev(2), kev(6)];
   const out = renderBrief(input({ nvd: ok(shuffled) }));
-  assert.deepEqual(ids(out, /CVE-2026-\d{4}/g), ['CVE-2026-1000', 'CVE-2026-1001', 'CVE-2026-1002', 'CVE-2026-1003', 'CVE-2026-1004', 'CVE-2026-1005']);
+  assert.deepEqual(ids(out, /CVE-2026-\d{4}/g), ['CVE-2026-1000', 'CVE-2026-1001', 'CVE-2026-1002', 'CVE-2026-1003', 'CVE-2026-1004']);
 });
 
 test('invalid items are skipped and do not take a place', () => {
   const nvd = [kev(0, { id: 'CVE-26-1' }), kev(1, { kevAdded: 'yesterday' }), null, 'x', ...many((i) => kev(i + 2), 6)];
   const widItems = [wid(0, { severity: 'mittel' }), wid(1, { status: 'NEW' }), wid(2, { id: 'WID-1' }), ...many((i) => wid(i + 3), 4)];
   const out = renderBrief(input({ nvd: ok(nvd), wid: ok(widItems) }));
-  assert.equal(count(out, /CISA KEV/g), 6);
+  assert.equal(count(out, /CISA KEV/g), 5);
   assert.equal(count(out, /CERT-Bund WID/g), 4);
   assert.ok(!out.includes('CVE-26-1') && !out.includes('mittel'));
 });
@@ -105,11 +105,12 @@ test('NEU mark brings its fingerprint definition once; none without NEU', () => 
   assert.ok(!plain.includes('<span class="print"') && !plain.includes('<symbol id="fp"'));
 });
 
-test('links are internal or official only, with the link to /news', () => {
-  const out = renderBrief(input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) }));
+test('links are internal only; the general /news link shows only when there are no cards', () => {
+  const out = renderBrief(input({ nvd: ok(many(kev, 5)), wid: ok(many(wid, 5)) }));
   const all = hrefs(out);
-  assert.ok(all.includes('/news'));
+  assert.ok(all.length === 10 && !all.includes('/news'));
   for (const h of all) assert.match(h, ALLOWED_HREF);
+  assert.ok(hrefs(renderBrief(input())).includes('/news'));
 });
 
 test('no input at all still renders the complete fragment', () => {
@@ -120,7 +121,7 @@ test('no input at all still renders the complete fragment', () => {
 });
 
 test('output is a deterministic fragment, never a page or a script', () => {
-  const data = input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) });
+  const data = input({ nvd: ok(many(kev, 5)), wid: ok(many(wid, 5)) });
   const out = renderBrief(data);
   assert.equal(out, renderBrief(data));
   assert.ok(out.trimStart().startsWith('<aside'));
@@ -128,7 +129,7 @@ test('output is a deterministic fragment, never a page or a script', () => {
 });
 
 test('every card links to its own card on /news, with no external link', () => {
-  const out = renderBrief(input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) }));
+  const out = renderBrief(input({ nvd: ok(many(kev, 5)), wid: ok(many(wid, 5)) }));
   const all = hrefs(out);
   assert.equal(count(out, /<a class="slip-link" href="\/news#/g), 10);
   assert.ok(all.includes('/news#nvd-CVE-2026-1000'));
@@ -137,7 +138,7 @@ test('every card links to its own card on /news, with no external link', () => {
 });
 
 test('two columns: KEV under the heading on one side, CERT-Bund on the other', () => {
-  const out = renderBrief(input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) }));
+  const out = renderBrief(input({ nvd: ok(many(kev, 5)), wid: ok(many(wid, 5)) }));
   assert.equal(count(out, /<div class="lage-col /g), 2);
   const [left, right] = out.split('<div class="lage-col lage-col-wid">');
   assert.ok(left.includes('id="lage-title"') && left.includes('CVE-2026-1000') && !left.includes('WID-SEC'));
@@ -145,7 +146,7 @@ test('two columns: KEV under the heading on one side, CERT-Bund on the other', (
 });
 
 test('every homepage link target exists as a card anchor on /news', () => {
-  const data = input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) });
+  const data = input({ nvd: ok(many(kev, 5)), wid: ok(many(wid, 5)) });
   const page = renderPage(data);
   const targets = hrefs(renderBrief(data)).filter((h) => h.startsWith('/news#'));
   assert.equal(targets.length, 10);
