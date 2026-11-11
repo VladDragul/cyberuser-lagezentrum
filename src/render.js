@@ -41,7 +41,7 @@ import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 /* ---------- Configuration ---------- */
 
 // Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261111a';
+export const STYLE_HREF = '/style.css?v=20261111b';
 export const MAX_ITEMS_PER_SECTION = 50;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
