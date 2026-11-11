@@ -1,0 +1,61 @@
+name: Deploy
+
+# Runs on every push to main and on manual start from the Actions tab
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The workflow token can only read the repository
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node from engines.node in package.json
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - name: Install exact dependencies from the lockfile
+        run: npm ci
+      - name: Run tests
+        run: npm test
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # Waits for manual approval; the token is released only after approval
+    environment:
+      name: production
+      url: https://cyberuser.de/news
+    # Never run two deployments at once; a newer one waits for the older one
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node from engines.node in package.json
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - name: Install exact dependencies from the lockfile
+        run: npm ci
+      - name: Deploy with the wrangler version pinned in the lockfile
+        run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
