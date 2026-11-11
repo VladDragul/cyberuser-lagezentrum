@@ -14,6 +14,11 @@ import {
   handleRequest,
   KV_STATE,
   KV_PAGE,
+  KV_BRIEF,
+  BRIEF_START,
+  BRIEF_END,
+  BRIEF_MAX_AGE_MS,
+  insertBrief,
   STALE_MAX_MS,
   SECURITY_HEADERS,
   PAGE_CACHE_CONTROL,
@@ -38,6 +43,10 @@ class MemoryKV {
     if (!this.store.has(key)) return null;
     const v = this.store.get(key);
     return type === 'json' ? JSON.parse(v) : v;
+  }
+  async getWithMetadata(key, type) {
+    const value = await this.get(key, type);
+    return { value, metadata: value === null ? null : (this.meta.get(key) ?? null) };
   }
   async put(key, value, options) {
     if (this.failPut) throw new Error('kv down');
@@ -323,4 +332,132 @@ test('no page yet or KV down gives 503 with Retry-After', async () => {
 test('entry module has a default export only, as workerd requires', async () => {
   const entry = await import('../src/index.js');
   assert.deepEqual(Object.keys(entry), ['default']);
+});
+
+/* ---------- Homepage ---------- */
+
+const BRIEF = '<aside class="lage">Sicherheitslage</aside>';
+const HOME = `<!doctype html><html><body><main>${BRIEF_START}\n<p><a href="/news">Lagezentrum</a></p>\n${BRIEF_END}</main></body></html>`;
+const HOME_WITH_BRIEF = `<!doctype html><html><body><main>${BRIEF_START}\n${BRIEF}${BRIEF_END}</main></body></html>`;
+
+// Same headers as the real nginx answer for /
+const NGINX_HEADERS = {
+  'content-type': 'text/html; charset=utf-8',
+  'content-security-policy': SECURITY_HEADERS['content-security-policy'],
+  'cache-control': 'public, max-age=300, no-transform',
+  etag: '"6af4775c-edb"',
+  'last-modified': 'Wed, 11 Nov 2026 14:10:36 GMT',
+};
+
+// Stand-in for nginx behind the tunnel; records the methods it was asked for
+function origin(body = HOME, { status = 200, headers = NGINX_HEADERS } = {}) {
+  const calls = [];
+  const fetchImpl = async (request) => {
+    calls.push(request.method);
+    return new Response(request.method === 'HEAD' ? null : body, { status, headers });
+  };
+  return { fetchImpl, calls };
+}
+
+function briefKV(value = BRIEF, generatedAt = NOW) {
+  const kv = new MemoryKV();
+  kv.store.set(KV_BRIEF, value);
+  // null = no metadata at all (undefined would select the default above)
+  if (generatedAt !== null) kv.meta.set(KV_BRIEF, { generatedAt });
+  return kv;
+}
+
+const home = (kv, o, method = 'GET') =>
+  handleRequest(req('/', method), { LAGE: kv }, { ...quiet, fetchImpl: o.fetchImpl, nowMs: NOW });
+
+test('insertBrief needs exactly one start marker followed by one end marker', () => {
+  assert.equal(insertBrief(HOME, BRIEF), HOME_WITH_BRIEF);
+  assert.equal(insertBrief('<p>no markers</p>', BRIEF), null);
+  assert.equal(insertBrief(`${BRIEF_START}<p>`, BRIEF), null);
+  assert.equal(insertBrief(`<p>${BRIEF_END}`, BRIEF), null);
+  assert.equal(insertBrief(`${BRIEF_END}x${BRIEF_START}`, BRIEF), null);
+  assert.equal(insertBrief(`${BRIEF_START}${BRIEF_START}${BRIEF_END}`, BRIEF), null);
+  assert.equal(insertBrief(`${BRIEF_START}${BRIEF_END}${BRIEF_END}`, BRIEF), null);
+  // No replacement patterns: the brief is copied as it is
+  assert.ok(insertBrief(HOME, '$& $1 $$').includes('$& $1 $$'));
+});
+
+test('GET / puts the brief into the homepage and keeps the nginx headers', async () => {
+  const o = origin();
+  const res = await home(briefKV(), o);
+  assert.equal(res.status, 200);
+  assert.equal(await res.text(), HOME_WITH_BRIEF);
+  assert.equal(res.headers.get('content-security-policy'), NGINX_HEADERS['content-security-policy']);
+  assert.equal(res.headers.get('cache-control'), NGINX_HEADERS['cache-control']);
+  assert.equal(res.headers.get('etag'), null);
+  assert.equal(res.headers.get('last-modified'), null);
+  assert.equal(res.headers.get('content-length'), null);
+  assert.deepEqual(o.calls, ['GET']);
+});
+
+test('homepage fails open: unchanged page whenever the brief cannot be used', async () => {
+  const noMarkers = '<!doctype html><p>no markers</p>';
+  const cases = [
+    ['no brief', new MemoryKV(), HOME],
+    ['KV down', new MemoryKV({ failGet: true }), HOME],
+    ['brief too old', briefKV(BRIEF, NOW - BRIEF_MAX_AGE_MS - 1), HOME],
+    ['brief from the future', briefKV(BRIEF, NOW + 2 * HOUR), HOME],
+    ['no metadata', briefKV(BRIEF, null), HOME],
+    ['page without markers', briefKV(), noMarkers],
+  ];
+  for (const [name, kv, body] of cases) {
+    const res = await home(kv, origin(body));
+    assert.equal(res.status, 200, name);
+    assert.equal(await res.text(), body, name);
+    assert.equal(res.headers.get('etag'), NGINX_HEADERS.etag, name);
+  }
+});
+
+test('homepage: non-200 or non-HTML origin answers pass through unchanged', async () => {
+  const notFound = await home(briefKV(), origin('<p>404</p>', { status: 404 }));
+  assert.equal(notFound.status, 404);
+  assert.equal(await notFound.text(), '<p>404</p>');
+
+  const text = await home(briefKV(), origin(HOME, { headers: { 'content-type': 'text/plain' } }));
+  assert.equal(await text.text(), HOME);
+});
+
+test('homepage: HEAD and other methods go to nginx and come back unchanged', async () => {
+  const head = origin();
+  const h = await home(briefKV(), head, 'HEAD');
+  assert.equal(h.status, 200);
+  assert.equal(await h.text(), '');
+  assert.deepEqual(head.calls, ['HEAD']);
+
+  for (const method of ['POST', 'PUT', 'DELETE', 'OPTIONS']) {
+    const o = origin('<p>405</p>', { status: 405, headers: { ...NGINX_HEADERS, allow: 'GET, HEAD' } });
+    const res = await home(briefKV(), o, method);
+    assert.equal(res.status, 405, method);
+    assert.equal(await res.text(), '<p>405</p>', method);
+    assert.deepEqual(o.calls, [method]);
+  }
+});
+
+test('homepage: unreachable origin gives 502 without caching', async () => {
+  const down = { fetchImpl: async () => { throw new Error('tunnel down'); } };
+  const res = await home(briefKV(), down);
+  assert.equal(res.status, 502);
+  assert.equal(res.headers.get('cache-control'), 'no-store, no-transform');
+  assertSecurityHeaders(res);
+});
+
+test('/news never calls the origin', async () => {
+  const kv = new MemoryKV();
+  kv.store.set(KV_PAGE, '<p>ok</p>');
+  const o = origin();
+  const res = await handleRequest(req('/news'), { LAGE: kv }, { ...quiet, fetchImpl: o.fetchImpl });
+  assert.equal(res.status, 200);
+  assert.deepEqual(o.calls, []);
+});
+
+test('runCron also stores the homepage brief with its time', async () => {
+  const kv = new MemoryKV();
+  await runCron(NOW, { LAGE: kv }, { fetchImpl: fixtureFetch(), ...quiet });
+  assert.ok(kv.store.get(KV_BRIEF).startsWith('<aside class="lage"'));
+  assert.deepEqual(kv.meta.get(KV_BRIEF), { generatedAt: NOW });
 });

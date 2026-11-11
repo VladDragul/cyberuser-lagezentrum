@@ -3,18 +3,21 @@
 // scheduled: fetch the sources that are due (NVD every two hours, the rest
 //            every hour), keep the last good copy of each in KV,
 //            render the page once and store the finished HTML in KV.
-// fetch:     serve that HTML for /news and /news/; 404 for anything else.
+// fetch:     serve that HTML for /news and /news/; for / pass the request to
+//            the origin and put the stored brief into the homepage;
+//            404 for anything else.
 //
 // All heavy work happens in the cron run. A visitor request costs one KV read
 // and no parsing or rendering.
 
 import { collectAll, mergeEuvdIntoNvd } from './sources.js';
-import { renderPage, SOURCE_KEYS, itemKey } from './render.js';
+import { renderPage, renderBrief, SOURCE_KEYS, itemKey } from './render.js';
 
 /* ---------- Configuration ---------- */
 
 export const KV_STATE = 'state';
 export const KV_PAGE = 'page';
+export const KV_BRIEF = 'brief';
 const STATE_VERSION = 3;
 
 // Minimum time between two fetch attempts per source, failed attempts
@@ -217,12 +220,16 @@ export async function runCron(nowMs, env, options = {}) {
   const attempts = nextAttempts(results, previous.attempts, nowMs);
   // First-seen times use the unmerged lists, so EUVD keys stay stable
   const seen = updateSeen(view, previous.seen, nowMs);
-  const page = renderPage({ nowMs, sources: mergeView(view, log), seen });
+  const merged = mergeView(view, log);
+  const page = renderPage({ nowMs, sources: merged, seen });
+  // Short homepage fragment from the same data, so both always agree
+  const brief = renderBrief({ nowMs, sources: merged, seen });
 
   // State first: if the page write fails, the next run still has the newest copies.
   // A failed write rejects, so the invocation is reported as failed in Metrics.
   await env.LAGE.put(KV_STATE, JSON.stringify({ v: STATE_VERSION, sources: next, attempts, seen }));
   await env.LAGE.put(KV_PAGE, page, { metadata: { generatedAt: nowMs } });
+  await env.LAGE.put(KV_BRIEF, brief, { metadata: { generatedAt: nowMs } });
 
   const states = {};
   for (const key of SOURCE_KEYS) states[key] = view[key].state;
@@ -246,10 +253,73 @@ function plain(method, status, text, extra = {}) {
   });
 }
 
+/* ---------- Homepage ---------- */
+
+// The brief is shown for at most this long after the cron run that wrote it;
+// older means the cron has stopped, and the homepage falls back to its own link
+export const BRIEF_MAX_AGE_MS = 24 * 3_600_000;
+export const BRIEF_START = '<!-- lage:start -->';
+export const BRIEF_END = '<!-- lage:end -->';
+
+// These describe the origin body and are wrong once the brief is inserted
+const BODY_HEADERS = ['etag', 'last-modified', 'content-length'];
+
+// Put the brief between the markers. null unless the page has exactly one
+// start marker followed by exactly one end marker. Built by slicing, so
+// nothing in the brief is interpreted as a replacement pattern.
+export function insertBrief(pageHtml, brief) {
+  const start = pageHtml.indexOf(BRIEF_START);
+  const end = pageHtml.indexOf(BRIEF_END);
+  if (start === -1 || end === -1 || end < start + BRIEF_START.length) return null;
+  if (pageHtml.includes(BRIEF_START, start + 1) || pageHtml.includes(BRIEF_END, end + 1)) return null;
+  return pageHtml.slice(0, start + BRIEF_START.length) + '\n' + brief + pageHtml.slice(end);
+}
+
+async function readBrief(kv, nowMs, log) {
+  try {
+    const { value, metadata } = await kv.getWithMetadata(KV_BRIEF);
+    const at = metadata?.generatedAt;
+    if (typeof value !== 'string' || typeof at !== 'number' || !Number.isFinite(at)) return null;
+    if (at > nowMs + INTERVAL_TOLERANCE_MS || nowMs - at > BRIEF_MAX_AGE_MS) return null;
+    return value;
+  } catch {
+    log(JSON.stringify({ source: 'fetch', error: 'kv_get_brief' }));
+    return null;
+  }
+}
+
+// The homepage comes from the origin (nginx on lab01, through the tunnel).
+// Only a GET answered with 200 HTML gets the brief; everything else, and every
+// failure on the way, passes the origin response through unchanged (fail-open).
+async function handleHome(request, env, options, log) {
+  const fetchImpl = options.fetchImpl ?? ((r) => fetch(r));
+  let origin;
+  try {
+    origin = await fetchImpl(request);
+  } catch {
+    log(JSON.stringify({ source: 'fetch', error: 'origin' }));
+    return plain(request.method, 502, 'Die Seite ist gerade nicht erreichbar. Bitte später erneut versuchen.\n');
+  }
+  if (request.method !== 'GET') return origin;
+  const type = origin.headers.get('content-type') ?? '';
+  if (origin.status !== 200 || !/^text\/html\b/i.test(type)) return origin;
+
+  const body = await origin.text();
+  const brief = await readBrief(env.LAGE, options.nowMs ?? Date.now(), log);
+  const merged = brief === null ? null : insertBrief(body, brief);
+  const headers = new Headers(origin.headers);
+  if (merged === null) return new Response(body, { status: origin.status, headers });
+  for (const name of BODY_HEADERS) headers.delete(name);
+  return new Response(merged, { status: origin.status, headers });
+}
+
 // No visitor data (IP, headers, query) is ever logged here.
 export async function handleRequest(request, env, options = {}) {
   const log = options.log ?? ((line) => console.log(line));
   const method = request.method;
+  // Every method goes to the origin here, so nginx keeps answering and
+  // logging non-GET requests exactly as before
+  if (new URL(request.url).pathname === '/') return handleHome(request, env, options, log);
   if (method !== 'GET' && method !== 'HEAD') {
     return plain(method, 405, 'Methode nicht erlaubt.\n', { allow: 'GET, HEAD' });
   }

@@ -2,7 +2,7 @@
 
 Cloudflare Worker that serves `/news` ("Lagezentrum") on cyberuser.de: a German-language overview of current vulnerabilities and security advisories from official sources. No cookies, no scripts from third parties, no visitor data stored.
 
-The rest of cyberuser.de is a static site served from a home server (lab01) through Cloudflare Tunnel. This Worker only answers the `/news` route.
+The rest of cyberuser.de is a static site served from a home server (lab01) through Cloudflare Tunnel. This Worker answers the `/news` route and, for the exact homepage `/`, inserts a short brief into the page that nginx on lab01 serves.
 
 ## Sources
 
@@ -26,6 +26,7 @@ NVD asks automated clients to check for updates no more than once every two hour
 - **State in Workers KV** (binding `LAGE`):
   - `state` (version 3): `{ v, sources, attempts, seen }`. Sources are stored unmerged; EUVD entries are merged into the NVD KEV list only when the view is built. Older state versions are ignored.
   - `page`: see `KV_PAGE` in `src/worker.js`.
+  - `brief`: short HTML fragment for the homepage (newest 6 KEV and 4 CERT-Bund WID entries), written by the same cron run with `generatedAt` metadata. The Worker puts it between `<!-- lage:start -->` and `<!-- lage:end -->` in the static `index.html`, only if it is at most 24 hours old. Otherwise, or on any error, the homepage is served unchanged (fail-open). See `KV_BRIEF`, `BRIEF_MAX_AGE_MS` and `insertBrief` in `src/worker.js`.
 - **Stale data.** A failed source shows its last good copy for at most 7 days (`STALE_MAX_MS`), then "KEINE DATEN".
 - **NEU mark.** `seen` records, per source, when each item was first seen (max 500 entries per source). Items first seen in the last 24 hours (`NEW_WINDOW_MS`) get a "NEU" mark with a fingerprint. The very first map of a source is a baseline: nothing in it is ever marked NEU, so a fresh deployment does not flag everything.
 - **Rendering.** `src/render.js` builds the HTML with a tagged template (`html`) that escapes every value. Links are built only from validated IDs and URLs (`src/sanitize.js`).
@@ -34,7 +35,7 @@ NVD asks automated clients to check for updates no more than once every two hour
 
 - Response headers (same policy as the static site): CSP `default-src 'none'` with `'self'` only for scripts, styles, images and fonts, no inline styles; COEP, COOP, CORP, Permissions-Policy, `Referrer-Policy: no-referrer`, `nosniff`, `X-Frame-Options: DENY`. HSTS is added by Cloudflare at the edge.
 - `Cache-Control: public, max-age=300, no-transform`. `no-transform` also stops Cloudflare from injecting its JavaScript Detections snippet.
-- No `*.workers.dev` address and no preview URLs: the Worker is reachable only through the `cyberuser.de/news*` route. Every path it does not serve gets a 404.
+- No `*.workers.dev` address and no preview URLs: the Worker is reachable only through the `cyberuser.de/news*` route and the exact homepage route `cyberuser.de/` (no wildcard, so `/index.html` and URLs with a query string go straight to the origin). Every other path it sees gets a 404.
 - Automatic invocation logs are disabled, so no visitor metadata (IP, headers) is stored. Only explicit console logs from the cron run are kept.
 - All input from sources is treated as untrusted: text is decoded, trimmed to fixed limits and escaped; IDs and URLs must match strict patterns before they are used.
 
@@ -44,7 +45,7 @@ NVD asks automated clients to check for updates no more than once every two hour
 src/index.js        Entry point. Default export only (see below)
 src/worker.js       Request handling, cron run, KV state, seen map, headers
 src/sources.js      Fetching and parsing of all six sources
-src/render.js       HTML page, NEU mark, item keys
+src/render.js       HTML page, NEU mark, item keys, homepage brief
 src/sanitize.js     Validation and escaping helpers
 src/fingerprint.js  Generated data for the fingerprint (do not edit by hand)
 test/               node:test suites and fixtures
@@ -111,7 +112,7 @@ Deterministic for a given numpy and matplotlib version (seeds 3 and 11). Last ge
 Relevant limits this design stays within (check the current values in the official docs):
 
 - Workers: 5 Cron Triggers per account, 10 ms CPU per invocation (cron included), 50 subrequests per invocation, 100,000 requests per day. <https://developers.cloudflare.com/workers/platform/limits/>
-- KV: 100,000 reads and 1,000 writes per day. An hourly cron writes about 48 times a day. Every page view costs one Worker request and one KV read. <https://developers.cloudflare.com/kv/platform/limits/>
+- KV: 100,000 reads and 1,000 writes per day. An hourly cron writes about 72 times a day (state, page, brief). Every `/news` view costs one Worker request and one KV read; every homepage view costs one Worker request, one KV read and one request to the origin. <https://developers.cloudflare.com/kv/platform/limits/>
 
 If traffic grows, the next step is the Cache API inside the Worker.
 

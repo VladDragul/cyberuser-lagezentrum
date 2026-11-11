@@ -469,3 +469,104 @@ ${sections}</main>
 `;
   return '<!doctype html>\n' + page.value;
 }
+
+/* ---------- Homepage brief ---------- */
+
+// Newest entries per source in the homepage brief
+export const BRIEF_COUNTS = Object.freeze({ nvd: 6, wid: 4 });
+
+// Sort newest first without trusting the feed order; invalid dates go last,
+// ties keep their original order
+function newestFirst(items, dateOf) {
+  return items
+    .map((item, index) => {
+      const ms = dateOf(item);
+      return { item, index, t: validDate(ms) ? ms : -Infinity };
+    })
+    .sort((a, b) => b.t - a.t || a.index - b.index)
+    .map((e) => e.item);
+}
+
+// Take the newest `count` items that pass validation (toEntry returns null otherwise)
+function pickNewest(items, dateOf, toEntry, count) {
+  const out = [];
+  for (const item of newestFirst(items, dateOf)) {
+    if (out.length >= count) break;
+    const entry = toEntry(item);
+    if (entry !== null) out.push(entry);
+  }
+  return out;
+}
+
+function briefItem({ head, time, title, id, href, fresh }) {
+  return html`<li class="lage-item">
+<div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
+<p class="lage-title">${href ? link(href, title) : title}</p>
+<p class="lage-id">${id}</p>${fresh ? NEW_MARK : ''}
+</li>`;
+}
+
+// Same validation as kevCard, so an item shows here only if /news shows it too
+function kevBrief(item, fresh) {
+  const id = cveId(item?.id);
+  if (!id || !validDate(item.kevAdded)) return null;
+  return briefItem({
+    head: 'CISA KEV',
+    time: timeTag(item.kevAdded, false),
+    title: cleanText(item.title, LIMITS.vulnName) || id,
+    id: joinParts([id, cvssText(item.cvss?.score, item.cvss?.version)], ', '),
+    href: nvdUrl(id),
+    fresh,
+  });
+}
+
+// Same validation as widCard
+function widBrief(item, fresh) {
+  const id = widId(item?.id);
+  const severity = item?.severity;
+  if (!id || !WID_SEVERITIES.has(severity) || !WID_STATUSES.has(item?.status) || !validDate(item.date)) return null;
+  return briefItem({
+    head: 'CERT-Bund WID',
+    time: timeTag(item.date, true),
+    title: cleanText(item.title, LIMITS.title) || id,
+    id: joinParts([id, `Schweregrad ${severity}`, item.unpatched === true ? html`<strong>UNGEPATCHT</strong>` : ''], ', '),
+    href: widUrl(id),
+    fresh,
+  });
+}
+
+function briefGroup(title, src, entries) {
+  let body = '';
+  if (src.state !== 'missing') {
+    body = entries.length > 0 ? html`<ul class="lage-list">${entries}</ul>` : html`<p>Derzeit keine Einträge.</p>`;
+  }
+  return html`<h3>${title}</h3>
+${sourceNotice(src)}${body}
+`;
+}
+
+// Short HTML fragment for the homepage. Same input as renderPage; returns a
+// string without <html>/<body>, to be placed between the homepage markers.
+export function renderBrief({ nowMs, sources, seen } = {}) {
+  const nvd = normalizeSource(sources?.nvd);
+  const wid = normalizeSource(sources?.wid);
+
+  const kev = pickNewest(nvd.items, (i) => i?.kevAdded, (i) => kevBrief(i, isFresh(seen, 'nvd', i, nowMs)), BRIEF_COUNTS.nvd);
+  const bsi = pickNewest(wid.items, (i) => i?.date, (i) => widBrief(i, isFresh(seen, 'wid', i, nowMs)), BRIEF_COUNTS.wid);
+
+  const groups = [
+    briefGroup('Aktiv ausgenutzte Schwachstellen', nvd, kev),
+    briefGroup('Hinweise des CERT-Bund', wid, bsi),
+  ];
+
+  // Item text is escaped, so this marker can only come from NEW_MARK
+  const marked = fragment(groups).includes('<span class="print"');
+
+  return html`<aside class="lage" aria-labelledby="lage-title">
+${marked ? FINGERPRINT_DEFS : ''}<h2 id="lage-title">Sicherheitslage</h2>
+<p class="status">Stand: ${timeTag(nowMs, true)}</p>
+${groups}<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>
+<p class="lage-sources">Quellen: CISA, NIST (NVD), CERT-Bund (BSI)</p>
+</aside>
+`.value;
+}

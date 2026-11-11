@@ -9,7 +9,10 @@
   // Matches /news, /news/ and anything else starting with /news;
   // the Worker answers 404 for every path it does not explicitly serve
   "routes": [
-    { "pattern": "cyberuser.de/news*", "zone_name": "cyberuser.de" }
+    { "pattern": "cyberuser.de/news*", "zone_name": "cyberuser.de" },
+    // Exact homepage only: no wildcard, so /index.html and URLs with a
+    // query string go straight to the origin, without the brief
+    { "pattern": "cyberuser.de/", "zone_name": "cyberuser.de" }
   ],
   // Every hour at minute 17 (UTC). NVD is fetched every two hours, see
   // SOURCE_INTERVAL_MS in src/worker.js
