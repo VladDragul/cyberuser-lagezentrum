@@ -531,7 +531,7 @@ async function collectEuvd(nowMs, ctx) {
 }
 
 // Fetches all sources in parallel. A failed source yields { ok: false } and
-// never affects the others; index.js keeps the last good version for it.
+// never affects the others; worker.js keeps the last good version for it.
 export async function collectAll(nowMs, options = {}) {
   const ctx = {
     fetchImpl: options.fetchImpl ?? globalThis.fetch,

@@ -1,4 +1,4 @@
-// Tests for src/index.js: source state resolution, the cron run against an
+// Tests for src/worker.js and the entry point in src/index.js: source state resolution, the cron run against an
 // in-memory KV, and request handling. No test touches the network.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,7 +14,7 @@ import {
   STALE_MAX_MS,
   SECURITY_HEADERS,
   PAGE_CACHE_CONTROL,
-} from '../src/index.js';
+} from '../src/worker.js';
 import worker from '../src/index.js';
 
 const fixture = (name) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
@@ -207,4 +207,9 @@ test('no page yet or KV down gives 503 with Retry-After', async () => {
     assert.equal(res.headers.get('cache-control'), 'no-store, no-transform');
     assertSecurityHeaders(res);
   }
+});
+
+test('entry module has a default export only, as workerd requires', async () => {
+  const entry = await import('../src/index.js');
+  assert.deepEqual(Object.keys(entry), ['default']);
 });

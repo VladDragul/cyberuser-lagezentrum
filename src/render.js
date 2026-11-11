@@ -338,7 +338,7 @@ function sectionTexts(nowMs) {
 
 // input: { nowMs, sources: { nvd, euvd, wid, buergercert, bits, presse } }
 // each source: { state: 'ok' | 'stale' | 'missing', asOf: epoch ms, items: [...] }
-// Fallback decisions (which copy is shown) are made by index.js, not here.
+// Fallback decisions (which copy is shown) are made by worker.js, not here.
 export function renderPage({ nowMs, sources } = {}) {
   const src = {};
   for (const key of SOURCE_KEYS) src[key] = normalizeSource(sources?.[key]);
