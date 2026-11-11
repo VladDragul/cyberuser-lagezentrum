@@ -2,7 +2,7 @@
 // Counts, ordering, validation, source states, escaping, NEU mark, links.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBrief, BRIEF_COUNTS } from '../src/render.js';
+import { renderBrief, renderPage, BRIEF_COUNTS } from '../src/render.js';
 
 // Same reference time as render.test.js
 const NOW = Date.UTC(2026, 10, 11, 20, 0, 0);
@@ -18,7 +18,7 @@ const hrefs = (out) => [...out.matchAll(/href="([^"]*)"/g)].map((m) => m[1]);
 const ids = (out, re) => [...new Set(out.match(re) ?? [])];
 
 // Internal paths and the official hosts; nothing else
-const ALLOWED_HREF = /^(?:\/[A-Za-z0-9._?=\/-]*|https:\/\/(?:nvd\.nist\.gov|wid\.cert-bund\.de)\/[^\s"<>]*)$/;
+const ALLOWED_HREF = /^(?:\/[A-Za-z0-9._?=#\/-]*|https:\/\/(?:nvd\.nist\.gov|wid\.cert-bund\.de)\/[^\s"<>]*)$/;
 
 const kev = (n, over = {}) => ({
   source: 'nvd',
@@ -125,4 +125,29 @@ test('output is a deterministic fragment, never a page or a script', () => {
   assert.equal(out, renderBrief(data));
   assert.ok(out.trimStart().startsWith('<aside'));
   assert.ok(!/<html|<body|<head|<script/i.test(out));
+});
+
+test('every card links to its own card on /news, with no external link', () => {
+  const out = renderBrief(input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) }));
+  const all = hrefs(out);
+  assert.equal(count(out, /<a class="slip-link" href="\/news#/g), 10);
+  assert.ok(all.includes('/news#nvd-CVE-2026-1000'));
+  assert.ok(all.includes('/news#wid-WID-SEC-2026-1000'));
+  assert.ok(all.every((h) => h.startsWith('/')));
+});
+
+test('two columns: KEV under the heading on one side, CERT-Bund on the other', () => {
+  const out = renderBrief(input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) }));
+  assert.equal(count(out, /<div class="lage-col /g), 2);
+  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
+  assert.ok(left.includes('id="lage-title"') && left.includes('CVE-2026-1000') && !left.includes('WID-SEC'));
+  assert.ok(right.includes('WID-SEC-2026-1000') && !right.includes('CVE-2026'));
+});
+
+test('every homepage link target exists as a card anchor on /news', () => {
+  const data = input({ nvd: ok(many(kev, 6)), wid: ok(many(wid, 4)) });
+  const page = renderPage(data);
+  const targets = hrefs(renderBrief(data)).filter((h) => h.startsWith('/news#'));
+  assert.equal(targets.length, 10);
+  for (const h of targets) assert.ok(page.includes(`<li id="${h.slice('/news#'.length)}">`), h);
 });

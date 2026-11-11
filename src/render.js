@@ -41,7 +41,7 @@ import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 /* ---------- Configuration ---------- */
 
 // Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261111c';
+export const STYLE_HREF = '/style.css?v=20261111e';
 export const MAX_ITEMS_PER_SECTION = 50;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
@@ -165,7 +165,7 @@ const NEW_MARK = html`<span class="print" title="Seit weniger als 24 Stunden auf
 const field = (label, value) => html`<div class="field"><dt>${label}</dt><dd>${value}</dd></div>`;
 const link = (href, text) => (href ? html`<a href="${href}" rel="noreferrer">${text}</a>` : '');
 
-function card({ head, time, threat, target, status, action, links, description, lang, fresh, href }) {
+function card({ head, time, threat, target, status, action, links, description, lang, fresh, href, anchor }) {
   // The threat text links to the primary source; CSS stretches this link over the whole card
   const threatCell = href ? html`<a class="slip-link" href="${href}" rel="noreferrer">${threat}</a>` : threat;
   let desc = '';
@@ -174,7 +174,9 @@ function card({ head, time, threat, target, status, action, links, description, 
       ? html`<p class="noscript" lang="${lang}">${description}</p>`
       : html`<p class="noscript">${description}</p>`;
   }
-  return html`<li><article class="slip">
+  // The anchor lets the homepage link to this exact card
+  const open = anchor ? html`<li id="${anchor}">` : html`<li>`;
+  return html`${open}<article class="slip">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
 <dl class="fields">${field('THREAT', threatCell)}${field('TARGET', target)}${field('STATUS', status)}${field('ACTION', action)}${field('LINK', joinParts(links, ' · '))}</dl>
 ${desc}${fresh ? NEW_MARK : ''}
@@ -243,6 +245,7 @@ function kevCard(item, fresh = false) {
       ),
       action: ACTIONS.kev,
       href: nvdUrl(id),
+      anchor: newsAnchor('nvd', id),
       links: [link(nvdUrl(id), 'NVD'), link(euvdUrl(euvd), 'EUVD')],
       description: cleanText(item.description, LIMITS.description),
       lang: 'en',
@@ -294,6 +297,7 @@ function widCard(item, fresh = false) {
     ),
     action,
     href: widUrl(id),
+    anchor: newsAnchor('wid', id),
     links: [link(widUrl(id), 'WID')],
     description: cleanText(item.description, LIMITS.description),
     lang: null,
@@ -481,6 +485,9 @@ ${sections}</main>
 // Newest entries per source in the homepage brief
 export const BRIEF_COUNTS = Object.freeze({ nvd: 6, wid: 4 });
 
+// Anchor of a card on /news: section key plus the validated item id
+export const newsAnchor = (key, id) => `${key}-${id}`;
+
 // Sort newest first without trusting the feed order; invalid dates go last,
 // ties keep their original order
 function newestFirst(items, dateOf) {
@@ -507,7 +514,7 @@ function pickNewest(items, dateOf, toEntry, count) {
 function briefItem({ head, time, title, id, href, fresh }) {
   return html`<li class="lage-item">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
-<p class="lage-title">${href ? link(href, title) : title}</p>
+<p class="lage-title">${href ? html`<a class="slip-link" href="${href}">${title}</a>` : title}</p>
 <p class="lage-id">${id}</p>${fresh ? NEW_MARK : ''}
 </li>`;
 }
@@ -521,7 +528,8 @@ function kevBrief(item, fresh) {
     time: timeTag(item.kevAdded, false),
     title: cleanText(item.title, LIMITS.vulnName) || id,
     id: joinParts([id, cvssText(item.cvss?.score, item.cvss?.version)], ', '),
-    href: nvdUrl(id),
+    // Homepage cards open the matching card on /news, which links to the source
+    href: `/news#${newsAnchor('nvd', id)}`,
     fresh,
   });
 }
@@ -536,7 +544,7 @@ function widBrief(item, fresh) {
     time: timeTag(item.date, true),
     title: cleanText(item.title, LIMITS.title) || id,
     id: joinParts([id, `Schweregrad ${severity}`, item.unpatched === true ? html`<strong>UNGEPATCHT</strong>` : ''], ', '),
-    href: widUrl(id),
+    href: `/news#${newsAnchor('wid', id)}`,
     fresh,
   });
 }
@@ -569,10 +577,14 @@ export function renderBrief({ nowMs, sources, seen } = {}) {
   const marked = fragment(groups).includes('<span class="print"');
 
   return html`<aside class="lage" aria-labelledby="lage-title">
-${marked ? FINGERPRINT_DEFS : ''}<h2 id="lage-title">Sicherheitslage</h2>
+${marked ? FINGERPRINT_DEFS : ''}<div class="lage-col lage-col-kev">
+<h2 id="lage-title">Sicherheitslage</h2>
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${groups}<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>
+${groups[0]}</div>
+<div class="lage-col lage-col-wid">
+${groups[1]}<p class="lage-more"><a href="/news">Gesamte Lage ansehen</a></p>
 <p class="lage-sources">Quellen: CISA, NIST (NVD), CERT-Bund (BSI)</p>
+</div>
 </aside>
 `.value;
 }
