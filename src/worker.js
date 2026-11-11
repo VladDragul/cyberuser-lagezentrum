@@ -9,13 +9,13 @@
 // and no parsing or rendering.
 
 import { collectAll, mergeEuvdIntoNvd } from './sources.js';
-import { renderPage, SOURCE_KEYS } from './render.js';
+import { renderPage, SOURCE_KEYS, itemKey } from './render.js';
 
 /* ---------- Configuration ---------- */
 
 export const KV_STATE = 'state';
 export const KV_PAGE = 'page';
-const STATE_VERSION = 2;
+const STATE_VERSION = 3;
 
 // Minimum time between two fetch attempts per source, failed attempts
 // included. NVD asks automated clients to check for updates no more than once
@@ -135,16 +135,65 @@ export function mergeView(view, log) {
   }
 }
 
+/* ---------- First-seen times for the NEU mark ---------- */
+
+const MAX_SEEN_PER_SOURCE = 500;
+
+// Stored maps come from KV: keep only sane entries
+function cleanSeen(map, nowMs) {
+  const out = {};
+  if (!isPlainObject(map)) return out;
+  let n = 0;
+  for (const [k, t] of Object.entries(map)) {
+    if (n >= MAX_SEEN_PER_SOURCE) break;
+    if (k === '__proto__' || k.length > 300) continue;
+    if (typeof t !== 'number' || !Number.isFinite(t) || t < 0 || t > nowMs) continue;
+    out[k] = t;
+    n++;
+  }
+  return out;
+}
+
+// Pure. Records per source when each shown item was first seen. A map holds
+// only the items shown now, so it cleans itself.
+//   - a source without a map so far: everything gets 0 (never NEU), so a
+//     deploy or a state reset does not flag the whole page as new
+//   - known item keeps its time, unknown item gets nowMs
+//   - a missing source keeps its map, so returning items are not flagged
+export function updateSeen(view, previousSeen, nowMs) {
+  const next = {};
+  for (const key of SOURCE_KEYS) {
+    const hasPrev = isPlainObject(previousSeen?.[key]);
+    const prev = cleanSeen(previousSeen?.[key], nowMs);
+    const v = view?.[key];
+    if (!v || v.state === 'missing' || !Array.isArray(v.items)) {
+      if (hasPrev) next[key] = prev;
+      continue;
+    }
+    const map = {};
+    let n = 0;
+    for (const item of v.items) {
+      if (n >= MAX_SEEN_PER_SOURCE) break;
+      const k = itemKey(key, item);
+      if (k === null || Object.hasOwn(map, k)) continue;
+      map[k] = !hasPrev ? 0 : Object.hasOwn(prev, k) ? prev[k] : nowMs;
+      n++;
+    }
+    next[key] = map;
+  }
+  return next;
+}
+
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
 }
 
 async function readState(kv, log) {
-  const empty = { sources: {}, attempts: {} };
+  const empty = { sources: {}, attempts: {}, seen: {} };
   try {
     const raw = await kv.get(KV_STATE, 'json');
     if (isPlainObject(raw) && raw.v === STATE_VERSION && isPlainObject(raw.sources) && isPlainObject(raw.attempts)) {
-      return { sources: raw.sources, attempts: raw.attempts };
+      return { sources: raw.sources, attempts: raw.attempts, seen: isPlainObject(raw.seen) ? raw.seen : {} };
     }
     // Older versions and unexpected shapes are ignored: every source is due once
     if (raw !== null) log(JSON.stringify({ source: 'kv', op: 'get_state', error: 'unexpected_shape' }));
@@ -166,11 +215,13 @@ export async function runCron(nowMs, env, options = {}) {
   const results = await collectAll(nowMs, { fetchImpl: options.fetchImpl, log, only: due });
   const { view, next } = resolveSources(results, previous.sources, nowMs, previous.attempts);
   const attempts = nextAttempts(results, previous.attempts, nowMs);
-  const page = renderPage({ nowMs, sources: mergeView(view, log) });
+  // First-seen times use the unmerged lists, so EUVD keys stay stable
+  const seen = updateSeen(view, previous.seen, nowMs);
+  const page = renderPage({ nowMs, sources: mergeView(view, log), seen });
 
   // State first: if the page write fails, the next run still has the newest copies.
   // A failed write rejects, so the invocation is reported as failed in Metrics.
-  await env.LAGE.put(KV_STATE, JSON.stringify({ v: STATE_VERSION, sources: next, attempts }));
+  await env.LAGE.put(KV_STATE, JSON.stringify({ v: STATE_VERSION, sources: next, attempts, seen }));
   await env.LAGE.put(KV_PAGE, page, { metadata: { generatedAt: nowMs } });
 
   const states = {};

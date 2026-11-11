@@ -164,7 +164,7 @@ test('runCron on fixtures stores state and page, then falls back per source', as
   const first = await runCron(NOW, env, { fetchImpl: fixtureFetch(), ...quiet });
   for (const k of SOURCE_KEYS) assert.equal(first.states[k], 'ok', k);
   const state = JSON.parse(kv.store.get(KV_STATE));
-  assert.equal(state.v, 2);
+  assert.equal(state.v, 3);
   assert.deepEqual(state.attempts, Object.fromEntries(SOURCE_KEYS.map((k) => [k, NOW])));
   assert.deepEqual(Object.keys(state.sources).sort(), [...SOURCE_KEYS].sort());
   assert.equal(cards(kv.store.get(KV_PAGE)), 29);
@@ -240,7 +240,7 @@ test('runCron survives a corrupted stored state', async () => {
   const r = await runCron(NOW, { LAGE: kv }, { fetchImpl: fixtureFetch(), log: (l) => logs.push(JSON.parse(l)) });
   assert.equal(r.states.wid, 'ok');
   assert.ok(logs.some((l) => l.source === 'kv' && l.error === 'read_failed'));
-  assert.equal(JSON.parse(kv.store.get(KV_STATE)).v, 2);
+  assert.equal(JSON.parse(kv.store.get(KV_STATE)).v, 3);
 });
 
 test('runCron rejects when KV cannot be written', async () => {

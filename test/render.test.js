@@ -237,8 +237,8 @@ test('KEV card: CVSS, CISA due date, EPSS, NVD and EUVD links, English descripti
 
 test('WID card: UNGEPATCHT is marked and selects its own action', () => {
   const cases = [
-    [wid({ severity: 'kritisch' }), ACTIONS.widCritical, 'Neu, Schweregrad kritisch</dd>'],
-    [wid({ severity: 'hoch' }), ACTIONS.widHigh, 'Neu, Schweregrad hoch</dd>'],
+    [wid({ severity: 'kritisch' }), ACTIONS.widCritical, 'Erstmeldung, Schweregrad kritisch</dd>'],
+    [wid({ severity: 'hoch' }), ACTIONS.widHigh, 'Erstmeldung, Schweregrad hoch</dd>'],
     [
       wid({ severity: 'hoch', status: 'UPDATE', unpatched: true }),
       ACTIONS.widUnpatched,

@@ -3,13 +3,14 @@
 // Pure: no I/O, no clock, no globals. The same input always gives the same
 // output, which keeps the cron CPU budget predictable and the tests exact.
 //
-// The page reuses existing site components only; style.css is not changed:
+// The page reuses existing site components; style.css only gains the NEU mark:
 //   .hero/.lead/.status  page head and the "Stand" line
 //   .fp-section          one section per source (as on fingerabdruck.html)
 //   .signals + .slip     SITREP cards: frosted panel with shadow (home page slip)
 //   .fields/.field       THREAT/TARGET/STATUS/ACTION/LINK grid inside a card
 //   .rules               frosted panel holding the compact BSI news lists
 //   .noscript            small muted paragraph, reused for item descriptions
+//   .print               NEU mark (fingerprint) on cards first seen in the last 24 h
 //
 // Safety model:
 //   - Every interpolated value goes through the html tag and escapeHtml.
@@ -35,12 +36,15 @@ import {
   safeBsiUrl,
 } from './sanitize.js';
 import { windowStartMs } from './sources.js';
+import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 
 /* ---------- Configuration ---------- */
 
 // Must match the version string used by the static pages, so the browser cache is shared
-export const STYLE_HREF = '/style.css?v=20261109m';
+export const STYLE_HREF = '/style.css?v=20261111a';
 export const MAX_ITEMS_PER_SECTION = 50;
+// An item counts as new for this long after the cron first saw it
+export const NEW_WINDOW_MS = 86_400_000;
 export const SOURCE_KEYS = Object.freeze(['nvd', 'euvd', 'wid', 'buergercert', 'bits', 'presse']);
 
 const MAX_CVES_SHOWN = 5;
@@ -141,12 +145,27 @@ function joinParts(parts, sep) {
   return out;
 }
 
+/* ---------- NEU mark ---------- */
+
+// The ridge data lives in this repository, but it is still checked and escaped
+// here: markup reaches the page only through the html tag.
+const RIDGE_PATH = /^M[0-9. ]{1,4000}$/;
+const inRange = (n, min, max, fallback) => (typeof n === 'number' && n >= min && n <= max ? n : fallback);
+const ridges = FINGERPRINT_RIDGES.filter((r) => Array.isArray(r) && typeof r[0] === 'string' && RIDGE_PATH.test(r[0]));
+
+// Defined once per page, and only when at least one card carries the mark
+const FINGERPRINT_DEFS = html`<svg class="print-defs" width="0" height="0" aria-hidden="true" focusable="false"><symbol id="fp" viewBox="${FINGERPRINT_VIEWBOX}"><g fill="none" stroke="currentColor" stroke-linecap="round">${ridges.map(
+  (r) => html`<path d="${r[0]}" stroke-opacity="${inRange(r[1], 0, 1, 1)}" stroke-width="${inRange(r[2], 0.5, 2, 1)}"/>`,
+)}</g></symbol></svg>`;
+
+const NEW_MARK = html`<span class="print" title="Seit weniger als 24 Stunden auf dieser Seite"><svg class="print-fp" viewBox="${FINGERPRINT_VIEWBOX}" aria-hidden="true" focusable="false"><use href="#fp"/></svg><span class="print-label">NEU</span></span>`;
+
 /* ---------- Building blocks ---------- */
 
 const field = (label, value) => html`<div class="field"><dt>${label}</dt><dd>${value}</dd></div>`;
 const link = (href, text) => (href ? html`<a href="${href}" rel="noreferrer">${text}</a>` : '');
 
-function card({ head, time, threat, target, status, action, links, description, lang }) {
+function card({ head, time, threat, target, status, action, links, description, lang, fresh }) {
   let desc = '';
   if (description !== '') {
     desc = lang
@@ -156,13 +175,54 @@ function card({ head, time, threat, target, status, action, links, description, 
   return html`<li><article class="slip">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
 <dl class="fields">${field('THREAT', threat)}${field('TARGET', target)}${field('STATUS', status)}${field('ACTION', action)}${field('LINK', joinParts(links, ' · '))}</dl>
-${desc}
+${desc}${fresh ? NEW_MARK : ''}
 </article></li>`;
+}
+
+/* ---------- Item identity (shared with worker.js) ---------- */
+
+// The key under which worker.js remembers when an item was first seen. The
+// validators are the same as for the cards, so a key exists exactly when the
+// item can be shown.
+export function itemKey(sourceKey, item) {
+  let k = null;
+  switch (sourceKey) {
+    case 'nvd':
+      k = cveId(item?.id);
+      break;
+    case 'euvd':
+      k = euvdId(item?.id);
+      break;
+    case 'wid':
+      k = widId(item?.id);
+      break;
+    case 'buergercert':
+      k = uuid(item?.id);
+      break;
+    case 'bits':
+    case 'presse':
+      k = safeBsiUrl(item?.link);
+      break;
+    default:
+      k = null;
+  }
+  return typeof k === 'string' && k !== '' && k !== '__proto__' ? k : null;
+}
+
+// New = first seen by the cron less than NEW_WINDOW_MS ago. The value 0 marks
+// items that were already there when a source got its first map (never new).
+export function isFresh(seen, sourceKey, item, nowMs) {
+  const map = seen?.[sourceKey];
+  if (map === null || typeof map !== 'object' || Array.isArray(map)) return false;
+  const k = itemKey(sourceKey, item);
+  if (k === null || !Object.hasOwn(map, k)) return false;
+  const t = map[k];
+  return typeof t === 'number' && Number.isFinite(t) && t > 0 && t <= nowMs && nowMs - t < NEW_WINDOW_MS;
 }
 
 /* ---------- Per-source items (null = invalid, not rendered) ---------- */
 
-function kevCard(item) {
+function kevCard(item, fresh = false) {
   const id = cveId(item?.id);
   if (!id || !validDate(item.kevAdded)) return null;
   const due = validDate(item.kevDue) ? item.kevDue : null;
@@ -183,11 +243,12 @@ function kevCard(item) {
       links: [link(nvdUrl(id), 'NVD'), link(euvdUrl(euvd), 'EUVD')],
       description: cleanText(item.description, LIMITS.description),
       lang: 'en',
+      fresh,
     }),
   };
 }
 
-function euvdCard(item, kevIds) {
+function euvdCard(item, kevIds, fresh = false) {
   const id = euvdId(item?.id);
   if (!id || !validDate(item.exploitedSince)) return null;
   const cves = Array.isArray(item.cves) ? [...new Set(item.cves.slice(0, 50).filter((c) => cveId(c) !== null))] : [];
@@ -205,10 +266,11 @@ function euvdCard(item, kevIds) {
     links: [link(euvdUrl(id), 'EUVD'), cves.length > 0 ? link(nvdUrl(cves[0]), 'NVD') : ''],
     description: cleanText(item.description, LIMITS.description),
     lang: 'en',
+    fresh,
   });
 }
 
-function widCard(item) {
+function widCard(item, fresh = false) {
   const id = widId(item?.id);
   const severity = item?.severity;
   const status = item?.status;
@@ -223,17 +285,18 @@ function widCard(item) {
     threat: cleanText(item.title, LIMITS.title) || id,
     target: id,
     status: joinParts(
-      [status === 'NEU' ? 'Neu' : 'Aktualisiert', `Schweregrad ${severity}`, unpatched ? html`<strong>UNGEPATCHT</strong>` : ''],
+      [status === 'NEU' ? 'Erstmeldung' : 'Aktualisiert', `Schweregrad ${severity}`, unpatched ? html`<strong>UNGEPATCHT</strong>` : ''],
       ', ',
     ),
     action,
     links: [link(widUrl(id), 'WID')],
     description: cleanText(item.description, LIMITS.description),
     lang: null,
+    fresh,
   });
 }
 
-function buergercertCard(item) {
+function buergercertCard(item, fresh = false) {
   const id = uuid(item?.id);
   const title = cleanText(item?.title, LIMITS.title);
   if (!id || title === '' || !validDate(item.date)) return null;
@@ -247,14 +310,15 @@ function buergercertCard(item) {
     links: [link(buergercertUrl(id), 'Bürger-CERT')],
     description: cleanText(item.description, LIMITS.description),
     lang: null,
+    fresh,
   });
 }
 
-function newsItem(item) {
+function newsItem(item, fresh = false) {
   const title = cleanText(item?.title, LIMITS.title);
   if (title === '' || !validDate(item.date)) return null;
   const href = safeBsiUrl(item.link);
-  return html`<li>${timeTag(item.date, true)}: ${href ? link(href, title) : title}</li>`;
+  return html`<li>${fresh ? html`<strong>NEU</strong> ` : ''}${timeTag(item.date, true)}: ${href ? link(href, title) : title}</li>`;
 }
 
 /* ---------- Sections ---------- */
@@ -338,8 +402,9 @@ function sectionTexts(nowMs) {
 
 // input: { nowMs, sources: { nvd, euvd, wid, buergercert, bits, presse } }
 // each source: { state: 'ok' | 'stale' | 'missing', asOf: epoch ms, items: [...] }
+// seen (optional): { [source]: { [itemKey]: firstSeenMs } } from worker.js, for NEU
 // Fallback decisions (which copy is shown) are made by worker.js, not here.
-export function renderPage({ nowMs, sources } = {}) {
+export function renderPage({ nowMs, sources, seen } = {}) {
   const src = {};
   for (const key of SOURCE_KEYS) src[key] = normalizeSource(sources?.[key]);
   const t = sectionTexts(nowMs);
@@ -347,7 +412,7 @@ export function renderPage({ nowMs, sources } = {}) {
   const kevIds = new Set();
   const kevCards = [];
   for (const item of src.nvd.items) {
-    const c = kevCard(item);
+    const c = kevCard(item, isFresh(seen, 'nvd', item, nowMs));
     if (c === null) continue;
     kevIds.add(c.id);
     kevCards.push(c.html);
@@ -355,12 +420,15 @@ export function renderPage({ nowMs, sources } = {}) {
 
   const sections = [
     section('nvd', t.nvd, src.nvd, kevCards, cardList),
-    section('euvd', t.euvd, src.euvd, mapValid(src.euvd.items, (i) => euvdCard(i, kevIds)), cardList),
-    section('wid', t.wid, src.wid, mapValid(src.wid.items, widCard), cardList),
-    section('buergercert', t.buergercert, src.buergercert, mapValid(src.buergercert.items, buergercertCard), cardList),
-    section('bits', t.bits, src.bits, mapValid(src.bits.items, newsItem), newsList),
-    section('presse', t.presse, src.presse, mapValid(src.presse.items, newsItem), newsList),
+    section('euvd', t.euvd, src.euvd, mapValid(src.euvd.items, (i) => euvdCard(i, kevIds, isFresh(seen, 'euvd', i, nowMs))), cardList),
+    section('wid', t.wid, src.wid, mapValid(src.wid.items, (i) => widCard(i, isFresh(seen, 'wid', i, nowMs))), cardList),
+    section('buergercert', t.buergercert, src.buergercert, mapValid(src.buergercert.items, (i) => buergercertCard(i, isFresh(seen, 'buergercert', i, nowMs))), cardList),
+    section('bits', t.bits, src.bits, mapValid(src.bits.items, (i) => newsItem(i, isFresh(seen, 'bits', i, nowMs))), newsList),
+    section('presse', t.presse, src.presse, mapValid(src.presse.items, (i) => newsItem(i, isFresh(seen, 'presse', i, nowMs))), newsList),
   ];
+
+  // Item text is escaped, so this marker can only come from NEW_MARK
+  const marked = fragment(sections).includes('<span class="print"');
 
   const page = html`<html lang="de">
 <head>
@@ -374,7 +442,7 @@ export function renderPage({ nowMs, sources } = {}) {
 <link rel="stylesheet" href="${STYLE_HREF}">
 </head>
 <body>
-
+${marked ? FINGERPRINT_DEFS : ''}
 <header class="site">
   <a class="brand" href="/">cyberuser.de</a>
 </header>
