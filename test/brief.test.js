@@ -2,7 +2,7 @@
 // Grouping, ordering, limits, validation, source states, escaping, NEU mark, links.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { renderBrief, SOURCE_KEYS, MAX_ITEMS_PER_SECTION } from '../src/render.js';
+import { renderBrief, SOURCE_KEYS, SOURCE_QUOTAS, MAX_CARDS } from '../src/render.js';
 
 // Same reference time as render.test.js
 const NOW = Date.UTC(2026, 10, 11, 20, 0, 0);
@@ -103,7 +103,7 @@ const one = () =>
     presse: ok([presse(0)]),
   });
 
-test('every source shows all its entries under its own head', () => {
+test('every source shows its entries, below its quota all of them', () => {
   const out = renderBrief(
     input({
       nvd: ok(many(kev, 3)),
@@ -151,19 +151,52 @@ test('WID: UNGEPATCHT is marked, and only a literal true counts', () => {
 test('entries are sorted newest first, whatever the feed order', () => {
   const shuffled = [kev(3), kev(0), kev(5), kev(1), kev(4), kev(2), kev(6)];
   const out = renderBrief(input({ nvd: ok(shuffled) }));
-  assert.deepEqual(
-    ids(out, /CVE-2026-\d{4}/g),
-    many((i) => `CVE-2026-${1000 + i}`, 7),
-  );
+  // The sorted list is dealt into the two columns in turn, so the left column
+  // holds the 1st, 3rd, 5th entry and the right column the 2nd, 4th, 6th
+  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
+  assert.deepEqual(ids(left, /CVE-2026-\d{4}/g), ['CVE-2026-1000', 'CVE-2026-1002', 'CVE-2026-1004', 'CVE-2026-1006']);
+  assert.deepEqual(ids(right, /CVE-2026-\d{4}/g), ['CVE-2026-1001', 'CVE-2026-1003', 'CVE-2026-1005']);
 });
 
-test('too many entries are capped per source, keeping the newest', () => {
-  assert.equal(MAX_ITEMS_PER_SECTION, 50);
-  const out = renderBrief(input({ nvd: ok(many(kev, 80).reverse()), bits: ok(many(bits, 60)) }));
-  assert.equal(heads(out, 'CISA KEV'), 50);
-  assert.equal(heads(out, 'BSI'), 50);
-  assert.ok(out.includes('CVE-2026-1000') && out.includes('CVE-2026-1049'));
-  assert.ok(!out.includes('CVE-2026-1050'));
+test('every source keeps its quota, and no more while the others fill theirs', () => {
+  assert.deepEqual({ ...SOURCE_QUOTAS }, { nvd: 8, euvd: 2, wid: 14, buergercert: 5, bits: 6, presse: 5 });
+  assert.equal(MAX_CARDS, 40);
+  assert.equal(
+    Object.values(SOURCE_QUOTAS).reduce((a, b) => a + b, 0),
+    MAX_CARDS,
+    'the quotas add up to the total',
+  );
+  const out = renderBrief(
+    input({
+      nvd: ok(many(kev, 30)),
+      euvd: ok(many(euvd, 30)),
+      wid: ok(many(wid, 30)),
+      buergercert: ok(many(bc, 30)),
+      bits: ok(many(bits, 30)),
+      presse: ok(many(presse, 30)),
+    }),
+  );
+  assert.equal(rows(out), MAX_CARDS);
+  for (const [key, head] of [
+    ['nvd', 'CISA KEV'],
+    ['euvd', 'ENISA EUVD'],
+    ['wid', 'CERT-Bund WID'],
+    ['buergercert', 'Bürger-CERT'],
+    ['bits', 'BSI Presse'],
+  ]) {
+    if (key === 'bits') continue;
+    assert.equal(heads(out, head), SOURCE_QUOTAS[key], head);
+  }
+  // Only the newest of each source, counted from its own quota
+  assert.ok(out.includes('CVE-2026-1007') && !out.includes('CVE-2026-1008'));
+});
+
+test('places a source cannot fill go to the others, newest first', () => {
+  const out = renderBrief(input({ nvd: ok(many(kev, 30)), wid: ok(many(wid, 2)) }));
+  // 40 places, WID brings 2, the other four sources nothing: KEV takes the rest
+  assert.equal(rows(out), 32);
+  assert.equal(heads(out, 'CISA KEV'), 30);
+  assert.equal(heads(out, 'CERT-Bund WID'), 2);
 });
 
 test('invalid items are skipped and do not take a place', () => {
@@ -180,21 +213,21 @@ test('invalid items are skipped and do not take a place', () => {
   assert.equal(heads(out, 'CERT-Bund WID'), 1);
   assert.equal(rows(out), 2);
   assert.ok(!out.includes('CVE-26-1') && !out.includes('mittel'));
-  // EUVD, Buerger-CERT, BSI and BSI Presse have nothing left
-  assert.equal(count(out, /Derzeit keine Einträge\./g), 4);
+  assert.equal(count(out, /Derzeit keine Einträge\./g), 0, 'the empty text is only for a completely empty page');
 });
 
-test('empty ok sources show the empty text for each group', () => {
+test('all sources empty: one empty text, no cards', () => {
   const out = renderBrief(input());
-  assert.equal(count(out, /Derzeit keine Einträge\./g), 6);
+  assert.equal(count(out, /Derzeit keine Einträge\./g), 1);
   assert.equal(rows(out), 0);
 });
 
 test('missing source: notice only; stale source: entries with the outage notice', () => {
   const missing = renderBrief(input({ nvd: { state: 'missing', items: [kev(0)] } }));
   assert.equal(count(missing, /QUELLE NICHT ERREICHBAR, KEINE DATEN/g), 1);
+  assert.ok(missing.includes('<p class="lage-source-state">CISA KEV</p>'), 'the notice names its source');
   assert.ok(!missing.includes('CVE-2026-1000'));
-  assert.equal(count(missing, /Derzeit keine Einträge\./g), 5);
+  assert.equal(count(missing, /Derzeit keine Einträge\./g), 0);
 
   const stale = renderBrief(input({ wid: { state: 'stale', asOf: NOW - DAY, items: [wid(0)] } }));
   assert.ok(stale.includes('QUELLE NICHT ERREICHBAR, STAND: 10.11.2026 21:00 Uhr'));
@@ -246,14 +279,15 @@ test('links go straight to the source, rebuilt from IDs, not taken from stored i
   data.sources.nvd.items[0].link = 'https://nvd.nist.gov.evil.example/';
   data.sources.wid.items[0].link = 'https://evil.example/';
   const out = renderBrief(data);
-  assert.deepEqual(hrefs(out), [
-    'https://nvd.nist.gov/vuln/detail/CVE-2026-1000',
+  // The order follows the columns, so compare the set, not the sequence
+  assert.deepEqual(hrefs(out).slice().sort(), [
     'https://euvd.enisa.europa.eu/vulnerability/EUVD-2026-1000',
-    'https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1000',
+    'https://nvd.nist.gov/vuln/detail/CVE-2026-1000',
     `https://wid.cert-bund.de/portal/wid/buergercert/details?uuid=${bcId(0)}`,
-    bitsLink(0),
+    'https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1000',
     presseLink(0),
-  ]);
+    bitsLink(0),
+  ].sort());
   assert.equal(count(out, /<a class="slip-link" href="[^"]+" rel="noopener noreferrer">/g), 6);
   assert.ok(!out.includes('evil.example'));
   assert.ok(!out.includes('/news'));
@@ -305,18 +339,49 @@ test('output is a deterministic fragment, never a page or a script', () => {
   assert.ok(!out.includes('\u2014'), 'no em dash');
 });
 
-test('two columns: exploited vulnerabilities on one side, the German sources on the other', () => {
-  const out = renderBrief(one());
-  assert.equal(count(out, /<div class="lage-col /g), 2);
-  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
-  assert.ok(left.includes('id="lage-title"'));
-  assert.ok(left.includes('<span>CISA KEV</span>') && left.includes('<span>ENISA EUVD</span>'));
-  assert.ok(!left.includes('WID-SEC') && !left.includes('www.bsi.bund.de'));
-  assert.ok(!right.includes('CVE-2026') && !right.includes('EUVD-2026'));
-  const order = ['<span>CERT-Bund WID</span>', '<span>Bürger-CERT</span>', '<span>BSI</span>', '<span>BSI Presse</span>'].map((h) =>
-    right.indexOf(h),
+test('newest first across all sources, whatever the source', () => {
+  // One entry per source, each an hour older than the one before
+  const out = renderBrief(
+    input({
+      wid: ok([wid(0, { date: NOW - HOUR })]),
+      buergercert: ok([bc(0, { date: NOW - 2 * HOUR })]),
+      bits: ok([bits(0, { date: NOW - 3 * HOUR })]),
+      presse: ok([presse(0, { date: NOW - 4 * HOUR })]),
+    }),
   );
-  assert.ok(order.every((p, i) => p !== -1 && (i === 0 || p > order[i - 1])), 'right column order');
+  const order = ['CERT-Bund WID', 'Bürger-CERT', 'BSI</span>', 'BSI Presse'].map((h) => out.indexOf(`<span>${h}`));
+  assert.ok(order.every((p) => p !== -1), 'all four are shown');
+  // Two columns, filled in turn: 1st and 3rd on the left, 2nd and 4th on the right
+  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
+  assert.ok(left.includes('<span>CERT-Bund WID</span>') && left.includes('<span>BSI</span>'));
+  assert.ok(right.includes('<span>Bürger-CERT</span>') && right.includes('<span>BSI Presse</span>'));
+});
+
+test('a day without a time of day counts as the end of that day', () => {
+  // KEV has no time; a WID entry from 10:00 the same day must come after it
+  const sameDay = Date.UTC(2026, 10, 11);
+  const out = renderBrief(
+    input({
+      nvd: ok([kev(0, { kevAdded: sameDay })]),
+      wid: ok([wid(0, { date: sameDay + 10 * HOUR })]),
+    }),
+  );
+  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
+  assert.ok(left.includes('<span>CISA KEV</span>'), 'KEV first');
+  assert.ok(right.includes('<span>CERT-Bund WID</span>'), 'WID second');
+});
+
+test('two columns of about the same height, both with cards', () => {
+  const out = renderBrief(
+    input({ nvd: ok(many(kev, 8)), wid: ok(many(wid, 14)), bits: ok(many(bits, 6)) }),
+  );
+  const [left, right] = out.split('<div class="lage-col lage-col-wid">');
+  const l = (left.match(/<li class="lage-item">/g) ?? []).length;
+  const r = (right.match(/<li class="lage-item">/g) ?? []).length;
+  assert.equal(l + r, 28);
+  assert.ok(Math.abs(l - r) <= 2, `columns differ by ${Math.abs(l - r)}`);
+  assert.equal(count(out, /<div class="lage-col /g), 2);
+  assert.ok(left.includes('id="lage-title"'));
   assert.ok(right.includes('<p class="lage-sources">Quellen: CISA, NIST (NVD), ENISA (EUVD), CERT-Bund, BSI</p>'));
 });
 

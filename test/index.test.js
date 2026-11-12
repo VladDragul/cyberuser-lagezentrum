@@ -175,7 +175,7 @@ test('runCron on fixtures stores state and brief, then falls back per source', a
   assert.equal(state.v, 3);
   assert.deepEqual(state.attempts, Object.fromEntries(SOURCE_KEYS.map((k) => [k, NOW])));
   assert.deepEqual(Object.keys(state.sources).sort(), [...SOURCE_KEYS].sort());
-  assert.equal(cards(kv.store.get(KV_BRIEF)), 49);
+  assert.equal(cards(kv.store.get(KV_BRIEF)), 40);
   assert.deepEqual(kv.meta.get(KV_BRIEF), { generatedAt: NOW });
 
   // Two hours later NVD is due again but down: its copy from the first run is shown as stale
@@ -189,7 +189,7 @@ test('runCron on fixtures stores state and brief, then falls back per source', a
   assert.ok(brief.includes('QUELLE NICHT ERREICHBAR, STAND: 11.11.2026 21:00 Uhr'));
   assert.equal(JSON.parse(kv.store.get(KV_STATE)).sources.nvd.asOf, NOW);
   // The stale KEV copy is still merged with the fresh EUVD list, so nothing is shown twice
-  assert.equal(cards(brief), 49);
+  assert.equal(cards(brief), 40);
 });
 
 test('runCron one hour later fetches everything except NVD and shows NVD as current', async () => {
@@ -213,7 +213,7 @@ test('runCron one hour later fetches everything except NVD and shows NVD as curr
   assert.equal(state.attempts.nvd, NOW);
   assert.equal(state.attempts.wid, later);
   assert.equal(state.sources.nvd.asOf, NOW);
-  assert.equal(cards(kv.store.get(KV_BRIEF)), 49);
+  assert.equal(cards(kv.store.get(KV_BRIEF)), 40);
 });
 
 test('runCron does not retry a failed NVD request before two hours', async () => {

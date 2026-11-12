@@ -40,8 +40,10 @@ import { FINGERPRINT_VIEWBOX, FINGERPRINT_RIDGES } from './fingerprint.js';
 
 /* ---------- Configuration ---------- */
 
-// Cards shown per source, newest first
-export const MAX_ITEMS_PER_SECTION = 50;
+// How many cards each source may contribute. Unused places (a source with
+// fewer entries) go to the other sources, newest first, until MAX_CARDS is full.
+export const SOURCE_QUOTAS = Object.freeze({ nvd: 8, euvd: 2, wid: 14, buergercert: 5, bits: 6, presse: 5 });
+export const MAX_CARDS = 40;
 // An item counts as new for this long after the cron first saw it
 export const NEW_WINDOW_MS = 86_400_000;
 export const SOURCE_KEYS = Object.freeze(['nvd', 'euvd', 'wid', 'buergercert', 'bits', 'presse']);
@@ -224,21 +226,83 @@ function newestFirst(items, dateOf) {
     .map((e) => e.item);
 }
 
-// Take the newest `count` items that pass validation (toEntry returns null otherwise)
-function pickNewest(items, dateOf, toEntry, count) {
+// Every valid item of a source, newest first, as { at, height, html }
+function allNewest(items, dateOf, toEntry) {
   const out = [];
   for (const item of newestFirst(items, dateOf)) {
-    if (out.length >= count) break;
     const entry = toEntry(item);
     if (entry !== null) out.push(entry);
   }
   return out;
 }
 
+// KEV and EUVD publish a day without a time of day. Comparing them at 00:00
+// would push them below every German entry of the same day, so a day counts
+// as its last moment.
+const DAY_MS = 86_400_000;
+function sortKey(ms, withTime) {
+  const d = validDate(ms);
+  if (!d) return -Infinity;
+  return withTime ? ms : ms + DAY_MS - 1;
+}
+
+// Pure. Each source first takes up to its quota; the places left over by
+// sources with fewer entries are filled from the remaining items of the other
+// sources, newest first, up to MAX_CARDS.
+export function fillQuotas(bySource, quotas = SOURCE_QUOTAS, max = MAX_CARDS) {
+  const taken = [];
+  const rest = [];
+  for (const key of SOURCE_KEYS) {
+    const list = bySource[key] ?? [];
+    const quota = quotas[key] ?? 0;
+    for (let i = 0; i < list.length; i++) {
+      if (i < quota) taken.push(list[i]);
+      else rest.push(list[i]);
+    }
+  }
+  if (taken.length < max) {
+    rest.sort((a, b) => b.at - a.at);
+    for (const entry of rest) {
+      if (taken.length >= max) break;
+      taken.push(entry);
+    }
+  }
+  taken.sort((a, b) => b.at - a.at);
+  return taken.slice(0, max);
+}
+
+// Pure. Fills the two columns in order, always adding to the shorter one, so
+// both end up about the same height. Equal height goes to the left column.
+export function splitColumns(entries) {
+  const left = [];
+  const right = [];
+  let hl = 0;
+  let hr = 0;
+  for (const entry of entries) {
+    if (hl <= hr) {
+      left.push(entry.html);
+      hl += entry.height;
+    } else {
+      right.push(entry.html);
+      hr += entry.height;
+    }
+  }
+  return { left, right };
+}
+
 /* ---------- Cards (null = invalid, not rendered) ---------- */
 
 // One card for every source: source and date, title linked to the original
 // publication, and a last line that is never empty
+// A card plus what the layout needs: when it was published and roughly how
+// tall it is. The height is counted in lines of about 40 characters, so a long
+// title makes a taller card; 2 is the head and the id line.
+const CHARS_PER_LINE = 40;
+function entry(ms, withTime, card) {
+  const lines = Math.ceil((card.title.length + 1) / CHARS_PER_LINE);
+  return { at: sortKey(ms, withTime), height: 2 + Math.max(1, lines), html: briefItem(card) };
+}
+
 function briefItem({ head, time, title, id, href, fresh }) {
   return html`<li class="lage-item">
 <div class="slip-head"><span>${head}</span><span class="slip-time">${time}</span></div>
@@ -250,7 +314,7 @@ function briefItem({ head, time, title, id, href, fresh }) {
 function kevBrief(item, fresh) {
   const id = cveId(item?.id);
   if (!id || !validDate(item.kevAdded)) return null;
-  return briefItem({
+  return entry(item.kevAdded, false, {
     head: 'CISA KEV',
     time: timeTag(item.kevAdded, false),
     title: cleanText(item.title, LIMITS.vulnName) || id,
@@ -270,7 +334,7 @@ function euvdBrief(item, kevIds, fresh) {
   if (cves.some((c) => kevIds.has(c))) return null;
   const shown = cves.slice(0, MAX_CVES_SHOWN).join(', ');
   const more = cves.length > MAX_CVES_SHOWN ? ` (+${cves.length - MAX_CVES_SHOWN})` : '';
-  return briefItem({
+  return entry(item.exploitedSince, false, {
     head: 'ENISA EUVD',
     time: timeTag(item.exploitedSince, false),
     title: cleanText(item.title, LIMITS.vulnName) || id,
@@ -284,7 +348,7 @@ function widBrief(item, fresh) {
   const id = widId(item?.id);
   const severity = item?.severity;
   if (!id || !WID_SEVERITIES.has(severity) || !WID_STATUSES.has(item?.status) || !validDate(item.date)) return null;
-  return briefItem({
+  return entry(item.date, true, {
     head: 'CERT-Bund WID',
     time: timeTag(item.date, true),
     title: cleanText(item.title, LIMITS.title) || id,
@@ -299,7 +363,7 @@ function buergercertBrief(item, fresh) {
   const id = uuid(item?.id);
   const title = cleanText(item?.title, LIMITS.title);
   if (!id || title === '' || !validDate(item.date)) return null;
-  return briefItem({
+  return entry(item.date, true, {
     head: 'Bürger-CERT',
     time: timeTag(item.date, true),
     title,
@@ -314,7 +378,7 @@ function buergercertBrief(item, fresh) {
 function bsiBrief(item, head, label, fresh) {
   const title = cleanText(item?.title, LIMITS.title);
   if (title === '' || !validDate(item.date)) return null;
-  return briefItem({
+  return entry(item.date, true, {
     head,
     time: timeTag(item.date, true),
     title,
@@ -340,15 +404,24 @@ function sourceNotice(src) {
   return '';
 }
 
-function briefGroup(title, src, entries) {
-  let body = '';
-  if (src.state !== 'missing') {
-    body = entries.length > 0 ? html`<ul class="lage-list">${entries}</ul>` : html`<p>Derzeit keine Einträge.</p>`;
+// One line per source that could not be reached, above the cards
+function columnNotices(src) {
+  const out = [];
+  for (const key of SOURCE_KEYS) {
+    const notice = sourceNotice(src[key]);
+    if (notice !== '') out.push(html`<p class="lage-source-state">${SOURCE_NAMES[key]}</p>${notice}`);
   }
-  return html`<h3>${title}</h3>
-${sourceNotice(src)}${body}
-`;
+  return out;
 }
+
+const SOURCE_NAMES = Object.freeze({
+  nvd: 'CISA KEV',
+  euvd: 'ENISA EUVD',
+  wid: 'CERT-Bund WID',
+  buergercert: 'Bürger-CERT',
+  bits: 'BSI',
+  presse: 'BSI Presse',
+});
 
 /* ---------- Homepage brief ---------- */
 
@@ -358,55 +431,46 @@ ${sourceNotice(src)}${body}
 // Fallback decisions (which copy is shown) are made by worker.js, not here.
 //
 // Returns a string without <html>/<body>, to be placed between the homepage
-// markers. Left column: exploited vulnerabilities (KEV, then EUVD entries that
-// are not in KEV). Right column: the German sources.
+// markers. All sources share one list: newest first, whatever the source, up
+// to MAX_CARDS, spread over two columns of about the same height.
 export function renderBrief({ nowMs, sources, seen } = {}) {
   const src = {};
   for (const key of SOURCE_KEYS) src[key] = normalizeSource(sources?.[key]);
 
   const fresh = (key, item) => isFresh(seen, key, item, nowMs);
-  const newest = (key, dateOf, toEntry) => pickNewest(src[key].items, dateOf, toEntry, MAX_ITEMS_PER_SECTION);
   const byDate = (i) => i?.date;
 
   // Only CVEs that really got a KEV card hide their EUVD entry
   const kevIds = new Set();
-  const kev = newest(
-    'nvd',
-    (i) => i?.kevAdded,
-    (i) => {
+  const bySource = {
+    nvd: allNewest(src.nvd.items, (i) => i?.kevAdded, (i) => {
       const entry = kevBrief(i, fresh('nvd', i));
       if (entry !== null) kevIds.add(i.id);
       return entry;
-    },
-  );
-  const euvd = newest('euvd', (i) => i?.exploitedSince, (i) => euvdBrief(i, kevIds, fresh('euvd', i)));
-  const wid = newest('wid', byDate, (i) => widBrief(i, fresh('wid', i)));
-  const buergercert = newest('buergercert', byDate, (i) => buergercertBrief(i, fresh('buergercert', i)));
-  const bits = newest('bits', byDate, (i) => bsiBrief(i, 'BSI', 'Cybersicherheitswarnung', fresh('bits', i)));
-  const presse = newest('presse', byDate, (i) => bsiBrief(i, 'BSI Presse', 'Presse und Veranstaltungen', fresh('presse', i)));
+    }),
+    euvd: allNewest(src.euvd.items, (i) => i?.exploitedSince, (i) => euvdBrief(i, kevIds, fresh('euvd', i))),
+    wid: allNewest(src.wid.items, byDate, (i) => widBrief(i, fresh('wid', i))),
+    buergercert: allNewest(src.buergercert.items, byDate, (i) => buergercertBrief(i, fresh('buergercert', i))),
+    bits: allNewest(src.bits.items, byDate, (i) => bsiBrief(i, 'BSI', 'Cybersicherheitswarnung', fresh('bits', i))),
+    presse: allNewest(src.presse.items, byDate, (i) => bsiBrief(i, 'BSI Presse', 'Presse und Veranstaltungen', fresh('presse', i))),
+  };
 
-  const left = [
-    briefGroup('Aktiv ausgenutzte Schwachstellen', src.nvd, kev),
-    briefGroup('Weitere ausgenutzte Schwachstellen (EUVD)', src.euvd, euvd),
-  ];
-  const right = [
-    briefGroup('Hinweise des CERT-Bund', src.wid, wid),
-    briefGroup('Warnungen für Privatanwender', src.buergercert, buergercert),
-    briefGroup('Cybersicherheitswarnungen des BSI', src.bits, bits),
-    briefGroup('Presse und Veranstaltungen des BSI', src.presse, presse),
-  ];
+  const { left, right } = splitColumns(fillQuotas(bySource));
+  const notices = columnNotices(src);
+  const empty = left.length === 0 && right.length === 0 && notices.length === 0;
 
   // Item text is escaped, so this marker can only come from NEW_MARK
   const marked = fragment([left, right]).includes('<span class="print"');
+  const list = (entries) => (entries.length > 0 ? html`<ul class="lage-list">${entries}</ul>` : '');
 
   return html`<aside class="lage" aria-labelledby="lage-title">
 ${marked ? FINGERPRINT_DEFS : ''}<div class="lage-col lage-col-kev">
 <h2 id="lage-title">Sicherheitslage</h2>
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${left}</div>
+${notices}${empty ? html`<p>Derzeit keine Einträge.</p>` : ''}${list(left)}</div>
 <div class="lage-col lage-col-wid">
 <p class="status">Stand: ${timeTag(nowMs, true)}</p>
-${right}<p class="lage-sources">Quellen: CISA, NIST (NVD), ENISA (EUVD), CERT-Bund, BSI</p>
+${list(right)}<p class="lage-sources">Quellen: CISA, NIST (NVD), ENISA (EUVD), CERT-Bund, BSI</p>
 </div>
 </aside>
 `.value;

@@ -90,17 +90,19 @@ test('fixtures: collectAll then renderBrief gives the expected cards and only al
   t.diagnostic(`render ms (cold): ${(performance.now() - started).toFixed(2)}, bytes: ${out.length}`);
 
   // 12 KEV + 0 EUVD (all merged into KEV) + 12 WID + 5 Buerger-CERT + 10 BSI + 10 BSI Presse
+  // EUVD brings nothing (all merged into KEV) and WID has only 12 in the
+  // fixtures, so the free places go to KEV, which has 12
   assert.equal(heads(out, 'CISA KEV'), 12);
   assert.equal(heads(out, 'ENISA EUVD'), 0);
   assert.equal(heads(out, 'CERT-Bund WID'), 12);
   assert.equal(heads(out, 'Bürger-CERT'), 5);
-  assert.equal(heads(out, 'BSI'), 10);
-  assert.equal(heads(out, 'BSI Presse'), 10);
-  assert.equal(count(out, /<li class="lage-item">/g), 49);
-  assert.equal(count(out, /Derzeit keine Einträge\./g), 1);
+  assert.equal(heads(out, 'BSI'), 6);
+  assert.equal(heads(out, 'BSI Presse'), 5);
+  assert.equal(count(out, /<li class="lage-item">/g), 40);
+  assert.equal(count(out, /Derzeit keine Einträge\./g), 0);
   assert.equal(count(out, /QUELLE NICHT ERREICHBAR/g), 0);
   assert.ok(!/<script/i.test(out));
   const all = hrefs(out);
-  assert.equal(all.length, 49);
+  assert.equal(all.length, 40);
   for (const h of all) assert.match(h, ALLOWED_HREF);
 });
